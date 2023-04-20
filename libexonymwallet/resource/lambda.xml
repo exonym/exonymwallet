@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:SystemParameters xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:idmx="http://zurich.ibm.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" Version="3.0.0" SystemParametersUID="24ac0a92-f383-44fe-ad1d-bb39b9e7d6f2">
+    <abc:CryptoParams>
+        <abc:UriParameter Name="urn:idmx:3.0.0:systemParameters:spId">
+            <abc:Value>24ac0a92-f383-44fe-ad1d-bb39b9e7d6f2</abc:Value>
+        </abc:UriParameter>
+        <abc:IntegerParameter Name="urn:idmx:3.0.0:systemParameters:securityLevel">
+            <abc:Value>103</abc:Value>
+        </abc:IntegerParameter>
+        <abc:StringParameter Name="urn:idmx:3.0.0:systemParameters:hashFunction">
+            <abc:Value>urn:abc4trust:1.0:hashalgorithm:sha-256</abc:Value>
+        </abc:StringParameter>
+        <abc:IntegerParameter Name="urn:idmx:3.0.0:systemParameters:rsaModulusLength">
+            <abc:Value>2048</abc:Value>
+        </abc:IntegerParameter>
+        <abc:IntegerParameter Name="urn:idmx:3.0.0:systemParameters:securityLevel">
+            <abc:Value>103</abc:Value>
+        </abc:IntegerParameter>
+        <abc:StringParameter Name="urn:idmx:3.0.0:systemParameters:hashFunction">
+            <abc:Value>urn:abc4trust:1.0:hashalgorithm:sha-256</abc:Value>
+        </abc:StringParameter>
+        <abc:IntegerParameter Name="urn:idmx:3.0.0:systemParameters:rsaModulusLength">
+            <abc:Value>2048</abc:Value>
+        </abc:IntegerParameter>
+        <abc:IntegerParameter Name="urn:idmx:3.0.0:systemParameters:attributeLength">
+            <abc:Value>256</abc:Value>
+        </abc:IntegerParameter>
+        <abc:IntegerParameter Name="urn:idmx:3.0.0:systemParameters:dhModulusLength">
+            <abc:Value>2048</abc:Value>
+        </abc:IntegerParameter>
+        <abc:IntegerParameter Name="urn:idmx:3.0.0:systemParameters:dhSubgroupLength">
+            <abc:Value>264</abc:Value>
+        </abc:IntegerParameter>
+        <abc:IntegerParameter Name="urn:idmx:3.0.0:systemParameters:statisticalZk">
+            <abc:Value>80</abc:Value>
+        </abc:IntegerParameter>
+        <abc:IntegerParameter Name="urn:idmx:3.0.0:systemParameters:primeProb">
+            <abc:Value>80</abc:Value>
+        </abc:IntegerParameter>
+        <abc:BigIntegerParameter Name="urn:idmx:3.0.0:systemParameters:dhModulus">
+            <abc:Value>23518038254905441012117369980607040343836984440804482564072162512009573254585551034842516356412870947612812386325840267131711711613479790112292164849624246513019392420888872358816811802144615982633053721089576866020763855311166911148043767306268623282733934498808848693271975987661995464885888778375240219788370328731904083908571209546662394003887035840902831205955639214481070490355894088241442471043158851846628109547405296317559743099031158562743279289976271853556780290429164744722990893972161852885403069034775684329743649842084598449980617519028822714354718683944785918897576759427319554563154653779643578914173</abc:Value>
+        </abc:BigIntegerParameter>
+        <abc:BigIntegerParameter Name="urn:idmx:3.0.0:systemParameters:dhSubgroupOrder">
+            <abc:Value>20305225716469779280635770111497828224612182140176202533266487927048736985790503</abc:Value>
+        </abc:BigIntegerParameter>
+        <abc:BigIntegerParameter Name="urn:idmx:3.0.0:systemParameters:dhGen-1">
+            <abc:Value>22072361520206905912441805305609764166942948907888443847996489835434073095573337631931273641987358789712661880174825554711093991232880984077832363766101140157189674218061339177567919991522580778275663776437193014996733448476127154511161400889915001557197967942245388307088869123869405894639169181504750366718238227925900332528264017677237719599566738174011549333215451661146258321113843959980970436304758132101985579070162541552794604726644290487627516873691605392541922458284358730875389351657491906659391948796958048048691896336552600151276887388119732987891175626860521871246413673424773369973489222538730500185533</abc:Value>
+        </abc:BigIntegerParameter>
+        <abc:Parameter xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:systemParameters:dhGen-2">
+            <abc:Value>23120547810579847401489650171914042180178721128634818016179311416735343864173015369106075942169364425509304639725859065915448972520884426123523338192008664031991390972214561216275816121245686355328586582830006136290512825791025690661792882484345092460070162167825874558114508600882331835329081594247021750136803638827500111187553406116875816098464570475199109856226432777756535033452444260803054340461543091999597328604089326249104028287403996769581863945432002285771464397449183353128343296592351282773749591260887908361457028359603952415290376197804495146767152884764014188745717482934444667920968096706341386558723</abc:Value>
+        </abc:Parameter>
+    </abc:CryptoParams>
+</abc:SystemParameters>

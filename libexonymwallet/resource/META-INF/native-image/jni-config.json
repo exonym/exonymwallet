@@ -1,0 +1,110 @@
+[
+{
+  "name":"io.exonym.lib.wallet.GraalVMProbeMain",
+  "methods":[{"name":"main","parameterTypes":["java.lang.String[]"] }]
+},
+{
+  "name":"java.awt.image.BufferedImage",
+  "fields":[
+    {"name":"colorModel"}, 
+    {"name":"imageType"}, 
+    {"name":"raster"}
+  ],
+  "methods":[
+    {"name":"getRGB","parameterTypes":["int","int","int","int","int[]","int","int"] }, 
+    {"name":"setRGB","parameterTypes":["int","int","int","int","int[]","int","int"] }
+  ]
+},
+{
+  "name":"java.awt.image.ColorModel",
+  "fields":[
+    {"name":"colorSpace"}, 
+    {"name":"colorSpaceType"}, 
+    {"name":"isAlphaPremultiplied"}, 
+    {"name":"is_sRGB"}, 
+    {"name":"nBits"}, 
+    {"name":"numComponents"}, 
+    {"name":"pData"}, 
+    {"name":"supportsAlpha"}, 
+    {"name":"transparency"}
+  ],
+  "methods":[{"name":"getRGBdefault","parameterTypes":[] }]
+},
+{
+  "name":"java.awt.image.IndexColorModel",
+  "fields":[
+    {"name":"map_size"}, 
+    {"name":"rgb"}, 
+    {"name":"transparent_index"}
+  ]
+},
+{
+  "name":"java.awt.image.Raster",
+  "fields":[
+    {"name":"dataBuffer"}, 
+    {"name":"height"}, 
+    {"name":"minX"}, 
+    {"name":"minY"}, 
+    {"name":"numBands"}, 
+    {"name":"numDataElements"}, 
+    {"name":"sampleModel"}, 
+    {"name":"sampleModelTranslateX"}, 
+    {"name":"sampleModelTranslateY"}, 
+    {"name":"width"}
+  ]
+},
+{
+  "name":"java.awt.image.SampleModel",
+  "fields":[
+    {"name":"height"}, 
+    {"name":"width"}
+  ],
+  "methods":[
+    {"name":"getPixels","parameterTypes":["int","int","int","int","int[]","java.awt.image.DataBuffer"] }, 
+    {"name":"setPixels","parameterTypes":["int","int","int","int","int[]","java.awt.image.DataBuffer"] }
+  ]
+},
+{
+  "name":"java.lang.Boolean",
+  "methods":[{"name":"getBoolean","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.lang.ClassLoader",
+  "methods":[
+    {"name":"getPlatformClassLoader","parameterTypes":[] }, 
+    {"name":"loadClass","parameterTypes":["java.lang.String"] }
+  ]
+},
+{
+  "name":"java.lang.String",
+  "methods":[
+    {"name":"lastIndexOf","parameterTypes":["int"] }, 
+    {"name":"substring","parameterTypes":["int"] }
+  ]
+},
+{
+  "name":"java.lang.System",
+  "methods":[
+    {"name":"getProperty","parameterTypes":["java.lang.String"] }, 
+    {"name":"load","parameterTypes":["java.lang.String"] }, 
+    {"name":"setProperty","parameterTypes":["java.lang.String","java.lang.String"] }
+  ]
+},
+{
+  "name":"jdk.internal.loader.ClassLoaders$PlatformClassLoader"
+},
+{
+  "name":"org.graalvm.jniutils.JNIExceptionWrapperEntryPoints",
+  "methods":[{"name":"getClassName","parameterTypes":["java.lang.Class"] }]
+},
+{
+  "name":"sun.awt.image.BytePackedRaster",
+  "fields":[
+    {"name":"data"}, 
+    {"name":"dataBitOffset"}, 
+    {"name":"pixelBitStride"}, 
+    {"name":"scanlineStride"}, 
+    {"name":"type"}
+  ]
+}
+]
