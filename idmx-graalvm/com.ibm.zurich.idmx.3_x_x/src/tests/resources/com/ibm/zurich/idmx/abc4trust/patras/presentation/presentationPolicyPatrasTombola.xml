@@ -1,0 +1,41 @@
+<abc:PresentationPolicyAlternatives xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0"  Version="1.0"> 
+  <abc:PresentationPolicy PolicyUID="urn:patras:policies:Tombola">
+    <abc:Message>
+       <abc:Nonce>bkQydHBQWDR4TUZzbXJKYUphdVM=</abc:Nonce>
+      <abc:FriendlyPolicyName lang="en">Presentation Policy for Tombola</abc:FriendlyPolicyName>
+      <abc:FriendlyPolicyDescription lang="en">Enter the Tombola - your matriculation number will encrypted</abc:FriendlyPolicyDescription>
+    </abc:Message>
+    <abc:Pseudonym Exclusive="true" Scope="urn:patras:tombola"  SameKeyBindingAs="#credUniv"/>
+	<abc:Credential Alias="#credTombola">
+      <abc:CredentialSpecAlternatives>
+        <abc:CredentialSpecUID>urn:patras:credspec:credTombola</abc:CredentialSpecUID>
+      </abc:CredentialSpecAlternatives>
+      <abc:IssuerAlternatives>
+        <abc:IssuerParametersUID>urn:patras:issuer:credTombola</abc:IssuerParametersUID>
+        <abc:IssuerParametersUID>urn:patras:issuer:idemix</abc:IssuerParametersUID>
+      </abc:IssuerAlternatives>
+	  <abc:DisclosedAttribute AttributeType="urn:patras:credspec:credTombola:matriculationnr">
+        <abc:InspectorAlternatives>
+          <abc:InspectorPublicKeyUID>urn:patras:inspector:tombola</abc:InspectorPublicKeyUID>
+        </abc:InspectorAlternatives>
+        <abc:InspectionGrounds>
+          Only the winner of the tombola will have his/her matriculation number revealed. 
+        </abc:InspectionGrounds>
+      </abc:DisclosedAttribute>
+    </abc:Credential>
+    <abc:Credential Alias="#credUniv">
+    	<abc:CredentialSpecAlternatives>
+        	<abc:CredentialSpecUID>urn:patras:credspec:credUniv</abc:CredentialSpecUID>
+        </abc:CredentialSpecAlternatives>
+        <abc:IssuerAlternatives>
+        	<abc:IssuerParametersUID>urn:patras:issuer:idemix</abc:IssuerParametersUID>
+        </abc:IssuerAlternatives>
+    </abc:Credential>
+     <abc:AttributePredicate Function="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+      <abc:Attribute CredentialAlias="#credTombola" AttributeType="urn:patras:credspec:credTombola:matriculationnr" />
+      <abc:Attribute CredentialAlias="#credUniv" AttributeType="urn:patras:credspec:credUniv:matriculationnr" />
+    </abc:AttributePredicate>
+  </abc:PresentationPolicy>
+</abc:PresentationPolicyAlternatives>
+  </abc:PresentationPolicy>
+</abc:PresentationPolicyAlternatives>

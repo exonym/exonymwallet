@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:IssuerSecretKey xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+    <abc:secretKeyUID>brands</abc:secretKeyUID>
+    <abc:CryptoParams>
+        <abc:PrivateKey PublicKeyId="iss-brands:7a43ee1d-d92b-4ef9-bfed-4ab3d7ee82d5">
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:privateKey:uprove:y0">
+                <abc:Value>26444711620759864127484699016261778932800156114043898730303686991916071461072</abc:Value>
+            </abc:Parameter>
+        </abc:PrivateKey>
+    </abc:CryptoParams>
+</abc:IssuerSecretKey>

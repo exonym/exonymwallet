@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!-- This is the issuance policy for issuance of the Patras course credential. -->
+
+<abc:IssuanceTokenDescription xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+	<abc:PresentationTokenDescription
+		PolicyUID="urn:patras:policies:issuance:credCourse">
+    <abc:Pseudonym Exclusive="true" Scope="urn:patras:registration" Alias="#nym"/>
+	</abc:PresentationTokenDescription>
+	<abc:CredentialTemplate SameKeyBindingAs="#nym">
+		<abc:CredentialSpecUID>urn:patras:credspec:credCourse</abc:CredentialSpecUID>
+		<abc:IssuerParametersUID>urn:patras:issuer:uprove</abc:IssuerParametersUID>
+	</abc:CredentialTemplate>
+</abc:IssuanceTokenDescription>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:SystemParameters xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+    <abc:CryptoParams>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:StringParameter" Name="urn:idmx:3.0.0:systemParameters:spId">
+            <abc:Value>7f707b4a-934c-4ef2-af99-62ef1c8764c0</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:systemParameters:securityLevel">
+            <abc:Value>50</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:StringParameter" Name="urn:idmx:3.0.0:systemParameters:hashFunction">
+            <abc:Value>urn:abc4trust:1.0:hashalgorithm:sha-256</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:systemParameters:rsaModulusLength">
+            <abc:Value>512</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:systemParameters:securityLevel">
+            <abc:Value>50</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:StringParameter" Name="urn:idmx:3.0.0:systemParameters:hashFunction">
+            <abc:Value>urn:abc4trust:1.0:hashalgorithm:sha-256</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:systemParameters:rsaModulusLength">
+            <abc:Value>512</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:systemParameters:attributeLength">
+            <abc:Value>256</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:systemParameters:dhModulusLength">
+            <abc:Value>512</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:systemParameters:dhSubgroupLength">
+            <abc:Value>257</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:systemParameters:statisticalZk">
+            <abc:Value>80</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:systemParameters:primeProb">
+            <abc:Value>80</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:systemParameters:dhModulus">
+            <abc:Value>5346314236752468668349971254131956938235876292495150653435787571752754688230281400181975676282154387125203594054321878847731583255012631517334307003816407</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:systemParameters:dhSubgroupOrder">
+            <abc:Value>217554832793901585291631716377123487483069858218466326916732010506794007414419</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:systemParameters:dhGen-1">
+            <abc:Value>2268102772632761894743081280075843771236642601107078378174883696114445936528394932199282837210978501154809381439892702319600616589664908736133400846455572</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:systemParameters:dhGen-2">
+            <abc:Value>3963339319039858858411235942130199984723365907491694716723812162726559675775485783169797636675617655245624025991066584489762861086855817079086109206139013</abc:Value>
+        </abc:Parameter>
+    </abc:CryptoParams>
+</abc:SystemParameters>

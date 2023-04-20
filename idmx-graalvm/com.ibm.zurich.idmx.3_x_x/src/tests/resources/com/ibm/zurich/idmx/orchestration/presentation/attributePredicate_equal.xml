@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:AttributePredicate xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0"
+	Function="urn:oasis:names:tc:xacml:1.0:function:integer-equal">
+	<abc:Attribute CredentialAlias="#credentialName"
+		AttributeType="FirstName" />
+	<abc:ConstantValue xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:integer">1337
+	</abc:ConstantValue>
+</abc:AttributePredicate>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:AttributeList xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+	<!-- We changed the order here on purpose -->
+	<abc:Attributes>
+		<abc:AttributeUID>atts-all-2</abc:AttributeUID>
+		<abc:AttributeDescription Type="type2"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>0</abc:AttributeValue>
+	</abc:Attributes>
+	<abc:Attributes>
+		<abc:AttributeUID>atts-all-3</abc:AttributeUID>
+		<abc:AttributeDescription Type="type3"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>4242</abc:AttributeValue>
+	</abc:Attributes>
+	<abc:Attributes>
+		<abc:AttributeUID>atts-all-1</abc:AttributeUID>
+		<abc:AttributeDescription Type="type1"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>1234</abc:AttributeValue>
+	</abc:Attributes>
+	<abc:Attributes>
+		<abc:AttributeUID>atts-all-5</abc:AttributeUID>
+		<abc:AttributeDescription Type="type5"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>115792089237316195423570985008687907853269984665640564039457584007913129639935
+		</abc:AttributeValue>
+	</abc:Attributes>
+	<abc:Attributes>
+		<abc:AttributeUID>atts-all-4</abc:AttributeUID>
+		<abc:AttributeDescription Type="type4"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>1</abc:AttributeValue>
+	</abc:Attributes>
+</abc:AttributeList>

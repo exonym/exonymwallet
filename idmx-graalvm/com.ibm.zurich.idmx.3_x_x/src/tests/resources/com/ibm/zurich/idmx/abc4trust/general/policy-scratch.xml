@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:IssuancePolicy xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0"
+	Version="1.0">
+	<abc:PresentationPolicy PolicyUID="policy-scratch-1"></abc:PresentationPolicy>
+	<abc:CredentialTemplate>
+		<abc:CredentialSpecUID>cs-simple</abc:CredentialSpecUID>
+		<abc:IssuerParametersUID>REPLACE_ME</abc:IssuerParametersUID>
+	</abc:CredentialTemplate>
+</abc:IssuancePolicy>

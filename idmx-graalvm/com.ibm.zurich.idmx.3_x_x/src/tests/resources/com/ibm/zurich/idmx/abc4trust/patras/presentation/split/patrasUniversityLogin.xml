@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:PresentationToken xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0" xmlns:idmx="http://zurich.ibm.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="3.0.0">
+    <abc:PresentationTokenDescription PolicyUID="urn:patras:policies:loginPseudonym" TokenUID="abc4trust.eu/token-uid/2">
+        <abc:Message>
+            <abc:Nonce>bkQydHBQWDR4TUZzbXJKYUphdVM=</abc:Nonce>
+        </abc:Message>
+        <abc:Pseudonym Exclusive="true" Scope="urn:patras:registration">
+            <abc:PseudonymValue>DTtZe7DoaMCHGewZfJk9Adc9PAEJkJZXs9KjvyemiyGng4USJagMYP3bokuSiHkIrbVxDhrsNmbCFsXuTV/7KkaWJRKW6r81/z+NPQ==</abc:PseudonymValue>
+        </abc:Pseudonym>
+    </abc:PresentationTokenDescription>
+    <abc:CryptoEvidence>
+        <abc:ZkProof>
+            <abc:Module Name="msg:0">
+                <abc:HashContribution>kjsa7BoJwLacDu0uBvyqmQShbzR7Z66yUtEYymRA7lQ=</abc:HashContribution>
+                <abc:NValue Name="msg:0:m" Type="octetStream">PGFiYzpNZXNzYWdlIHhtbG5zOmFiYz0iaHR0cDovL2FiYzR0cnVzdC5ldS93cDIvYWJjc2NoZW1hdjEuMCI+PGFiYzpOb25jZT5ia1F5ZEhCUVdEUjRUVVp6YlhKS1lVcGhkVk09PC9hYmM6Tm9uY2U+PC9hYmM6TWVzc2FnZT4=</abc:NValue>
+            </abc:Module>
+            <abc:Module Name="nym:0">
+                <abc:HashContribution>7ebCOq4okUVgIM9lY3OmJDCVErG1riXhyIy3aygoQ/U=</abc:HashContribution>
+                <abc:DValue Name="nym:0:rep:C" Type="groupElement">DTtZe7DoaMCHGewZfJk9Adc9PAEJkJZXs9KjvyemiyGng4USJagMYP3bokuSiHkIrbVxDhrsNmbCFsXuTV/7KkaWJRKW6r81/z+NPQ==</abc:DValue>
+                <abc:NValue Name="nym:0:rep:base:0" Type="groupElement">BLVKbF6ifGJyE4KhmU9BnofsebX3Wf/ZS4x/f6P+xX9RbDB/uH5H/rTJMoWM+N3CVz1AJ5lCpaCLTyVl9Oo1+iy/QvlQ8FSt5Vi94g==</abc:NValue>
+                <abc:NValue Name="nym:0:rep:groupDescription" Type="octetStream">UHJpbWVPcmRlckdyb3VwIFttb2R1bHVzPTc1ODQyMzQyNjIwMDMzOTAxNzY5MTgyMDE5MTE3MjMwNTYzMDAzNTcwNDk1MzY3MzEzOTA4MTMwNjg1NjYxNDQ3NzM3ODYwNDk0MDk3NDI2NzQ0MTA3NTMyNTkyNjQ3NTIxMzE5NTA2MzAzMTEwODg2MTA0Mjk5NTUxNzMwMDM1NjU0MTMxMTgwOTc3MjE3OTU3NjU3MTAxMzE5MjE2ODg2ODY4NTM3MjYxNzYyOTU3MTQ1MTM0Nywgc3ViZ3JvdXBPcmRlcj0xODE1NDYzNTYzMDczMDE0MzA3OTU0ODEwMzc4NjU1NjkzMjM4MTQ2MzczODIxNDY3Mzk4MTA0MDMyNjYwODg3MDg2ODUwMjUzMDE3NTNd</abc:NValue>
+                <abc:TValue Name="nym:0:rep:t" Type="groupElement">AJAo6WcHKsrhk68c7gz1Ri0xSlVHXXU23i8S8kbGyUGWwD0G6mxbXauJeiG8HnvH4C4L4eyXftKxnzsohNjI41gM9jOCo3Ebug1Ah1s=</abc:TValue>
+            </abc:Module>
+            <abc:Module Name="param:ms">
+                <abc:HashContribution>HSWmn6oIYcJnt6IJCaob/Yp9xdYAoeivFR4Pzg4U79Y=</abc:HashContribution>
+                <abc:NValue Name="param:ms:mechanismSpecification:c14n" Type="octetStream">5kyNSF41RWWz8uZYj00OWkvUqEFfQRvLqZxhDPAxW9Y=</abc:NValue>
+            </abc:Module>
+            <abc:Module Name="param:pt">
+                <abc:HashContribution>+P0NwYzyFy8hDMEvV3tA4T74sd+W6VKH+WIDTek/IfU=</abc:HashContribution>
+                <abc:NValue Name="param:pt:ptDescription:c14n" Type="octetStream">WuS76uvmzG+DoX5ebI47qOIJUQiAqub7ja3rgamZH8Y=</abc:NValue>
+            </abc:Module>
+            <abc:Module Name="param:sp">
+                <abc:HashContribution>AKZpAZzGlpdwqBGjS9QIRxIoHPhAnXekQvUIqaYdBF4=</abc:HashContribution>
+                <abc:NValue Name="param:sp:systemParameters:c14n" Type="octetStream">4VLQ+McjjF6UxbXQ0eNF+lLW1BQ9iq/Q/N3EXco3S9A=</abc:NValue>
+            </abc:Module>
+            <abc:Module Name="param:vp">
+                <abc:HashContribution>AxYZac99BpjKUg4uJxcDKZLBSt7pg4sA0NKX8ZYxEdQ=</abc:HashContribution>
+                <abc:NValue Name="param:vp:verifierParameters:c14n" Type="octetStream">7HeuNFjuJiHm+pSHqRe1O740UHbfhVeW1y9vRYELiSw=</abc:NValue>
+            </abc:Module>
+            <abc:Challenge>NB/pFpleXCjEbugRD3nNZFmX6vlGUgZdhFlUY2GGrAQ=</abc:Challenge>
+            <abc:SValue Name="nym:0:rep:0" Type="integer">DfQwO+pqxhLCGssBRbbfI6NqDOvisZvrbPKFhEJlUwHr9hqd+yrAxUTJowVyeeewo8f42/5uB1ADZNft/uR/30UFgZFFw7j91dc=</abc:SValue>
+            <abc:AttributePartition representativeName="nym:0:rep:0" residueClass="true">
+                <abc:attributeName>nym:0:rep:0</abc:attributeName>
+                <abc:attributeName>nym:0:secret</abc:attributeName>
+            </abc:AttributePartition>
+        </abc:ZkProof>
+        <abc:MechanismSpecification SystemParametersId="eeae1e60-6b49-4ff7-b32f-c3306282c45d" ProofSystem="fiat-shamir">
+            <abc:Parameter xsi:type="abc:UriParameter" Name="nym:0">
+                <abc:Value>urn:idmx:3.0.0:block:pseudonym:scopeExclusive</abc:Value>
+            </abc:Parameter>
+        </abc:MechanismSpecification>
+    </abc:CryptoEvidence>
+</abc:PresentationToken>

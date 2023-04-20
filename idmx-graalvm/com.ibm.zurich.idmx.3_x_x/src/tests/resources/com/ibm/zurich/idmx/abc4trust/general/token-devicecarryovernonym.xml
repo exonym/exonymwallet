@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:IssuanceTokenDescription xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+	<abc:PresentationTokenDescription
+		PolicyUID="policy-devicecarryovernonym-1">
+		<abc:Credential Alias="base">
+			<abc:CredentialSpecUID>REPLACE_ME</abc:CredentialSpecUID>
+			<abc:IssuerParametersUID>REPLACE_ME</abc:IssuerParametersUID>
+		</abc:Credential>
+	</abc:PresentationTokenDescription>
+	<abc:CredentialTemplate>
+		<abc:CredentialSpecUID>REPLACE_THE_WHOLE_CREDENTIAL_TEMPLATE</abc:CredentialSpecUID>
+		<abc:IssuerParametersUID></abc:IssuerParametersUID>
+	</abc:CredentialTemplate>
+</abc:IssuanceTokenDescription>

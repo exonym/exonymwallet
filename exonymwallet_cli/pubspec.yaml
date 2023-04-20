@@ -1,0 +1,32 @@
+name: exonymwallet_cli
+description: A command-line wallet for exonym.
+version: 0.0.1
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: '>=2.19.0 <3.0.0'
+
+dependencies:
+  args: ^2.3.2
+  build_cli_annotations: ^2.0.0
+  github: ^9.2.0
+  intl: ^0.17.0
+  exonymwallet:
+    path: ../exonymwallet/
+
+  logger: ^1.1.0
+  console: ^4.1.0
+
+
+dev_dependencies:
+  build_cli: ^2.0.0
+  build_runner: ^2.0.6
+  lints: ^2.0.1
+  test: ^1.6.0
+
+linter:
+  rules:
+    unawaited_futures;
+
+executables:
+  exonymwallet_cli: exonym

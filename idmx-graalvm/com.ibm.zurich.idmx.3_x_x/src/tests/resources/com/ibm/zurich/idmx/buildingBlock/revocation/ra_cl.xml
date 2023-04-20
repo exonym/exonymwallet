@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:KeyPair xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+    <abc:PrivateKey PublicKeyId="urn:ch.admin:revocation:idmx:3.0.0:publicKey:08b502f7-6e91-4aad-9f37-a9fdfb45790b">
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:rsaModulus">
+            <abc:Value>8637944624706729163933773667726302577749477117378952321342790733377499256226093157106501297108146653088319986151515135161576836717419119893592113465023301</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:p">
+            <abc:Value>82348903103453263380085018757841575686501974391273380258120498684303072597719</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:q">
+            <abc:Value>104894470954337471055079159022155824476862831720446984535456409934265279776579</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:pPrime">
+            <abc:Value>41174451551726631690042509378920787843250987195636690129060249342151536298859</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:qPrime">
+            <abc:Value>52447235477168735527539579511077912238431415860223492267728204967132639888289</abc:Value>
+        </abc:Parameter>
+    </abc:PrivateKey>
+    <abc:PublicKey Technology="urn:idmx:3.0.0:block:revocation" SystemParametersId="4056c8b9-9582-40d1-93de-2accbf4b77be" PublicKeyId="urn:ch.admin:revocation:idmx:3.0.0:publicKey:08b502f7-6e91-4aad-9f37-a9fdfb45790b">
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:UriParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:nreReference">
+            <abc:Value>non:revocation:evidence:reference</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:UriParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:nreUpdateReference">
+            <abc:Value>non:revocation:evidence:update:reference</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:rsaModulus">
+            <abc:Value>8637944624706729163933773667726302577749477117378952321342790733377499256226093157106501297108146653088319986151515135161576836717419119893592113465023301</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:base:0">
+            <abc:Value>762780775295544553887268693799665070106266450609789283749136382852774194340053808455901723570440048783862569284055795954748365321329699101882880067361455</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:base:1">
+            <abc:Value>5478628400806968704375025501802484915299802009256698735665381162661511244545156856906642412174522705470221146821781130969491585952555825064632786897190594</abc:Value>
+        </abc:Parameter>
+    </abc:PublicKey>
+</abc:KeyPair>

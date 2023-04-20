@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:IssuerSecretKey xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+    <abc:secretKeyUID>cl</abc:secretKeyUID>
+    <abc:CryptoParams>
+        <abc:PrivateKey PublicKeyId="iss-idemix:4e137523-6968-4bdf-8692-e96670e8a594">
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:privateKey:rsaModulus">
+                <abc:Value>742779824756860163498611696257756085718919321201236437842506187879673309327711431813129348335669174441568667597581798693095490859130427178687847976190540255376053002331258877568677089</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:privateKey:p">
+                <abc:Value>24685037132795925798689603599841727044018003750489593689755901440278051932114986510177883683</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:privateKey:q">
+                <abc:Value>30090285899145818172129437975456043838944640300839346713932601964723262903792294231982595883</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:privateKey:pPrime">
+                <abc:Value>12342518566397962899344801799920863522009001875244796844877950720139025966057493255088941841</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:privateKey:qPrime">
+                <abc:Value>15045142949572909086064718987728021919472320150419673356966300982361631451896147115991297941</abc:Value>
+            </abc:Parameter>
+        </abc:PrivateKey>
+    </abc:CryptoParams>
+</abc:IssuerSecretKey>

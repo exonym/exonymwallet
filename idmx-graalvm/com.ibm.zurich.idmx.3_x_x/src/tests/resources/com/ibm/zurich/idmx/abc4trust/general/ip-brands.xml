@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:IssuerParameters xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0" Version="3.0.0">
+    <abc:ParametersUID>brands</abc:ParametersUID>
+    <abc:AlgorithmID>urn:idmx:3.0.0:block:sig:uprove</abc:AlgorithmID>
+    <abc:SystemParametersUID>eeae1e60-6b49-4ff7-b32f-c3306282c45d</abc:SystemParametersUID>
+    <abc:MaximalNumberOfAttributes>10</abc:MaximalNumberOfAttributes>
+    <abc:HashAlgorithm>sha-256</abc:HashAlgorithm>
+    <abc:CryptoParams>
+        <abc:PublicKey Version="3.0.0" Technology="urn:idmx:3.0.0:block:sig:uprove" SystemParametersId="eeae1e60-6b49-4ff7-b32f-c3306282c45d" PublicKeyId="iss-brands:7a43ee1d-d92b-4ef9-bfed-4ab3d7ee82d5">
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:maxAtts">
+                <abc:Value>10</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:0">
+                <abc:Value>684832007610344186989555364733803989299529978866329083362219467623334517712691032628255051492921710470370191540727405115288240748054602817972613578250031170611242880637149101945640069</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:1">
+                <abc:Value>439155946115941175580767900110078991988772001793942568549991091867735056228374542386911175835860947261547358536120694514488515929026056612879889141457033847613380151326150091366878677</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:2">
+                <abc:Value>359247192573903570810839999009918202015446967307111543128829338857106048806974983252805873148736549828645553746982607378407836357570747809976835919429604369967268349243691213924346627</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:3">
+                <abc:Value>455755095031590626644658062198776392348864766932245289645102264334570528714819757891364095776434451907963585701036661397173451948589207849208687101912565598643212567252595673331241070</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:4">
+                <abc:Value>581481148731679696907079849930083628381876184380746540680390692872655808228950672696654680894968694987944633560997919066062643915191181459215790355032491364075924898296477166329195701</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:5">
+                <abc:Value>210022272550926921905049277295674553551418642144328229852308330759604030278739878347472195441624502475745836652066460509836918791645596162523760287901841939296927247195207435329825025</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:6">
+                <abc:Value>321122367454166563893411402841662915319625564244928998023434441251264801120278674528700409195294535616320218994168597975943036813119823591329848254897167737865009810098797392829969865</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:7">
+                <abc:Value>37498232411366057059079968727182387828474641328391099834637612427303613901511609834844148803501587924715840621989039921444561318214661500294637718479279899785572306898415991586534059</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:8">
+                <abc:Value>638856025020406239458284268032116061611138887494361348217980286309410368178560801141814775485101078653059523162332346505407221208007020924344847493789695321785590099840433179645734616</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:9">
+                <abc:Value>276605537243016459385493606547674105790911542541416796116442362910099894201232822694239935435636282736255440962778472011239008751483131749029193816176624748807318915166962511878174518</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:10">
+                <abc:Value>378589231305078805863870460940046960262204064328532699997479736564082019194289068766137369089664266334089614758906453440288694083365520285608877898969309287161630430096733368494798711</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:d">
+                <abc:Value>519153040335160969709366831196263875783570923807987559661977264017547618039990929866206961565444640443422730544955138426984303326022472808385049951569237930848479896143398713342100004</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:g:t">
+                <abc:Value>194596896722704026962445250358909519906563298318624137188949137838292081965909625928652473026550664689550823275482497009120993279714387743733203122118302969746254578963545095012450894</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:IntegerParameter" Name="urn:idmx:3.0.0:issuer:publicKey:uprove:tokens">
+                <abc:Value>10</abc:Value>
+            </abc:Parameter>
+        </abc:PublicKey>
+    </abc:CryptoParams>
+</abc:IssuerParameters>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:KeyPair xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+    <abc:PrivateKey PublicKeyId="urn:patras:revocation:pk:c9a179db-946b-436a-b4cf-a918aeca893c">
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:rsaModulus">
+            <abc:Value>731946256105434912723561880635511369456404609397525552192657565061050385153913830535885051436082170160255475303757493992957851199560317576998961822877437643578895016115149642154289189</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:p">
+            <abc:Value>24293138565327813673875066533410631210048200306906653468619477239490743469625509537818363467</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:q">
+            <abc:Value>30129752651643757164478163132994505337547488208993446013496172880541783123385270530096530767</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:pPrime">
+            <abc:Value>12146569282663906836937533266705315605024100153453326734309738619745371734812754768909181733</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:privateKey:qPrime">
+            <abc:Value>15064876325821878582239081566497252668773744104496723006748086440270891561692635265048265383</abc:Value>
+        </abc:Parameter>
+    </abc:PrivateKey>
+    <abc:PublicKey Technology="urn:idmx:3.0.0:block:revocation" SystemParametersId="eeae1e60-6b49-4ff7-b32f-c3306282c45d" PublicKeyId="urn:patras:revocation:pk:c9a179db-946b-436a-b4cf-a918aeca893c">
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:UriParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:nreReference">
+            <abc:Value>non:revocation:evidence:reference</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:UriParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:nreUpdateReference">
+            <abc:Value>non:revocation:evidence:update:reference</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:UriParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:revocationInformationReference">
+            <abc:Value>revocation:information:reference</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:rsaModulus">
+            <abc:Value>731946256105434912723561880635511369456404609397525552192657565061050385153913830535885051436082170160255475303757493992957851199560317576998961822877437643578895016115149642154289189</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:base:0">
+            <abc:Value>105199748822900909576427556221920464924872136325425141967326642943966982243581683647233903583862951052171533554441193367920677920213820807866494465084738208646673882979287128807952678</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:revocationAuthority:publicKey:base:1">
+            <abc:Value>265978227142809729077884761811474658956064261518682929875628443430522389501951370008695010091657373844489493775262766552079840294001004730642534555460328181497944502454830958367904060</abc:Value>
+        </abc:Parameter>
+    </abc:PublicKey>
+</abc:KeyPair>

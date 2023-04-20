@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:Signature xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+    <abc:canReuseToken>false</abc:canReuseToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>4665546466448707770507552455936225349464155785761027241871633978996465938973225571253329909854597221085529008667642492524845107295522894863946916126787813</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>38406146961155519892029040456830638774000497636089615405025405449087575263411</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>148944897267815658991272910101227229715138927299634709352103865606499079370064</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>878310432627990992035147727883770522828331072741138382914964600546703564448232941415665649360036663594744777714915058029832219897965343786193354942476689</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>119763972955119202565371524384247684996540498595117953208448605186455706192442</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>3648917037541683414411705019311808573497985355709422861069741354690796572400916529609772153521439395532344602781166429703133139263259388268474728125591841</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>69201945986721359529861114774872311038628271569544941260605400311902370029681</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>32486574541691713266659860869278753841334231869531830698346375552452956805386</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>5333879153047003712394887042228465678516163501873838372549275523348918528112409951591594102546305149825774444091117299932805371213144392930448648594443342</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>129731395826796243690086500135790079270127249487892592013821817284052896913849</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>4109107324387062223497278442808737289340364156848433057059372237129720471240494239037307847882554102210816533954784052707582995493696854354262586745479558</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>52698593751489153937541000057282039508962068056689037577372395345645691151491</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>24515434838347618882704381785836522036247481752143685194331843647179706163387</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>3203405989435540088707305616979078987161175236296869942055854739905644308315448977080147031556426599699972504255992441832849747869562269392038744854237120</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>189690965892401998336550844473978212618853944368463159371505775413636333823604</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>199337979076885740038418997783629957206106437362355997626382502365778493147995184802172975390113094266752326761753674248476940493786368542842353108304798</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>85182163483833061105790979621214988884951124208589731201590978233941101200001</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>56533452745959361758086770962732476002158151531211598615964200044766507458062</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>3023658659548429597087668805286416838758367223176650462969146887743826881733009893122669623519982527823878241495735398182586019905656844102171925477344382</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>107559458468048445474551338065992367277994554274418152626809053586905179439764</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>533182041442909083526672863125099324964600180992526288791488199849854207959181131971224445366162791465330504899669598282252354407852826593512072786141375</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>42058159848930657022014548446152170183425416472653165854012341437036122885617</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>198109953198425299546157972382721188352783520395397332699264862363705514604807</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>1639592323701030647291435362791969561779361482205477471145576980597940683289966580725691793037852371099242363290490505726353798524190973522050199809078632</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>27266132944066147199094189098709253689305953593677969698391199769896111984146</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>385418440271419141331883795414264934324883909632726789815534577875815398011714088539927059516905569259658182040435651563884252629250755607184029731692337</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>11831054929839632350829109844020144562272482045549301900065197495604147521355</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>24600199358591807261233811542717300837722359643463570333195286657139936758111</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>2347945494700907517121661379408131492763236083539516111827156781382666209395277371960653542569665832991861276783803233110916482690556663273220762859186024</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>73103217618560209368051907054084285810390288783886026831474892403995323652280</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>1298279567720952917795059319494171099623263844683205321534419226717211441265367381253023867586100126656446662120951989928418213496460987118587466377963895</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>21954893324133837423249953889609800700620233280515828165652518573973298333195</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>1239338349112806985005644632414573411548841859416482344145854609617462876983</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>1038893578374156906587348037110419579620882449936842098560364741506129481843822450871398381309335185879581868781276677355781328012880952543398938684800011</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>63918918345818319408678579444821110561743138024574267307965177776345821315047</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>1618719165533699084635197121657771516010970268106830506930782284301161503080491444881804805068507053960255675547190682714879122228577510619390513180515422</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>84013296981814746939328341901584174214785878169214464679262422188301776236099</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>177589582797372056655145473064453940033177072269951695806897926053930360054722</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>191869306560383717843581303871421420310702286303142836487301291058817798505690058472434217010070440307482091420489187385646862357800238985724356845979398</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>163512432772435530319032501648414843336211563284284276164692666414171552681295</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>396248571442599562070533370425958812811137053453305179296977216371640709916011445217010510366242983741874044786581652673323241867710074115742077225156110</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>62224346617793039251549825913931909876656298351697003633920863979696756172547</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>192355340319013952858939409314448098128899061445880048267497459173156620250226</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>2212865574779549116984545220076298596582821279662379323016907760876739269866513097042807863673612231061322980313158510865739861369845516762089310186853711</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>40968797042072337375773712627920486677642541422213260329025634853435882971334</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+    <abc:SignatureToken>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaZPrime">
+            <abc:Value>3404970257289338338044497068031313814935237876821661419961460374165758330117018918454808327607362054398756611255000070866789374166621704801057067536753094</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaCPrime">
+            <abc:Value>93551651660315834907998018367438786942499056480828913058127015950129168389563</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="sigmaRPrime">
+            <abc:Value>132395858703204087861229249135927498952933835374367843462926446713350912851083</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="h">
+            <abc:Value>1429059742128323350997778393115500579987646484108620837277566785661749623512153129788410959223488375528957614456155493855792431488195663716483906349889696</abc:Value>
+        </abc:Parameter>
+        <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="alphaInverse">
+            <abc:Value>58983106023760885528983700777920646976947540367861139337099875988465293327110</abc:Value>
+        </abc:Parameter>
+    </abc:SignatureToken>
+</abc:Signature>

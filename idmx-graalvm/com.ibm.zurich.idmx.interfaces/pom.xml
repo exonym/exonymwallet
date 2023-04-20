@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ibm.zurich.idmx</groupId>
+    <artifactId>pom</artifactId>
+    <version>3.1.0</version>
+  </parent>
+
+  <artifactId>com.ibm.zurich.idmx.interfaces</artifactId>
+  <name>Identity Mixer Interfaces</name>
+  <version>3.1.0</version>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <!-- ABC4Trust dependencies -->
+    <dependency>
+      <groupId>eu.abc4trust.ri</groupId>
+      <artifactId>abc4trust-xml</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>eu.abc4trust.ri</groupId>
+      <artifactId>abce-interfaces</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>set-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/interfaces</source>
+                <source>src/exceptions</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

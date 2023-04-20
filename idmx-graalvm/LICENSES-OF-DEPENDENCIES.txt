@@ -1,0 +1,26 @@
+#################################################################################################
+# Note: For all dependencies that are dual-licensed, we choose the non-GPL/non-LGPL license.
+# 
+# The content of this file was generated with the command
+# $ mvn license:aggregate-add-third-party -Dlicense.useMissingFile -Dlicense.failIfWarning
+# which generates a file in target/generated-sources/license/THIRD-PARTY.txt. The content of this 
+# file was copied here.
+#################################################################################################
+
+Lists of 16 third-party dependencies.
+     (Public Domain) AOP alliance (aopalliance:aopalliance:1.0 - http://aopalliance.sourceforge.net)
+     (ASF 2.0) Code Generation Library (cglib:cglib-nodep:2.2 - http://cglib.sourceforge.net/)
+     (The Apache Software License, Version 2.0) Google Guice - Core Library (com.google.inject:guice:3.0 - http://code.google.com/p/google-guice/guice/)
+     (Dual License: International License Agreement for Identity Mixer Version 1.2 or Apache License Version 2.0) Identity Mixer Interfaces (com.ibm.zurich.idmx:com.ibm.zurich.idmx.interfaces:3.0.36 - http://www.zurich.ibm.com/security/idemix/com.ibm.zurich.idmx.interfaces/)
+     (Dual licensed under CDDL 1.0 and GPL 2 with classpath exception. Dependencies with Apache License 2.0) XML Security with Extensions (com.sun.xml.security:xml-security-impl:1.0 - no url defined)
+     (Dual License: CDDL 1.0 and GPL V2 with Classpath Exception) Metro Runtime Implementation (com.sun.xml.ws:webservices-rt:2.0.1 - https://metro.dev.java.net/webservices-rt/)
+     (Apache License Version 2.0) abc4trust-xml (eu.abc4trust.ri:abc4trust-xml:1.1.36 - no url defined)
+     (Apache License Version 2.0) abce-interfaces (eu.abc4trust.ri:abce-interfaces:1.1.36 - no url defined)
+     (The Apache Software License, Version 2.0) javax.inject (javax.inject:javax.inject:1 - http://code.google.com/p/atinject/)
+     (Dual License: CDDL 1.0 and GPL V2 with Classpath Exception) Metro API (javax.xml:webservices-api:2.0.1 - https://metro.dev.java.net/webservices-api/)
+     (Dual licensed under CDDL 1.1 and GPL 2 with classpath exception) jaxb-api (javax.xml.bind:jaxb-api:2.1 - no url defined)
+     (COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0) (GNU General Public License) Streaming API for XML (javax.xml.stream:stax-api:1.0-2 - no url defined)
+     (Common Public License Version 1.0) JUnit (junit:junit:4.10 - http://junit.org)
+     (Apache 2) EasyMock (org.easymock:easymock:3.0 - http://www.easymock.org/easymock)
+     (BSD style) Hamcrest Core (org.hamcrest:hamcrest-core:1.1 - no url defined)
+     (Apache 2) Objenesis (org.objenesis:objenesis:1.2 - http://objenesis.googlecode.com/svn/docs/index.html)

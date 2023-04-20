@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!-- This is credential specification for the UProve compatibility test -->
+
+<abc:CredentialSpecification xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0"
+	Version="Version 1.0" KeyBinding="false" Revocable="false">
+	<abc:SpecificationUID>uprovecompatibility:cs</abc:SpecificationUID>
+	<abc:NumericalId>1337</abc:NumericalId>
+	<abc:FriendlyCredentialName lang="en">UProve compatibility credential specification</abc:FriendlyCredentialName>
+	<abc:DefaultImageReference>http://research.microsoft.com/en-us/projects/u-prove/U_Prove_small.jpg</abc:DefaultImageReference>
+	<abc:AttributeDescriptions MaxLength="256">
+		<!-- <abc:AttributeDescription Type="http://abc4trust.eu/wp2/abcschemav1.0/revocationhandle" 
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned"/> -->
+		<abc:AttributeDescription Type="a:1"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+			<abc:FriendlyAttributeName lang="en">first attribute</abc:FriendlyAttributeName>
+		</abc:AttributeDescription>
+		<abc:AttributeDescription Type="a:2"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+			<abc:FriendlyAttributeName lang="en">second attribute</abc:FriendlyAttributeName>
+		</abc:AttributeDescription>
+		<abc:AttributeDescription Type="a:3"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+			<abc:FriendlyAttributeName lang="en">third attribute</abc:FriendlyAttributeName>
+		</abc:AttributeDescription>
+		<abc:AttributeDescription Type="a:4"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+			<abc:FriendlyAttributeName lang="en">fourth attribute</abc:FriendlyAttributeName>
+		</abc:AttributeDescription>
+		<abc:AttributeDescription Type="a:5"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+			<abc:FriendlyAttributeName lang="en">fifth attribute</abc:FriendlyAttributeName>
+		</abc:AttributeDescription>
+	</abc:AttributeDescriptions>
+</abc:CredentialSpecification>
+
+

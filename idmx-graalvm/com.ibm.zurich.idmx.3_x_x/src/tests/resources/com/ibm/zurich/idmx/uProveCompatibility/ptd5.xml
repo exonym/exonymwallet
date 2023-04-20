@@ -1,0 +1,27 @@
+<abc:PresentationTokenDescription
+	xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://abc4trust.eu/wp2/abcschemav1.0 ../../../../../../../../abc4trust-xml/src/main/resources/xsd/schema.xsd"
+	PolicyUID="uprovecompatibility:pp:5" TokenUID="uprovecompatibility:pt:5">
+	<abc:Message>
+		<abc:Nonce>V29ybGQ=</abc:Nonce>
+	</abc:Message>
+	<abc:Credential Alias="#c1">
+		<abc:CredentialSpecUID>uprovecompatibility:cs</abc:CredentialSpecUID>
+		<abc:IssuerParametersUID>uprovecompatibility:ip</abc:IssuerParametersUID>
+		<abc:DisclosedAttribute AttributeType="a:1">
+			<abc:AttributeValue>90899537074547289182608691034901616415077893110019539018424501613410943248515</abc:AttributeValue>
+		</abc:DisclosedAttribute>
+		<abc:DisclosedAttribute AttributeType="a:2">
+			<abc:AttributeValue>86798643402801669753564698649484956311054820457125558931626049680234909140427</abc:AttributeValue>
+		</abc:DisclosedAttribute>
+		<abc:DisclosedAttribute AttributeType="a:3">
+			<abc:AttributeValue>31078211149841034701205381436424195574701585221694577473562799754780040475482</abc:AttributeValue>
+		</abc:DisclosedAttribute>
+		<abc:DisclosedAttribute AttributeType="a:4">
+			<abc:AttributeValue>0</abc:AttributeValue>
+		</abc:DisclosedAttribute>
+		<abc:DisclosedAttribute AttributeType="a:5">
+			<abc:AttributeValue>61954235709850086879078532</abc:AttributeValue>
+		</abc:DisclosedAttribute>
+	</abc:Credential>
+</abc:PresentationTokenDescription>

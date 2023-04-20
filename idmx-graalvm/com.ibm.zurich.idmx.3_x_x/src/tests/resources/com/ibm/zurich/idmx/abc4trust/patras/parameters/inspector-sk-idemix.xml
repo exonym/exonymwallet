@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:InspectorSecretKey xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+    <abc:secretKeyUID>urn:patras:inspector:tombola</abc:secretKeyUID>
+    <abc:CryptoParams>
+        <abc:PrivateKey PublicKeyId="iss-idemix:a0ebc881-7900-449c-b79b-3624c6392099">
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:inspector:privateKey:RsaModulus">
+                <abc:Value>877735568422698678811341996948609525252471956673202367085570492610898585613410806282776060430168805230334794387272738198047972666118763718016678009601024714868507806632791993190536533</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:inspector:privateKey:X1">
+                <abc:Value>106486323521789691892550734856512563212937109328638215436993962211069590853055200466868185623515392146963517357987723630965253881231053644227206558313281434875237025428323754073331278642470257174485799207633483255422867612882484453734196168290459930476270784196234319580320673057937707226369649269945238621392587080190740742210087074416309501582411684254369797348174</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:inspector:privateKey:X2">
+                <abc:Value>137270602231323909553215678153544503720507356080178446072328100000447143492244256245521950271623209046843872476182839564678185221648853627490909906588657964910001414708672042750620716231244194038310484140856719170679514820006627410900184468159574503190029900641647123594256904009896255083815439428408636732876306623338601281718240484783506040776198872887257020782303</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:inspector:privateKey:X3">
+                <abc:Value>173860525410093732284542773786557590248951480487453275955353355206134947142348009771700309701471905630814312929900158934860491520495347335352008049825119456976292406507508405820045073745037165315622428177060411013071139481847837270626973168025879863166030187925303379348907959344532706323846309666031650494201602335756180419884637509360446003431872163030403508498105</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:StringParameter" Name="urn:idmx:3.0.0:inspector:privateKey:hashFunction">
+                <abc:Value>urn:abc4trust:1.0:hashalgorithm:SHA-256</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:inspector:privateKey:hk">
+                <abc:Value>894446893706746245362760</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:inspector:privateKey:AuxRsaModulus">
+                <abc:Value>580507439555430868201050971871325122378064547050397155515972214744132585616767983947535875163536038535074921071794798781374384232768498949394635065028463203899189437265085202695328941</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:inspector:privateKey:AuxG">
+                <abc:Value>227396609855554527426633307109747331233626753951344044752587424422626368940399376064234406707261824646012223106901095483539330672481601232131175033842324685792373699575582586068254236</abc:Value>
+            </abc:Parameter>
+            <abc:Parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="abc:BigIntegerParameter" Name="urn:idmx:3.0.0:inspector:privateKey:AuxH">
+                <abc:Value>289808314830417332494729527365515317819573049325062786808870095482090907722722816495746016120682411907561492089769657545889815456556361182544490138019270077114072759923322580163791264</abc:Value>
+            </abc:Parameter>
+        </abc:PrivateKey>
+    </abc:CryptoParams>
+</abc:InspectorSecretKey>

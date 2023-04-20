@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:AttributeList xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+	<!-- We changed the order here on purpose -->
+	<abc:Attributes>
+		<abc:AttributeUID>au:1</abc:AttributeUID>
+		<abc:AttributeDescription Type="a:1"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>90899537074547289182608691034901616415077893110019539018424501613410943248515
+		</abc:AttributeValue>
+	</abc:Attributes>
+	<abc:Attributes>
+		<abc:AttributeUID>au:2</abc:AttributeUID>
+		<abc:AttributeDescription Type="a:2"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>86798643402801669753564698649484956311054820457125558931626049680234909140427
+		</abc:AttributeValue>
+	</abc:Attributes>
+	<abc:Attributes>
+		<abc:AttributeUID>au:3</abc:AttributeUID>
+		<abc:AttributeDescription Type="a:3"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>31078211149841034701205381436424195574701585221694577473562799754780040475482
+		</abc:AttributeValue>
+	</abc:Attributes>
+	<abc:Attributes>
+		<abc:AttributeUID>au:4</abc:AttributeUID>
+		<abc:AttributeDescription Type="a:4"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>0</abc:AttributeValue>
+	</abc:Attributes>
+	<abc:Attributes>
+		<abc:AttributeUID>au:5</abc:AttributeUID>
+		<abc:AttributeDescription Type="a:5"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned" />
+		<abc:AttributeValue>61954235709850086879078532</abc:AttributeValue>
+	</abc:Attributes>
+</abc:AttributeList>

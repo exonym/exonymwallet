@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!-- This is the issuance token description for issuance of the PATRAS University credential. -->
+
+<abc:IssuanceTokenDescription xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+	<abc:PresentationTokenDescription
+		PolicyUID="urn:patras:policies:issuance:credUniv">
+	<abc:Pseudonym Exclusive="true" Scope="urn:patras:registration" Alias="#nym">
+	<abc:PseudonymValue></abc:PseudonymValue>
+	</abc:Pseudonym>
+	</abc:PresentationTokenDescription>
+	<abc:CredentialTemplate SameKeyBindingAs="#nym">
+		<abc:CredentialSpecUID>urn:patras:credspec:credUniv</abc:CredentialSpecUID>
+		<abc:IssuerParametersUID>urn:patras:issuer:idemix</abc:IssuerParametersUID>
+	</abc:CredentialTemplate>
+</abc:IssuanceTokenDescription>

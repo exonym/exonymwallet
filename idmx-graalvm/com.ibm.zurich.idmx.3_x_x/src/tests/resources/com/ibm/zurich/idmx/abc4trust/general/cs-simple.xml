@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:CredentialSpecification xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0"
+	Version="1.0" KeyBinding="false" Revocable="false"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<abc:SpecificationUID>cs-simple</abc:SpecificationUID>
+	<abc:AttributeDescriptions MaxLength="256">
+		<abc:AttributeDescription Type="type1"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+		</abc:AttributeDescription>
+		<abc:AttributeDescription Type="type2"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+		</abc:AttributeDescription>
+		<abc:AttributeDescription Type="type3"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+		</abc:AttributeDescription>
+		<abc:AttributeDescription Type="type4"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+		</abc:AttributeDescription>
+		<abc:AttributeDescription Type="type5"
+			DataType="xs:integer" Encoding="urn:abc4trust:1.0:encoding:integer:unsigned">
+		</abc:AttributeDescription>
+	</abc:AttributeDescriptions>
+</abc:CredentialSpecification>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!-- This is the issuance token description for issuance of the PATRAS Tombola credential. -->
+
+<abc:IssuanceTokenDescription xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0">
+	<abc:PresentationTokenDescription
+		PolicyUID="urn:patras:policies:issuance:credTombola">
+	<abc:Pseudonym Exclusive="true" Scope="urn:patras:evaluation" Alias="#nym">
+	<abc:PseudonymValue></abc:PseudonymValue>
+	</abc:Pseudonym>
+	<abc:Credential Alias="#credUniv" SameKeyBindingAs="#nym">
+        <abc:CredentialSpecUID>urn:patras:credspec:credUniv</abc:CredentialSpecUID>
+        <abc:IssuerParametersUID>urn:patras:issuer:idemix</abc:IssuerParametersUID>
+    </abc:Credential>
+	</abc:PresentationTokenDescription>
+	<abc:CredentialTemplate>
+		<abc:CredentialSpecUID>urn:patras:credspec:credTombola</abc:CredentialSpecUID>
+		<abc:IssuerParametersUID>urn:patras:issuer:idemix</abc:IssuerParametersUID>
+		<abc:UnknownAttributes>
+          <abc:CarriedOverAttribute TargetAttributeType="urn:patras:credspec:credTombola:matriculationnr">
+          <abc:SourceCredentialInfo Alias="#credUniv" AttributeType="urn:patras:credspec:credUniv:matriculationnr"/>
+      </abc:CarriedOverAttribute>
+    </abc:UnknownAttributes>
+	</abc:CredentialTemplate>
+</abc:IssuanceTokenDescription>
+

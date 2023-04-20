@@ -1,0 +1,39 @@
+<abc:PresentationToken 
+  xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0"
+  Version="Version 1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://abc4trust.eu/wp2/abcschemav1.0 ../../../../../../../../abc4trust-xml/src/main/resources/xsd/schema.xsd">
+  <abc:PresentationTokenDescription PolicyUID="urn:patras:policies:Tombola"
+    TokenUID="abc4trust.eu/token-uid/4">
+    <abc:Message>
+       <abc:Nonce>bkQydHBQWDR4TUZzbXJKYUphdVM=</abc:Nonce>
+      <abc:FriendlyPolicyName lang="en">Presentation Policy for Tombola</abc:FriendlyPolicyName>
+      <abc:FriendlyPolicyDescription lang="en">Enter the Tombola - your matriculation number will encrypted</abc:FriendlyPolicyDescription>
+    </abc:Message>
+    <abc:Pseudonym Exclusive="true" Scope="urn:patras:tombola"  SameKeyBindingAs="#credUniv"/>
+	<abc:Credential Alias="#credTombola">
+        <abc:CredentialSpecUID>urn:patras:credspec:credTombola</abc:CredentialSpecUID>
+        <abc:IssuerParametersUID>urn:patras:issuer:idemix</abc:IssuerParametersUID>
+	  <abc:DisclosedAttribute AttributeType="urn:patras:credspec:credTombola:matriculationnr">
+          <abc:InspectorPublicKeyUID>urn:patras:inspector:tombola</abc:InspectorPublicKeyUID>
+        <abc:InspectionGrounds>
+          Only the winner of the tombola will have his/her matriculation number revealed. 
+        </abc:InspectionGrounds>
+      </abc:DisclosedAttribute>
+    </abc:Credential>
+    <abc:Credential Alias="#credUniv">
+        <abc:CredentialSpecUID>urn:patras:credspec:credUniv:revocable</abc:CredentialSpecUID>
+        <abc:IssuerParametersUID>urn:patras:issuer:idemix</abc:IssuerParametersUID>
+    </abc:Credential>
+    <abc:AttributePredicate Function="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+      <abc:Attribute CredentialAlias="#credTombola" AttributeType="urn:patras:credspec:credTombola:matriculationnr" />
+      <abc:Attribute CredentialAlias="#credUniv" AttributeType="urn:patras:credspec:credUniv:matriculationnr" />
+    </abc:AttributePredicate>
+    </abc:PresentationTokenDescription>
+  <abc:CryptoEvidence>
+    <abc:TestCryptoParams>
+      <abc:Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xsi:type="xs:string">4654v76g57i6bghfgheru6tr$^$FUV7kibg7,hjuy6brju bgmjytrvfuyrj</abc:Data>
+    </abc:TestCryptoParams>
+  </abc:CryptoEvidence>
+</abc:PresentationToken>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<abc:IssuancePolicy xmlns:abc="http://abc4trust.eu/wp2/abcschemav1.0"
+	Version="1.0">
+	<abc:PresentationPolicy PolicyUID="policy-devicecarryover-1">
+		<abc:Credential Alias="base">
+			<abc:CredentialSpecAlternatives>
+				<abc:CredentialSpecUID>REPLACE_ME</abc:CredentialSpecUID>
+			</abc:CredentialSpecAlternatives>
+			<abc:IssuerAlternatives>
+				<abc:IssuerParametersUID>REPLACE_ME</abc:IssuerParametersUID>
+			</abc:IssuerAlternatives>
+		</abc:Credential>
+	</abc:PresentationPolicy>
+	<abc:CredentialTemplate SameKeyBindingAs="base">
+		<abc:CredentialSpecUID>cs-device</abc:CredentialSpecUID>
+		<abc:IssuerParametersUID>REPLACE_ME</abc:IssuerParametersUID>
+		<abc:UnknownAttributes>
+			<abc:CarriedOverAttribute
+				TargetAttributeType="type3">
+				<abc:SourceCredentialInfo AttributeType="type2"
+					Alias="base" />
+			</abc:CarriedOverAttribute>
+			<abc:CarriedOverAttribute
+				TargetAttributeType="type4">
+				<abc:SourceCredentialInfo AttributeType="type3"
+					Alias="base" />
+			</abc:CarriedOverAttribute>
+			<abc:CarriedOverAttribute
+				TargetAttributeType="type5">
+				<abc:SourceCredentialInfo AttributeType="type4"
+					Alias="base" />
+			</abc:CarriedOverAttribute>
+			<abc:CarriedOverAttribute
+				TargetAttributeType="type1">
+				<abc:SourceCredentialInfo AttributeType="type5"
+					Alias="base" />
+			</abc:CarriedOverAttribute>
+			<abc:CarriedOverAttribute
+				TargetAttributeType="type2">
+				<abc:SourceCredentialInfo AttributeType="type1"
+					Alias="base" />
+			</abc:CarriedOverAttribute>
+		</abc:UnknownAttributes>
+	</abc:CredentialTemplate>
+</abc:IssuancePolicy>
