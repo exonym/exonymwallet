@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<meta name="viewport" content="width=device-width">
+		<meta name="description" content="">
+		<meta name="author" content="Exonym">
+		<title>Sybil Auth</title>
+		<link href="exonym.css" rel="stylesheet" type="text/css">
+</head>
+	
+	<body>
+		<h2>Sybil Clone Account Resistance</h2>		
+		<ul>
+			<li>Switch on clone resistance for specific service features.</li>
+		</ul>
+		<div id="sybilAuthEndPoint" class="pad">
+			<a href="exonym/sybil">Pretty Printing End Point</a>
+		</div>
+		<div id="exonymAuthWrapper" endPoint="exonym/sybil">
+			<div id="exonymInvite">
+				<div>Access with Exonym</div>
+				<div>Sybil needed</div>
+
+				<div id="exonymSignInButton">Sign in</div>
+
+			</div>
+			<div id="exonymProbeWrapper" class="exonymHide">
+				<div id="exonymQrWrapper" class="exonymQrCode">
+					<img id="exonymQrDisplay" class="exonymQrCode" src="#" alt="working">
+				</div>
+				<div id="exonymLinkWrapper" class="exonymPad">
+					<a id="exonymLink" href="#">On Device Link</a>
+				</div>
+			</div>
+		</div>
+
+
+	</body>
+	<script src="jquery-3.4.1.min.js"></script>
+	<script src="exonym.js"></script>
+	<script>
+
+		function authCallBack(){
+			console.log("Called Auth Callback");
+		}
+
+		exonym.ready(()=>{
+			exonym.init(authCallBack);
+
+		});
+
+	</script>
+
+</html>

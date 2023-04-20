@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  exonym-example-sso:
+    container_name: exonym-example-sso
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: exonym-example-sso:latest
+    ports: 
+      - 20001:8080
+    environment:
+     - HTTPS_METHOD=noredirect
+     - VIRTUAL_HOST=localhost
+     - VIRTUAL_PORT=20001
+    networks:
+      - net0
+
+networks:
+ net0:
+  name: net0

@@ -1,0 +1,95 @@
+@charset "ISO-8859-1";
+
+.exonymQrCode {
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		height: 150px;
+		width: 150px;
+		border: 1px solid grey;
+}
+
+.exonymPad {
+	padding: 25px 0px;
+}
+
+#exonymAuthWrapper {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    min-width: 250px;
+    flex-direction: column;
+    box-shadow: 0 5px 5px 0 rgba(222,222,222,1.00);
+    border-radius: 25px;
+    -webkit-box-shadow: 0 5px 5px 0 rgba(222,222,222,1.00);
+}
+
+.exonymSignInButton {
+	background: blue;
+	color: white;
+	padding: 15px 45px;
+	border-radius: 25px;
+	cursor: pointer;
+	
+		
+	
+}
+
+#exonymSignInButton {
+	background: blue;
+	color: white;
+	padding: 15px 45px;
+	border-radius: 25px;
+	cursor: pointer;
+	max-width: 250px
+	
+	
+}
+
+.exonymHide {
+	display: none !important;
+}
+
+.exonymShow {
+	display: flex;
+}
+
+
+
+.exonymWorking {
+	width: 25px;
+	height: 25px;
+}
+
+.exonymDisplay {
+	width: 150px;
+	height: 150px;
+}
+
+#exonymQrWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#exonymInvite {
+	display: flex;
+	flex-direction: column;
+
+	justify-content: space-around;
+
+	text-align: center;
+	flex-grow: 1;
+
+
+}
+
+
+
+#exonymLinkWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}

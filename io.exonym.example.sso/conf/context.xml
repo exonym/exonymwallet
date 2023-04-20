@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context reloadable="false">
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <WatchedResource>WEB-INF/tomcat-web.xml</WatchedResource>
+    <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
+    <WatchedResource>${catalina.base}/conf/lambda.xml</WatchedResource>
+    <JarScanner scanClassPath="false"/>
+    <!-- Uncomment this to disable session persistence across Tomcat restarts -->
+    
+<!--     <Manager pathname="" />
+ -->    
+</Context>
