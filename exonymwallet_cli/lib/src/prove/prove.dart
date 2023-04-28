@@ -37,6 +37,7 @@ class ProveCommands{
     }
   }
 
+  //
   _staticProof(List<String> options) async {
     final name = cliContext.containerName;
     final pwd = cliContext.containerPassword;

@@ -240,17 +240,17 @@ public class GraalVMProbeMain {
 
         NetworkMapInspector inspector = new NetworkMapInspector(map);
         String s = inspector.listActors(null);
-        String ruid = "urn:rulebook:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa";
+        String ruid = Rulebook.SYBIL_RULEBOOK_ID.toString();
         System.out.println(s);
         System.out.println(inspector.viewActor(ruid));
-        String sybilSource = inspector.viewActor("urn:rulebook:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa");
+        String sybilSource = inspector.viewActor("urn:rulebook:sybil:" + Rulebook.SYBIL_RULEBOOK_HASH);
         System.out.println(sybilSource);
-        String sybilTest = inspector.viewActor("urn:rulebook:sybil:test-net:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa");
+        String sybilTest = inspector.viewActor("urn:rulebook:sybil:test-net:" + Rulebook.SYBIL_RULEBOOK_HASH);
         System.out.println(sybilTest);
 
-        String v = inspector.listActors("urn:rulebook:sybil:test-net:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa");
+        String v = inspector.listActors("urn:rulebook:sybil:test-net:" + Rulebook.SYBIL_RULEBOOK_HASH);
         System.out.println(v);
-        String t = inspector.listActors("urn:rulebook:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa");
+        String t = inspector.listActors("urn:rulebook:sybil:" + Rulebook.SYBIL_RULEBOOK_HASH);
         System.out.println(t);
 
         assert map.networkMapExists();
@@ -262,7 +262,7 @@ public class GraalVMProbeMain {
     private static void networkMapSpawning() throws Exception {
         NetworkMap networkMap = new NetworkMap(Path.of("resource", "network-map"));
         networkMap.spawn();
-        String rulebookId = Namespace.URN_PREFIX_COLON + "69bb840695e4fd79a00577de5f0071b311bbd8600430f6d0da8f865c5c459d44";
+        String rulebookId = Namespace.URN_PREFIX_COLON + "29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c";
         String sybilId = Rulebook.SYBIL_RULEBOOK_ID.toString();
 
         List<String> sources = networkMap.getSourceFilenamesForRulebook(rulebookId);
@@ -291,7 +291,7 @@ public class GraalVMProbeMain {
         exo.getOwner().setupContainerSecret(store.getEncrypt(), store.getDecipher());
         exo.getNetworkMap().spawn();
 
-        URI advocateId = URI.create("urn:rulebook:exosources:baseline:69bb840695e4fd79a00577de5f0071b311bbd8600430f6d0da8f865c5c459d44");
+        URI advocateId = URI.create("urn:rulebook:exonym:trusted-sources:29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c");
 
         SybilOnboarding.testNet(store, path(), Rulebook.SYBIL_CLASS_PERSON);
         RulebookOnboarding.onboardRulebook(store, path, advocateId);
@@ -301,7 +301,7 @@ public class GraalVMProbeMain {
 
         URI target = URI.create("http://localhost:8080");
         SsoConfigWrapper config = new SsoConfigWrapper(target);
-        config.requireRulebook(URI.create("urn:rulebook:69bb840695e4fd79a00577de5f0071b311bbd8600430f6d0da8f865c5c459d44"));
+        config.requireRulebook(URI.create("urn:rulebook:29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c"));
 
         SsoChallenge c = SsoChallenge.newChallenge(config.getConfig());
         AuthenticationWrapper w = AuthenticationWrapper.wrapToWrapper(c, 100, SsoChallenge.class);
@@ -392,7 +392,7 @@ public class GraalVMProbeMain {
         try {
             logger.info("Probe Initialised");
 
-////            sftpSetup();
+            sftpSetup();
 
             networkMapInspector();
             networkMapSpawning();
@@ -404,7 +404,6 @@ public class GraalVMProbeMain {
 
             setupIssuanceTestProve();
             subscriptionLifecycle();
-
 
         } catch (Exception e) {
             String a = ExceptionUtils.getStackTrace(e);

@@ -23,13 +23,17 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class SybilOnboarding {
+    
+    private final static Logger logger = Logger.getLogger(SybilOnboarding.class.getName());
 
-     private final static String sybilUrl = "http://exonym-x-03:8080/";
+//     private final static String sybilUrl = "http://exonym-x-03:8080/";
+//    private final static String sybilUrl = "https://t0.sybil.exonym.io/";
 
     public static String testNet(PassStore store, Path rootPath, String sybilClass) throws Exception {
-        URL registerUrl = new URL(sybilUrl + "register");
+
         Cache cache = new Cache(rootPath);
         NetworkMap map = openNetworkMap(rootPath.resolve("network-map"));
         PkiExternalResourceContainer external = PkiExternalResourceContainer.getInstance();
@@ -69,9 +73,16 @@ public class SybilOnboarding {
         hello.setSybilClass(sybilClass);
 
         Http client = new Http();
-        String response = client.basicPost(
-                registerUrl.toString(), JaxbHelper.serializeToJson(hello, IssuanceSigma.class));
+        String target = (testNetTarget.getRulebookNodeURL().toString() + "/register")
+                .replaceAll("node.", "");
+
+        logger.info(">>>>>>>>> " + target);
+
+        String response = client.basicPost(target,
+                JaxbHelper.serializeToJson(hello, IssuanceSigma.class));
+
         IssuanceSigma in = JaxbHelper.jsonToClass(response, IssuanceSigma.class);
+        WalletUtils.rejectOnError(in);
 
         IssuanceMessageAndBoolean imab = Parser.parseIssuanceMessageAndBoolean(in.getImab());
 
@@ -82,8 +93,11 @@ public class SybilOnboarding {
         hello2.setHello(hello.getHello());
         hello2.setIm(Parser.parseIssuanceMessage(message));
 
-        response = client.basicPost(registerUrl.toString(), JaxbHelper.serializeToJson(hello2, IssuanceSigma.class));
+        response = client.basicPost(target, JaxbHelper.serializeToJson(hello2, IssuanceSigma.class));
+
         IssuanceSigma in2 = JaxbHelper.jsonToClass(response, IssuanceSigma.class);
+        WalletUtils.rejectOnError(in2);
+
         in2.setTestNet(true);
         in2.setSybilClass(sybilClass);
 
@@ -93,6 +107,7 @@ public class SybilOnboarding {
         return Parser.parseIssuanceResult(in2);
 
     }
+
 
     private static NetworkMapItemAdvocate targetSybil(NetworkMapItemSource sybilSourceTarget, NetworkMap map, boolean mainNet) throws Exception {
         List<URI> advocates = sybilSourceTarget.getAdvocatesForSource();

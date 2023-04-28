@@ -205,7 +205,7 @@ public final class ExonymOwner extends AbstractExonymOwner {
             owner.openContainer(store);
             owner.setupContainerSecret(store.getEncrypt(), store.getDecipher());
             // load sybil in preparation
-            owner.openResourceIfNotLoaded(URI.create("urn:rulebook:sybil:test-net:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa:8cd6d49b:i"));
+            owner.openResourceIfNotLoaded(networkMap.nmiForSybilTestNet().getLastIssuerUID());
             VERIFIER=owner;
 
         }

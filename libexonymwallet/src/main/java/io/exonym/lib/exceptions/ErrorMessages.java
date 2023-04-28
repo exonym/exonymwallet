@@ -9,6 +9,7 @@ public class ErrorMessages {
      */
     public static final String INCORRECT_PARAMETERS = "ERROR_INCORRECT_PARAMETERS";
     public static final String SSO_END_POINT_404 = "SSO_END_POINT_404";
+    public static final String ADVOCATE_DOES_NOT_ACCEPT_OPEN_ADOPTION = "ADVOCATE_DOES_NOT_ACCEPT_OPEN_ADOPTION";
     public static final String TIME_OUT = "TIME_OUT";
 
     public static final String BLACKLISTED_ADVOCATE = "BLACKLISTED_ADVOCATE";

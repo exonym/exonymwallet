@@ -158,6 +158,21 @@ class ExonymWalletLibrary {
   late final _run_main = _run_mainPtr
       .asFunction<int Function(int, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
 
+  void vmLocatorSymbol(
+    ffi.Pointer<graal_isolatethread_t> thread,
+  ) {
+    return _vmLocatorSymbol(
+      thread,
+    );
+  }
+
+  late final _vmLocatorSymbolPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<graal_isolatethread_t>)>>('vmLocatorSymbol');
+  late final _vmLocatorSymbol = _vmLocatorSymbolPtr
+      .asFunction<void Function(ffi.Pointer<graal_isolatethread_t>)>();
+
   ffi.Pointer<ffi.Char> open_system_params(
     ffi.Pointer<graal_isolatethread_t> arg0,
   ) {
@@ -522,6 +537,50 @@ class ExonymWalletLibrary {
           ffi.Pointer<ffi.Char>,
           ffi.Pointer<ffi.Char>)>();
 
+  ffi.Pointer<ffi.Char> sftp_put(
+    ffi.Pointer<graal_isolatethread_t> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+    ffi.Pointer<ffi.Char> arg2,
+    ffi.Pointer<ffi.Char> arg3,
+    ffi.Pointer<ffi.Char> arg4,
+    ffi.Pointer<ffi.Char> arg5,
+    ffi.Pointer<ffi.Char> arg6,
+    ffi.Pointer<ffi.Char> arg7,
+  ) {
+    return _sftp_put(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+      arg4,
+      arg5,
+      arg6,
+      arg7,
+    );
+  }
+
+  late final _sftp_putPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<graal_isolatethread_t>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('sftp_put');
+  late final _sftp_put = _sftp_putPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<graal_isolatethread_t>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>)>();
+
   ffi.Pointer<ffi.Char> sftp_template(
     ffi.Pointer<graal_isolatethread_t> arg0,
     ffi.Pointer<ffi.Char> arg1,
@@ -863,12 +922,6 @@ class __graal_create_isolate_params_t extends ffi.Struct {
 
   @ffi.Int()
   external int pkey;
-
-  @ffi.Char()
-  external int _reserved_3;
-
-  @ffi.Char()
-  external int _reserved_4;
 }
 
 typedef __graal_uword = ffi.UnsignedLong;
@@ -876,7 +929,7 @@ typedef graal_create_isolate_params_t = __graal_create_isolate_params_t;
 typedef graal_isolate_t = __graal_isolate_t;
 typedef graal_isolatethread_t = __graal_isolatethread_t;
 
-const int __graal_create_isolate_params_version = 4;
+const int __graal_create_isolate_params_version = 1;
 
 const int NO_PROTECTION_DOMAIN = 0;
 

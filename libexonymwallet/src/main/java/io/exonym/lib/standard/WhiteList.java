@@ -42,11 +42,7 @@ public class WhiteList {
 		return isAdvocateUid(uid.toString());
 	}
 	public static boolean isAdvocateUid(String uid){
-		if (uid==null){
-			return false;
-
-		}
-		return uid.toString().matches(Namespace.URN_PREFIX_COLON + "[\\w-]*[:][\\w-]*[:][0-9a-f]{64}");
+		return uid!=null && uid.toString().matches(Namespace.URN_PREFIX_COLON + "[\\w-]*[:][\\w-]*[:][0-9a-f]{64}");
 
 	}
 

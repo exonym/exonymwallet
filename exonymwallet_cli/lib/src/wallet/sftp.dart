@@ -74,7 +74,7 @@ void _printWalletUsage(Object e) {
   line.warn('''
 No command 'wallet sftp $e': valid sub-commands are:
   template         :   create a template to add new credentials
-  add              :   add from the sftp-credential.xml file in cli/<test|main>/
+  add              :   add from the _sftp-credential.xml file in cli/<test|main>/
   remove           :   remove credential by name
   ''');
 

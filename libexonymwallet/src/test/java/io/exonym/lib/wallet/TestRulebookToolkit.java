@@ -1,12 +1,9 @@
 package io.exonym.lib.wallet;
 
 import com.google.gson.Gson;
-import io.exonym.lib.api.RulebookCreator;
 import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.api.RulebookVerifier;
 import io.exonym.lib.api.XContainerJSON;
-import io.exonym.lib.lite.SFTPClient;
-import io.exonym.lib.lite.SFTPLogonData;
 import io.exonym.lib.pojo.NetworkMapItemAdvocate;
 import io.exonym.lib.pojo.NetworkMapItemSource;
 import io.exonym.lib.pojo.Namespace;
@@ -49,31 +46,31 @@ public class TestRulebookToolkit {
     public void sftpSetup() {
         try {
             // sftp template
-
             Path working = Path.of("resource");
+//            SFTPManager.createTemplate(working);
+            String username = "mharris";
+
+
             XContainerJSON x = new XContainerJSON(
-                    ExonymToolset.pathToContainers(working), "mjh", true);
+                    ExonymToolset.pathToContainers(working), username, false);
 
             ExonymOwner owner = new ExonymOwner(x);
             PassStore passStore = new PassStore("password", false);
-            passStore.setUsername("mjh");
+            passStore.setUsername(username);
             owner.openContainer(passStore);
             owner.setupContainerSecret(passStore.getEncrypt(), passStore.getDecipher());
+            SFTPManager sftp = new SFTPManager(passStore, working);
 
-//            SFTPCredentialManager.createTemplate(working);
-            SFTPCredentialManager.add(passStore, working);
-            SFTPCredentialManager.remove(passStore, "urn:rulebook:exonym-trust:sftp", working);
+            sftp.add();
 
+//            sftp.remove("urn:rulebook:exonym-trust:sftp");
 
             // sftp add filename
             // sftp remove name
 
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     // todo assertions

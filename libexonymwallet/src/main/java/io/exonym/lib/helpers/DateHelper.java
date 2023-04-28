@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.TemporalUnit;
 import java.util.GregorianCalendar;
 
 public class DateHelper {
@@ -66,6 +67,13 @@ public class DateHelper {
 		return date;
 
 	}
+
+	public static long getUtcMillisInDays(int days) {
+		return Instant.now().plus(Period.ofDays(days)).toEpochMilli();
+
+	}
+
+
 
 	public static boolean isTargetInFutureWithinPeriod(Instant target, Period period){
 		if (target==null || period == null){

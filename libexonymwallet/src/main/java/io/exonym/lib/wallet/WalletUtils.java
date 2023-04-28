@@ -7,6 +7,7 @@ import eu.abc4trust.xml.PresentationPolicyAlternatives;
 import eu.abc4trust.xml.PresentationToken;
 import eu.abc4trust.xml.PseudonymInToken;
 import io.exonym.lib.helpers.UIDHelper;
+import io.exonym.lib.pojo.IssuanceSigma;
 import io.exonym.lib.pojo.Namespace;
 import io.exonym.lib.pojo.NetworkMapItemAdvocate;
 import io.exonym.lib.helpers.UrlHelper;
@@ -25,10 +26,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterOutputStream;
 
 public class WalletUtils {
+    
+    private final static Logger logger = Logger.getLogger(WalletUtils.class.getName());
 
     protected static <T> T deserialize(String object) throws UxException {
         if (UrlHelper.isXml(object.getBytes(StandardCharsets.UTF_8))){
@@ -53,6 +57,19 @@ public class WalletUtils {
             }
         }
     }
+
+    protected static void rejectOnError(IssuanceSigma in) throws UxException {
+        if (in.getError()!=null){
+            String[] errors = new String[in.getInfo().size()];
+            for (int i=0; i<errors.length; i++){
+                errors[i] = in.getInfo().get(i);
+
+            }
+            throw new UxException(in.getError(), errors);
+
+        }
+    }
+
 
     protected static NetworkMapItemAdvocate determinedSearchForAdvocate(Path path, URI advocateUID) throws Exception {
         NetworkMap map = new NetworkMap(path.resolve("network-map"));
@@ -83,6 +100,15 @@ public class WalletUtils {
         return ppa;
 
     }
+
+    public static String decodeCompressedB64(String b64) throws IOException {
+        byte[] decom = decompress(
+                Base64.decodeBase64(
+                b64.getBytes(StandardCharsets.UTF_8)));
+        return new String(decom, StandardCharsets.UTF_8);
+    }
+
+
 
     public static String decodeUncompressedB64(String b64) throws IOException {
         return new String(Base64.decodeBase64(b64), StandardCharsets.UTF_8);
@@ -178,10 +204,12 @@ public class WalletUtils {
         String n6 = Form.toHex(fullValue).substring(0,6);
         String shortValue = CryptoUtils.computeSha256HashAsHex(fullValue);
         String prefix = CryptoUtils.computeSha256HashAsHex(scope);
-        return URI.create(Namespace.ENDONYM_PREFIX +
+        URI result = URI.create(Namespace.ENDONYM_PREFIX +
                 prefix.substring(32) + ":" +
                 n6 + "-" +
                 shortValue);
+        logger.info(result.toString());
+        return result;
 
     }
 

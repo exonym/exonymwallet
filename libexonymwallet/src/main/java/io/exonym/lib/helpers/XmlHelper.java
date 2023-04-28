@@ -156,6 +156,7 @@ public class XmlHelper {
 					result.put(f, obj);
 					
 				} catch (Exception e) {
+					logger.info("Error at deserialisation " + e.getMessage());
 					logger.throwing("XmlHelper.class", "deserializeOpenXml() - Ignoring an unrecognized object ", e);
 
 				}

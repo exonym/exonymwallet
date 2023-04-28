@@ -1,6 +1,7 @@
 package io.exonym.lib.wallet;
 
 import io.exonym.lib.api.XContainerJSON;
+import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.pojo.NetworkMapItemAdvocate;
 import io.exonym.lib.pojo.NetworkMapItemSource;
 import io.exonym.lib.pojo.Rulebook;
@@ -13,9 +14,11 @@ import org.junit.Test;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class RulebookOnboardingTest  {
 
+    private final static Logger logger = Logger.getLogger(RulebookOnboardingTest.class.getName());
     private final static String username = "mharris";
     private final static String password = "password";
 
@@ -32,7 +35,8 @@ public class RulebookOnboardingTest  {
 
     @After
     public void tearDown() throws Exception {
-        XContainerJSON x = new XContainerJSON(username, false);
+        Path path = ExonymToolset.pathToContainers(Path.of("resource"));
+        XContainerJSON x = new XContainerJSON(path, username, false);
 //        x.delete();
 
     }
@@ -48,12 +52,10 @@ public class RulebookOnboardingTest  {
 
             NetworkMap map = new NetworkMap(where.resolve("network-map"));
             List<String> files = map.getSourceFilenamesForRulebook(
-                    "69bb840695e4fd79a00577de5f0071b311bbd8600430f6d0da8f865c5c459d44");
-            NetworkMapItemSource source = (NetworkMapItemSource)
-                    map.nmiForNode(map.fromNmiFilename(files.get(1)));
+                    "29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c");
             NetworkMapItemAdvocate advocate = (NetworkMapItemAdvocate)
                     // map.nmiForNode(source.getAdvocatesForSource().get(0));
-                    map.nmiForNode(URI.create("urn:rulebook:exosources:baseline:69bb840695e4fd79a00577de5f0071b311bbd8600430f6d0da8f865c5c459d44"));
+                    map.nmiForNode(URI.create("urn:rulebook:exonym:trusted-sources:29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c"));
             System.out.println(advocate.getNodeUID());
 
             long t = Timing.currentTime();
@@ -63,8 +65,17 @@ public class RulebookOnboardingTest  {
             System.out.println("Took " + Timing.hasBeenMs(t));
             System.out.println(result);
 
+        } catch (UxException e) {
+            logger.info(e.getMessage());
+            for (String info : e.getInfo()){
+                logger.info(info);
+
+            }
+            throw new RuntimeException(e);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
+
         }
     }
 

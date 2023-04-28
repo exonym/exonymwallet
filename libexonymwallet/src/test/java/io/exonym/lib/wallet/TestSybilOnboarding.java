@@ -17,7 +17,7 @@ public class TestSybilOnboarding {
     @BeforeClass
     public static void beforeClass() throws Exception {
         PassStore store = new PassStore(password, false);
-        XContainerJSON x = new XContainerJSON(username, true);
+        XContainerJSON x = new XContainerJSON(ExonymToolset.pathToContainers(Path.of("resource")), username, true);
         ExonymOwner o = new ExonymOwner(x);
         o.openContainer(store);
         o.setupContainerSecret(store.getEncrypt(), store.getDecipher());
@@ -26,7 +26,7 @@ public class TestSybilOnboarding {
 
     @After
     public void tearDown() throws Exception {
-        XContainerJSON x = new XContainerJSON(username, false);
+        XContainerJSON x = new XContainerJSON(ExonymToolset.pathToContainers(Path.of("resource")), username, false);
         x.delete();
 
     }

@@ -17,21 +17,30 @@ import io.exonym.lib.standard.ExtractObject;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 public  class RulebookOnboarding {
+    
+    private final static Logger logger = Logger.getLogger(RulebookOnboarding.class.getName());
 
     public static String onboardRulebook(PassStore store, Path path, URI advocateUID) throws Exception {
         NetworkMapItemAdvocate advocateNmia = WalletUtils.determinedSearchForAdvocate(path, advocateUID);
         Http client = new Http();
         String json = client.basicGet(advocateNmia.getRulebookNodeURL() + "/subscribe");
         Rulebook rulebook = JaxbHelper.jsonToClass(json, Rulebook.class);
-        return onboardRulebook(store, path, rulebook.getChallengeB64());
-
+        if (rulebook.getLink()!=null){
+            return onboardRulebook(store, path, rulebook.getLink());
+        } else {
+            throw new UxException(ErrorMessages.ADVOCATE_DOES_NOT_ACCEPT_OPEN_ADOPTION);
+        }
     }
 
     public static String onboardRulebook(PassStore store, Path path, String issuancePolicy) throws Exception {
+        issuancePolicy = WalletUtils.isolateUniversalLinkContent(issuancePolicy);
+        String decoded = WalletUtils.decodeCompressedB64(issuancePolicy);
+
         ExonymToolset exo = new ExonymToolset(store, path);
-        IssuanceMessageAndBoolean imab = WalletUtils.deserialize(issuancePolicy);
+        IssuanceMessageAndBoolean imab = WalletUtils.deserialize(decoded);
         NetworkMapItemAdvocate advocateNmi = discoverAdvocate(imab, exo.getNetworkMap());
 
         ExonymOwner owner = exo.getOwner();
@@ -40,7 +49,9 @@ public  class RulebookOnboarding {
         Http client = new Http();
         String response = client.basicPost(advocateNmi.getRulebookNodeURL() + "/subscribe",
                 XContainerJSON.convertObjectToXml(im));
-
+        if (response.startsWith("{")){
+            return response;
+        }
         IssuanceMessageAndBoolean completionToken = processIssuanceMessage(response);
         owner.issuanceStep(completionToken, store.getEncrypt());
 

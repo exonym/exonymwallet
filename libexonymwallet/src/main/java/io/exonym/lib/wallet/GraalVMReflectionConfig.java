@@ -1,8 +1,11 @@
 package io.exonym.lib.wallet;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.helpers.AbstractCouchDbObject;
 import io.exonym.lib.lite.FulfillmentReport;
+import io.exonym.lib.lite.NonInteractiveProofRequest;
 import io.exonym.lib.lite.SFTPLogonData;
 import io.exonym.lib.lite.WalletReport;
 import io.exonym.lib.pojo.*;
@@ -119,6 +122,10 @@ public class GraalVMReflectionConfig {
             SsoChallenge.class,
             AuthenticationWrapper.class,
             FulfillmentReport.class,
+            NonInteractiveProofRequest.class,
+            HashSet.class,
+            JsonObject.class,
+            JsonArray.class,
             eu.abc4trust.xml.SmartcardPinRequests.class,
             eu.abc4trust.xml.ABCEBoolean.class,
             eu.abc4trust.xml.NreUpdateMessage.class,
@@ -331,9 +338,9 @@ public class GraalVMReflectionConfig {
     }
 
     public static void main(String[] args) throws Exception {
-          createReflectionConfig(CLASSES);
-//        GraalVMReflectionConfig c = GraalVMReflectionConfig.init(FulfillmentReport.class);
-//
+           createReflectionConfig(CLASSES);
+//        GraalVMReflectionConfig c = GraalVMReflectionConfig.init(JsonArray.class);
 //        System.out.println(c.toJson());
+
     }
 }

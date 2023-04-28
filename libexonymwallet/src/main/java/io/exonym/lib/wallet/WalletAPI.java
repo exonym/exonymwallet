@@ -308,10 +308,10 @@ public class WalletAPI {
     //
     @CEntryPoint(name = "non_interactive_proof")
     public static CCharPointer nonInteractiveProofRequest(IsolateThread thread,
-                                           CCharPointer username_,
-                                           CCharPointer passwordAsSha256Hex_,
-                                           CCharPointer nonInteractiveProofRequest_,
-                                           CCharPointer path_){
+                                                          CCharPointer username_,
+                                                          CCharPointer passwordAsSha256Hex_,
+                                                          CCharPointer nonInteractiveProofRequest_,
+                                                          CCharPointer path_){
         try {
             PassStore passStore = openPassStore(username_, passwordAsSha256Hex_);
             String path = CTypeConversion.toJavaString(path_);
@@ -326,12 +326,38 @@ public class WalletAPI {
         }
     }
 
+    @CEntryPoint(name = "sftp_put")
+    public static CCharPointer sftpPut(IsolateThread thread,
+                                        CCharPointer username_,
+                                        CCharPointer passwordAsSha256Hex_,
+                                        CCharPointer sftpCredentialUID_,
+                                        CCharPointer fileName_,
+                                        CCharPointer token_,
+                                        CCharPointer remotePath_,
+                                        CCharPointer path_){
+        try {
+            PassStore passStore = openPassStore(username_, passwordAsSha256Hex_);
+            String path = CTypeConversion.toJavaString(path_);
+            String filename = CTypeConversion.toJavaString(fileName_);
+            String token = CTypeConversion.toJavaString(token_);
+            String remotePath = CTypeConversion.toJavaString(remotePath_);
+            String sftpCredentialUID = CTypeConversion.toJavaString(sftpCredentialUID_);
+            SFTPManager credentialManager = new SFTPManager(passStore, Path.of(path));
+            String result = credentialManager.put(filename, token, sftpCredentialUID, remotePath);
+            return toCString(result);
+
+        } catch (Exception e) {
+            return handleError(e);
+
+        }
+    }
+
     @CEntryPoint(name = "sftp_template")
     public static CCharPointer sftpTemplate(IsolateThread thread,
                                             CCharPointer path_){
         try {
             String path = CTypeConversion.toJavaString(path_);
-            String result = SFTPCredentialManager.createTemplate(Path.of(path));
+            String result = SFTPManager.createTemplate(Path.of(path));
             return toCString(result);
 
         } catch (Exception e) {
@@ -342,14 +368,15 @@ public class WalletAPI {
 
 
     @CEntryPoint(name = "sftp_add")
-    public static CCharPointer sftpTemplate(IsolateThread thread,
+    public static CCharPointer addSftpTemplate(IsolateThread thread,
                                             CCharPointer username_,
                                             CCharPointer passwordAsSha256Hex_,
                                             CCharPointer path_){
         try {
             PassStore passStore = openPassStore(username_, passwordAsSha256Hex_);
             String path = CTypeConversion.toJavaString(path_);
-            String result = SFTPCredentialManager.add(passStore, Path.of(path));
+            SFTPManager sftp = new SFTPManager(passStore, Path.of(path));
+            String result = sftp.add();
             return toCString(result);
 
         } catch (Exception e) {
@@ -368,7 +395,8 @@ public class WalletAPI {
             PassStore passStore = openPassStore(username_, passwordAsSha256Hex_);
             String path = CTypeConversion.toJavaString(path_);
             String name = CTypeConversion.toJavaString(name_);
-            String result = SFTPCredentialManager.remove(passStore, name, Path.of(path) );
+            SFTPManager sftp = new SFTPManager(passStore, Path.of(path));
+            String result = sftp.remove(name);
             return toCString(result);
 
         } catch (Exception e) {

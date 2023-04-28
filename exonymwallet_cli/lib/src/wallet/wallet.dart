@@ -20,23 +20,23 @@ class WalletCommands{
               commandAndOptions.removeAt(0), WalletMenu.values);
       selected.options = commandAndOptions;
 
-
-    if (selected.choice == WalletMenu.get) {
-      await _onboard(selected.options);
-    } else if (selected.choice == WalletMenu.list) {
-      await _list();
-    } else if (selected.choice == WalletMenu.sftp) {
-      await SftpCommands().execute(commandAndOptions);
-    } else if (selected.choice == WalletMenu.create) {
-      await _createContainer(selected.options);
-    } else if (selected.choice == WalletMenu.open){
-      await _openContainer(selected.options);
-    } else if (selected.choice == WalletMenu.close){
-      _closeContainer();
-    } else {
-      throw Exception();
-    }
+      if (selected.choice == WalletMenu.get) {
+        await _onboard(selected.options);
+      } else if (selected.choice == WalletMenu.list) {
+        await _list();
+      } else if (selected.choice == WalletMenu.sftp) {
+        await SftpCommands().execute(commandAndOptions);
+      } else if (selected.choice == WalletMenu.create) {
+        await _createContainer(selected.options);
+      } else if (selected.choice == WalletMenu.open){
+        await _openContainer(selected.options);
+      } else if (selected.choice == WalletMenu.close){
+        _closeContainer();
+      } else {
+        throw Exception();
+      }
    } catch (e) {
+      print("Message");
       print(e);
       _printWalletUsage(e);
 
@@ -135,7 +135,7 @@ class WalletCommands{
 
       }
     } else {
-      throw "[sybil 'person' || 'entity' || 'robot' || 'representative' || 'product'] || advocateUID ]";
+      line.error("[sybil 'person' || 'entity' || 'robot' || 'representative' || 'product'] || advocateUID ]");
 
     }
   }
@@ -151,22 +151,36 @@ class WalletCommands{
       line.success(result);
 
     } else {
-      throw "Test Network requires a Sybil Class";
+      line.error("wallet get sybil <sybil-class>");
 
     }
   }
 
+  // Works for universal links and Advocate IDs
   void _onboardAdvocateTestNet(List<String> options) async {
     if (options.isNotEmpty){
-      String result = await exonymWallet.onboardRulebookAdvocateUID(cliContext.containerName!,
-          cliContext.containerPassword!,
-          options[0],
-          rootPath
-      );
-      line.success(result);
+      if (options[0].startsWith("https://trust.exonym.io")){
+        print(options[0]);
+        exonymWallet.onboardRulebookIssuancePolicy(
+            cliContext.containerName!,
+            options[0],
+            cliContext.containerPassword!,
+            rootPath);
 
+      } else {
+        print("advocateUID");
+        print(options[0]);
+        String result = await exonymWallet.onboardRulebookAdvocateUID(
+            cliContext.containerName!,
+            cliContext.containerPassword!,
+            options[0],
+            rootPath
+        );
+        line.success(result);
+
+      }
     } else {
-      throw "<advocateUID> is needed";
+      line.error("<advocateUID> is needed");
 
     }
   }
@@ -174,6 +188,7 @@ class WalletCommands{
   // auth rejected above
   Future<void> _onboardMainNet(List<String> options) async {
     line.success("main net onboarding");
+
   }
 
 
@@ -193,8 +208,6 @@ class WalletCommands{
     line.success("sftp");
 
   }
-
-
 }
 
 String _computeTabs(String word){

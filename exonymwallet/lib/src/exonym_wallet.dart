@@ -78,6 +78,25 @@ class ExonymWallet extends AbstractResource {
     );
   }
 
+  Future<String> sftpPut(String username, String passwordAsSha256Hex,
+        String sftpCredentialUID,
+        String fileName,
+        String token,
+        String remotePath,
+        String path) async {
+    return global.fromCString(
+        _lib!.sftp_put(_getThread(),
+            global.toCString(username),
+            global.toCString(passwordAsSha256Hex),
+            global.toCString(sftpCredentialUID),
+            global.toCString(fileName),
+            global.toCString(token),
+            global.toCString(remotePath),
+            global.toCString(path)
+        )
+    );
+  }
+
   Future<String> sftpRemove(String username, String passwordAsSha256Hex, String name, String path) async {
     return global.fromCString(
         _lib!.sftp_remove(_getThread(),

@@ -1,12 +1,14 @@
 package io.exonym.lib.lite;
 
+import com.google.gson.JsonObject;
+
 import java.util.HashSet;
 
 public class NonInteractiveProofRequest {
 
     private HashSet<String> issuerUids = new HashSet<>();
     private HashSet<String> pseudonyms = new HashSet<>();
-    private String metadata;
+    private JsonObject metadata;
 
     public HashSet<String> getIssuerUids() {
         return issuerUids;
@@ -24,11 +26,12 @@ public class NonInteractiveProofRequest {
         this.pseudonyms = pseudonyms;
     }
 
-    public String getMetadata() {
+
+    public JsonObject getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(String metadata) {
+    public void setMetadata(JsonObject metadata) {
         this.metadata = metadata;
     }
 }

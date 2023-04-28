@@ -256,7 +256,8 @@ public abstract class AbstractNetworkMap {
                     .collect(Collectors.toList());
 
         } else {
-            throw new UxException(ErrorMessages.FILE_NOT_FOUND, "No such rulebook");
+            throw new UxException(ErrorMessages.FILE_NOT_FOUND,
+                    "No such rulebook", path.toString());
 
         }
     }
@@ -269,7 +270,8 @@ public abstract class AbstractNetworkMap {
                     .collect(Collectors.toList());
 
         } else {
-            throw new UxException(ErrorMessages.FILE_NOT_FOUND, "No such rulebook");
+            throw new UxException(ErrorMessages.FILE_NOT_FOUND,
+                    "No such rulebook", rootPath.toString());
 
         }
     }

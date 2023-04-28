@@ -1,5 +1,6 @@
 package io.exonym.lib.wallet;
 
+import com.google.gson.JsonObject;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.helpers.BuildPresentationPolicy;
 import io.exonym.lib.helpers.DateHelper;
@@ -57,18 +58,34 @@ public class Prove {
     }
 
     protected String nonInteractiveProofRequest(String nonInteractiveProofRequestJson) throws Exception {
-        NonInteractiveProofRequest request = JaxbHelper.jsonToClass(nonInteractiveProofRequestJson,
+        NonInteractiveProofRequest request = JaxbHelper.jsonToClass(
+                nonInteractiveProofRequestJson,
                 NonInteractiveProofRequest.class);
+        return nonInteractiveProofRequest(request);
 
+    }
+
+
+    protected String nonInteractiveProofRequest(NonInteractiveProofRequest request) throws Exception {
         List<String> issuers = new ArrayList<>(request.getIssuerUids());
-        List<String> nyms = new ArrayList<>(request.getPseudonyms());
+        // we are not allowing pseudonyms in non-interactive proofs before p2p use cases are targeted.
+        // this is because the use of cross-domain nyms needs to be limited.
+        List<String> nyms = new ArrayList<>();
         if (request.getMetadata()==null){
             throw new UxException(ErrorMessages.INSPECTION_RESULT_REQUIRED);
 
         }
+        for (String issuer : issuers){
+            if (!issuer.endsWith(":i")){
+                throw new UxException("ISSUER_UID_REQUIRED", issuer);
+
+            }
+        }
+
         return proofForRulebooks((ArrayList<String>) issuers,
                 (ArrayList<String>) nyms,
                 request.getMetadata());
+
     }
 
     /**
@@ -85,7 +102,7 @@ public class Prove {
      */
     private String proofForRulebooks(ArrayList<String> issuerUids,
                                        ArrayList<String> pseudonyms,
-                                       String metadata) throws Exception {
+                                       JsonObject metadata) throws Exception {
         PresentationPolicy pp = proofRequest(issuerUids, pseudonyms, metadata);
         PresentationToken token = proveFromPresentationPolicy(pp);
         return XContainer.convertObjectToXml(token);
@@ -98,10 +115,12 @@ public class Prove {
         logger.info(ssoCJson);
         SsoChallenge c = jsonToClass(ssoCJson, SsoChallenge.class);
         logger.info(c.getChallenge());
+        JsonObject o = new JsonObject();
+        o.addProperty("c", c.getChallenge());
 
         FulfillmentReport report = fulfillmentReport(c);
         if (report.isProvable()){
-            return proofForRulebookSSO(report.getIssuersToUse(), c.getDomain().toString(), c.getChallenge());
+            return proofForRulebookSSO(report.getIssuersToUse(), c.getDomain().toString(), o);
 
         } else {
             return JaxbHelper.serializeToJson(report, FulfillmentReport.class);
@@ -261,7 +280,7 @@ public class Prove {
 
     private String proofForRulebookSSO(ArrayList<String> issuerUids,
                                          String pseudonym,
-                                         String metadata) throws Exception {
+                                         JsonObject metadata) throws Exception {
         try {
             if (WhiteList.url(pseudonym)){
                 List<String> nyms = List.of(pseudonym);
@@ -310,14 +329,14 @@ public class Prove {
     }
 
     protected PresentationPolicy proofRequest(ArrayList<String> issuerUids,
-                                              ArrayList<String> pseudonyms, String metadata) throws Exception {
+                                              ArrayList<String> pseudonyms, JsonObject metadata) throws Exception {
         return proofRequest(issuerUids, pseudonyms, metadata, false);
 
     }
 
     private PresentationPolicy proofRequest(ArrayList<String> issuerUids,
                                               List<String> pseudonyms,
-                                              String metadata, boolean allowURLs) throws Exception {
+                                              JsonObject metadata, boolean allowURLs) throws Exception {
         URI ppUID = URI.create(Namespace.URN_PREFIX_COLON +
                 UUID.randomUUID().toString().replaceAll("-", "") + ":pp");
 
@@ -327,16 +346,11 @@ public class Prove {
         if (metadata==null){
             bpp.makeInteractive();
 
-        } else if (metadata.startsWith("{")) {
-            bpp.makeNonInteractive(metadata);
-
         } else {
-            bpp.makeNonInteractiveB64(metadata);
+            bpp.makeNonInteractive(metadata.toString());
 
         }
         if (!issuerUids.isEmpty()){
-
-
             HashSet<URI> credentials = new HashSet<>();
 
             HashMap<URI, ArrayList<CredentialInPolicy.IssuerAlternatives.IssuerParametersUID>>
@@ -430,7 +444,7 @@ public class Prove {
             if (WhiteList.isNumbers(expiry)){
                 long exp = Long.parseLong(expiry);
                 return DateHelper.isTargetInFutureWithinPeriod(
-                        Instant.ofEpochMilli(exp), Period.of(1,0,1));
+                        Instant.ofEpochMilli(exp), Period.of(0,0,366));
 
             }
         }

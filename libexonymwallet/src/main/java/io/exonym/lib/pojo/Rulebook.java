@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Rulebook extends SerialErrorHandling {
 
-    public static final String SYBIL_RULEBOOK_HASH = "7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa";
+    public static final String SYBIL_RULEBOOK_HASH = "800a5e641a0f9e6f2ba77c8a31384df2d034a969ccd565b8b9206fd4f8126296";
 
     public static final URI SYBIL_SOURCE_UID = URI.create(Namespace.URN_PREFIX_COLON
             + "sybil:" + SYBIL_RULEBOOK_HASH);
@@ -37,6 +37,8 @@ public class Rulebook extends SerialErrorHandling {
     private ArrayList<String> acceptsSybilClasses = new ArrayList<>();
 
     private RulebookPenalties penalties;
+
+    private String link;
 
 
     public Rulebook(){
@@ -119,4 +121,11 @@ public class Rulebook extends SerialErrorHandling {
         this.challengeB64 = challengeB64;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 }

@@ -1,7 +1,9 @@
 package io.exonym.lib.api;
 
+import com.google.gson.JsonObject;
 import com.ibm.zurich.idmx.exception.SerializationException;
 import eu.abc4trust.xml.*;
+import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.exceptions.AlreadyAuthException;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.HubException;
@@ -17,6 +19,7 @@ import io.exonym.lib.wallet.WalletUtils;
 import org.apache.commons.codec.binary.Base64;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -161,7 +164,11 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     private String authenticateToken(String token) throws Exception {
         PresentationToken pt = Parser.parsePresentationTokenFromXml(token);
         PresentationTokenDescription ptd = pt.getPresentationTokenDescription();
-        String challenge = Base64.encodeBase64String(ptd.getMessage().getNonce());
+        JsonObject o = JaxbHelper.gson.fromJson(
+                new String(ptd.getMessage().getNonce(),
+                        StandardCharsets.UTF_8), JsonObject.class);
+
+        String challenge = o.get("c").getAsString();
 
         String sessionId = challengeToSessionId.get(challenge);
         ExonymChallenge c = challengeToAuthenticationRequest.remove(challenge);
@@ -254,6 +261,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
 
                     this.sessionIdToEndonym.put(sessionId, endonym);
                     hasExclusive = true;
+
                 }
             } else {
                 if (!nym.isExclusive()){
@@ -346,5 +354,13 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     @Override
     protected void receivedMessage(Msg msg) {
         // do nothing
+    }
+
+    public static void main(String[] args) {
+        String c = "eyJjIjoiTVBWRC9QTEhKcWJkMk54KzV3NVUybEZIRkpRemhEZjNjVEhpbkphb0dqND0ifQ==";
+        String s = new String(Base64.decodeBase64(c));
+        JsonObject o = JaxbHelper.gson.fromJson(s, JsonObject.class);
+        System.out.println(o.get("c").getAsString());
+
     }
 }

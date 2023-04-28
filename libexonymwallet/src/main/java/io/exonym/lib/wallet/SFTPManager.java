@@ -7,6 +7,7 @@ import io.exonym.lib.lite.SFTPClient;
 import io.exonym.lib.lite.SFTPLogonData;
 import io.exonym.lib.pojo.Namespace;
 import io.exonym.lib.standard.PassStore;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,13 +16,23 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
+import java.util.logging.Logger;
 
-public class SFTPCredentialManager {
+public class SFTPManager {
 
-    public static final String CRED_FILE_NAME = "sftp-credential.xml";
+    public static final String CRED_FILE_NAME = "_sftp-credential.xml";
+    private final PassStore store;
+    private final Path  root;
+    private final ExonymToolset exo;
 
-    public static String add(PassStore store, Path  root) throws Exception {
-        ExonymToolset exo = new ExonymToolset(store, root);
+    public SFTPManager(PassStore store, Path  root) throws Exception {
+        this.store=store;
+        this.root = root;
+        this.exo = new ExonymToolset(store, root);;
+
+    }
+
+    public String add() throws Exception {
         SFTPLogonData credential = readCredentialFile(root);
         verifyCredential(credential);
         verifyAccess(credential);
@@ -31,7 +42,7 @@ public class SFTPCredentialManager {
 
     }
 
-    public static String remove(PassStore store, String uidToDelete, Path root) throws Exception {
+    public String remove(String uidToDelete) throws Exception {
         if (!uidToDelete.startsWith(Namespace.URN_PREFIX_COLON)){
             uidToDelete = Namespace.URN_PREFIX_COLON + uidToDelete;
             if (!uidToDelete.endsWith(":sftp")){
@@ -39,13 +50,14 @@ public class SFTPCredentialManager {
 
             }
         }
-        ExonymToolset exo = new ExonymToolset(store, root);
         exo.getX().deleteSftpCredential(uidToDelete);
         return "DELETED";
 
     }
 
-    private static void verifyAccess(SFTPLogonData credential) throws Exception {
+    private final static Logger logger = Logger.getLogger(SFTPManager.class.getName());
+
+    private void verifyAccess(SFTPLogonData credential) throws Exception {
         try {
             SFTPClient client = new SFTPClient(credential);
             client.connect();
@@ -60,16 +72,40 @@ public class SFTPCredentialManager {
             client.close();
 
         } catch (Exception e) {
+            logger.info(e.getMessage());
+            String stack = ExceptionUtils.getStackTrace(e);
+            logger.info(stack);
+
             throw new UxException("SFTP_CREDENTIAL_INVALID", e,
                     "Check your username, password, or known host data",
                     "Authentication was refused by the server.",
                     "To generate the Known Host fingerprints try the following command:",
-                    "ssh-keyscan <sftp-host>");
+                    "ssh-keyscan " + credential.getHost(),
+                    credential.getUsername(),
+                    credential.getKnownHost0(),
+                    credential.getKnownHost1(),
+                    credential.getKnownHost2());
 
         }
     }
 
-    private static void verifyCredential(SFTPLogonData credential) throws UxException {
+    public String put(String filename, String token, String sftpCredentialUID, String remotePath) throws Exception {
+        SFTPLogonData sftpCred = exo.getX().openResource(URI.create(sftpCredentialUID), store.getDecipher());
+        SFTPClient client = new SFTPClient(sftpCred);
+        client.connect();
+        try {
+            client.put(remotePath + "/" + filename, token, false);
+
+        } catch (Exception e) {
+            client.put(remotePath + "/" + filename, token, true);
+
+        }
+        client.close();
+        return"{'success':true}";
+
+    }
+
+    private void verifyCredential(SFTPLogonData credential) throws UxException {
         if (credential.getSftpUID()==null){
             throw new UxException(ErrorMessages.INVALID_UID, "sftpUID");
 
@@ -88,7 +124,7 @@ public class SFTPCredentialManager {
         }
     }
 
-    private static SFTPLogonData readCredentialFile(Path root) throws UxException {
+    private SFTPLogonData readCredentialFile(Path root) throws UxException {
         root = root.resolve(CRED_FILE_NAME);
         if (Files.isRegularFile(root)){
             try (BufferedReader reader = Files.newBufferedReader(root)){
@@ -106,7 +142,7 @@ public class SFTPCredentialManager {
 
                 }
             } catch (Exception e){
-                throw new UxException(ErrorMessages.FILE_NOT_FOUND, e, "An error occured");
+                throw new UxException(ErrorMessages.FILE_NOT_FOUND, e, "An error occurred");
 
             }
         } else {
