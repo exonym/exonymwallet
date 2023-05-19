@@ -1,1 +1,3 @@
 /libexonymwallet/dependency-reduced-pom.xml
+*.DS_Store
+*push.sh

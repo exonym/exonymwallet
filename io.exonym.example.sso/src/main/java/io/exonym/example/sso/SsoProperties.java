@@ -8,14 +8,20 @@ import eu.abc4trust.xml.SystemParameters;
 import io.exonym.lib.api.SsoConfigWrapper;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.pojo.SsoConfiguration;
+import io.exonym.lib.standard.WhiteList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Logger;
 
-public class SsoProperties {
+public class SsoProperties  {
+    
+
+    private static final Logger logger = LogManager.getLogger(SsoProperties.class);
+    
 
     private static SsoProperties instance;
 
@@ -23,12 +29,15 @@ public class SsoProperties {
     private SsoConfiguration sybil;
     private SsoConfiguration rulebooks;
 
-    private URI myDomain = URI.create("http://exonym-x-03:20001");
+    private URI myDomain;
 
     public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public SsoProperties() {
+    public SsoProperties() throws UxException {
+        String url = mandatory("SERVICE_URL");
+        myDomain = URI.create(url);
         // The authentication request will be sent to domain provided.
+        // The user identity (the endonym) will be unique within the context of the URL string
         SsoConfigWrapper basic = new SsoConfigWrapper(URI.create(myDomain + "/entry"));
         this.basic = basic.getConfig();
 
@@ -41,9 +50,28 @@ public class SsoProperties {
         // all rulebooks require the use to have onboarded to Sybil.
         SsoConfigWrapper rulebooks = new SsoConfigWrapper(URI.create(myDomain + "/accountability-required"));
 
-        rulebooks.requireRulebook(URI.create("urn:rulebook:69bb840695e4fd79a00577de5f0071b311bbd8600430f6d0da8f865c5c459d44"));
+        String rulebook = mandatory("RULEBOOK_URN");
+
+        rulebooks.requireRulebook(URI.create(rulebook));
+
+        String excludeAdvocate = optional("BLACKLIST_ADVOCATE", null);
+        String excludeSource = optional("BLACKLIST_SOURCE", null);
+
         // You can black list specific advocates or sources.
-        rulebooks.addAdvocateToBlacklist(URI.create("urn:rulebook:exosources:raised:69bb840695e4fd79a00577de5f0071b311bbd8600430f6d0da8f865c5c459d44"));
+        if (WhiteList.isAdvocateUid(excludeAdvocate)){
+            rulebooks.addAdvocateToBlacklist(URI.create(excludeAdvocate));
+
+        } else {
+            logger.warn("BLACKLIST_ADVOCATE=" + excludeAdvocate);
+
+        }
+        if (WhiteList.isSourceUid(excludeSource)){
+            rulebooks.addSourceToBlacklist(URI.create(excludeSource));
+
+        } else {
+            logger.warn("BLACKLIST_SOURCE=" + excludeAdvocate);
+        }
+
         this.rulebooks=rulebooks.getConfig();
 
     }
@@ -61,15 +89,53 @@ public class SsoProperties {
     }
 
     static {
-        instance = new SsoProperties();
+        try {
+            instance = new SsoProperties();
 
+        } catch (UxException e) {
+            logger.error("Critical Error", e);
+
+        }
     }
 
     public static SsoProperties getInstance() {
         return instance;
     }
     
-    private final static Logger logger = Logger.getLogger(SsoProperties.class.getName());
+
+
+
+    protected String messageOnFail(String env, String message) throws UxException {
+        try {
+            return mandatory(env);
+
+        } catch (UxException e) {
+            throw new UxException("'" + env + "' is mandatory: " + message);
+
+        }
+    }
+
+    protected String optional(String env, String def) {
+        String var = System.getenv(env);
+        if (var!=null){
+            return var.trim();
+
+        } else {
+            return def;
+
+        }
+    }
+
+    protected String mandatory(String env) throws UxException {
+        String var = System.getenv(env);
+        if (var==null || var.equals("")){
+            throw new UxException("The environment variable '" + env + "' has not been set and is mandatory.");
+
+        } else {
+            return var.trim();
+
+        }
+    }
 
     public static void main(String[] args) throws UxException, SerializationException, IOException {
         try(InputStream stream = ClassLoader.getSystemResourceAsStream("lambda.xml")){

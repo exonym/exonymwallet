@@ -25,6 +25,7 @@
 				<div id="exonymSignInButton">Sign in</div>
 			</div>
 
+
 			<div id="exonymProbeWrapper" class="exonymHide">
 				<div id="exonymQrWrapper" class="exonymQrCode">
 					<img id="exonymQrDisplay" class="exonymQrCode" src="#" alt="working">
@@ -34,15 +35,23 @@
 				</div>
 			</div>
 		</div>
+		<div id="auth_users">
 
+		</div>
 		
-
+		<div class="demos">
+			<div><a href="/basic.html">Basic Auth</a></div>
+			<div><a href="/sybil.html">Switch on Sybil</a></div>
+		</div>
 	</body>
+	<script src="jquery-3.4.1.min.js"></script>
 	<script src="exonym.js"></script>
+
 	<script>
 
 		function authCallBack(){
 			console.log("Called Auth Callback");
+			$("#auth_users").html("Authenticated");
 		}
 
 		exonym.ready(()=>{

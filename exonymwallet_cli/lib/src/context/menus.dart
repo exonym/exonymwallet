@@ -55,6 +55,7 @@ enum NetMenu {
   rulebooks,
   sources,
   advocates,
+  add_source
 
 }
 

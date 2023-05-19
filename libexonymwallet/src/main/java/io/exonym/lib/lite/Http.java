@@ -62,8 +62,6 @@ public class Http implements AutoCloseable {
 //        post.addHeader("Sec-Fetch-Mode", "cors");
 //        post.addHeader("Sec-Fetch-Site", "same-site");
         post.addHeader("content-type", "application/json");
-
-        post.addHeader("Origin", "http://exonym-node");
         StringEntity entity = new StringEntity(json);
         post.setEntity(entity);
         ResponseBasic r = new ResponseBasic();

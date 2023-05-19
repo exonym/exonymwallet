@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:core';
 
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:console/console.dart';
 import 'package:exonymwallet_cli/src/context/context_tracker.dart';

@@ -68,6 +68,14 @@ class ExonymWallet extends AbstractResource {
     );
   }
 
+  Future<String> sourceListTest(String url) async {
+    return global.fromCString(
+        _lib!.source_list_test(_getThread(),
+            global.toCString(url)
+        )
+    );
+  }
+
   Future<String> sftpAdd(String username, String passwordAsSha256Hex, String path) async {
     return global.fromCString(
         _lib!.sftp_add(_getThread(),

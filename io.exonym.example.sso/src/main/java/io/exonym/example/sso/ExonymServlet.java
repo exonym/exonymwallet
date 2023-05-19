@@ -8,8 +8,8 @@ import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.helpers.Timing;
 import io.exonym.lib.pojo.AuthenticationWrapper;
 import io.exonym.lib.pojo.SsoChallenge;
-import io.exonym.lib.pojo.SsoConfiguration;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +24,8 @@ import java.net.URI;
 @WebServlet("/exonym/*")
 public class ExonymServlet extends HttpServlet {
     
-    private final static Logger logger = Logger.getLogger(ExonymServlet.class);
+
+    private static final Logger logger = LogManager.getLogger(ExonymServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

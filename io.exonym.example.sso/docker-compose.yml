@@ -9,6 +9,8 @@ services:
     image: exonym-example-sso:latest
     ports: 
       - 20001:8080
+    env_file:
+      - envfile.env
     environment:
      - HTTPS_METHOD=noredirect
      - VIRTUAL_HOST=localhost

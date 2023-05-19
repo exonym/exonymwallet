@@ -59,6 +59,11 @@ public class WhiteList {
 
 	}
 
+	public static boolean isSourceUrl(String url){
+		return (url!=null && url.matches(".*/x-source\\/?"));
+
+	}
+
 	public static boolean numbers(String value){
 		if (value==null){ 
 			return false; 

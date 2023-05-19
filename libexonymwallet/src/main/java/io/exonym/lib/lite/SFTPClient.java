@@ -212,6 +212,7 @@ public class SFTPClient extends ModelCommandProcessor implements AutoCloseable {
 				
 			}
 			String root = (forceUploadsFolderAsRoot ? "/" + this.rootPathFolder + "/" : "/");
+			sftp.cd(".");
 			logger.fine("path to root: " + root);
 			sftp.cd(root);
 			for (String f : folders) {

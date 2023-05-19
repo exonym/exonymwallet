@@ -1,13 +1,43 @@
-@charset "ISO-8859-1";
-
-.exonymQrCode {
-		display: flex;
-		align-content: center;
-		justify-content: center;
-		height: 150px;
-		width: 150px;
-		border: 1px solid grey;
+:root {
+  --orange-color: #FFA500;
+  --pop-color: #FFFF00;
 }
+
+html body {
+	background-color: black;
+	color: white;
+	font-family: "Helvetica Neue", Helvetica, Arial, "sans-serif";
+	font-weight: 300;
+	display: flex;
+	flex-direction: column;
+	min-height: 90vh;
+	width: 95%;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	margin: 15px; 
+	
+		
+}
+
+a {
+	color: #FFFF00;
+	
+}
+
+.qrCode {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	height: 150px;
+	width: 150px;
+	border: 1px solid grey;
+}
+
+.pad {
+	padding: 25px 0px;
+}
+
 
 .exonymPad {
 	padding: 25px 0px;
@@ -15,6 +45,9 @@
 
 #exonymAuthWrapper {
     display: flex;
+	background-color: #EEE;
+	margin: 50px 0px; 
+	color: black;
     flex-grow: 1;
     align-items: center;
     justify-content: center;
@@ -24,6 +57,10 @@
     box-shadow: 0 5px 5px 0 rgba(222,222,222,1.00);
     border-radius: 25px;
     -webkit-box-shadow: 0 5px 5px 0 rgba(222,222,222,1.00);
+}
+
+#exonymAuthWrapper > a {
+	color: blue;
 }
 
 .exonymSignInButton {
@@ -92,4 +129,82 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+.logo {
+	margin-top: 150px;
+	max-width: 64px;
+	
+}
+
+.demos {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 250px;
+
+	
+}
+.demos > div {
+	padding: 0px 15px;
+	
+
+	
+}
+
+.benefits {
+	font-weight: 400;
+	padding: 50px;
+}
+
+.benefits  span  {
+
+	
+}
+
+.benefits > div {
+	padding: 5px;
+}
+
+h2 {
+	color: #FFA500
+}
+
+.deep-dive {
+	display: flex;
+	flex-grow: 1;
+	justify-content: flex-start;
+	text-align: left;
+	flex-direction: column;
+	width: 100%; 
+	max-width: 800px;
+
+	
+
+}
+
+.deep-dive div {
+	font-size: 19px;
+	font-weight: 350;
+	line-height: 29px;
+}
+
+.demo-header {
+	margin-top: 50px; 
+}
+
+.directions {
+	margin: 25px 0px; 
+	align-content: flex-start;
+	text-align: left;
+}
+
+.directions div{
+	padding: 8px 0px;
+	font-weight: 400;
+}
+
+
+#exonymProbeWrapper a {
+	color: blue;
+	
 }

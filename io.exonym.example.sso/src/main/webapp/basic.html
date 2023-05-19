@@ -12,21 +12,19 @@
 	<body>
 		<h1>Requesting Authentications</h1>
 		<h2>Basic</h2>
-		<ul>
-			<li>Gets an 'endonym' from the user.</li>
-			<li>You can have as many endonyms for your domain as you like.</li>
-			<li>User just needs the app installed.</li>
-			<li>Known endonyms can delegate access to others for specific features.</li>
-			<li>Collect multiple endonyms to ringfence user data and mitigate the risks of data breaches.</li>
-		</ul>
+		<div class="directions">
+			<div>Obtains an 'endonym' from the user.</div>
+			<div>You're free to assign as many endonyms to your domain as needed.</div>
+			<div>All the user requires is the installed application.</div>
+			<div>Existing endonyms can delegate access to specific features to others.</div>
+			<div>By gathering multiple endonyms, you can compartmentalize user data, thus reducing the impact of potential data breaches.</div>
+		</div>
 		<div id="authEndPoint" class="exonymPad">
 			<a href="exonym">End Point Response</a>
 		</div>	
 		<div id="exonymAuthWrapper" endPoint="exonym" class="">
 			<div id="exonymInvite">
 				<div>Access with Exonym</div>
-
-
 				<div id="exonymSignInButton">Sign in</div>
 			</div>
 			<div id="exonymProbeWrapper" class="exonymHide">
@@ -38,19 +36,26 @@
 				</div>
 			</div>
 		</div>
+		
+		<div id="auth_users">
+
+		</div>
 
 
-<!--qrImgRulebooks-->
-<!--		rulebooksLink-->
-<!--	sybilLink-->
-<!--	qrImgSybil-->
+		<div class="demos">
+			<div><a href="/sybil.html">Switch on Sybil</a></div>
+			<div><a href="/rulebooks.html">Switch on Rulebooks</a></div>
+		</div>
+
+
 	</body>
-<!--	<script src="jquery-3.4.1.min.js"></script>-->
+	<script src="jquery-3.4.1.min.js"></script>
 	<script src="exonym.js"></script>
 	<script>
 
 		function authCallBack(){
 			console.log("Called Auth Callback");
+			$("#auth_users").html("Authenticated");
 		}
 
 		exonym.ready(()=>{

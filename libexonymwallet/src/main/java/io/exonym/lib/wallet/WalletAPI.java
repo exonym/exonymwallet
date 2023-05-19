@@ -1,6 +1,7 @@
 package io.exonym.lib.wallet;
 
 import eu.abc4trust.xml.SystemParameters;
+import io.exonym.lib.api.AddToTrustworthySourcesList;
 import io.exonym.lib.api.RulebookCreator;
 import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.actor.XContainerExternal;
@@ -137,6 +138,22 @@ public class WalletAPI {
 
         }
     }
+
+    @CEntryPoint(name = "source_list_test")
+    public static CCharPointer sourceListTest(IsolateThread thread,
+                                               CCharPointer url_){
+        try {
+            String url = CTypeConversion.toJavaString(url_);
+            String result = AddToTrustworthySourcesList.addToSourcesTest(url);
+            return toCString(result);
+
+        } catch (Exception e) {
+            return handleError(e);
+
+        }
+    }
+
+
 
     @CEntryPoint(name = "spawn_network_map")
     public static CCharPointer spawnNetworkMap(IsolateThread thread,

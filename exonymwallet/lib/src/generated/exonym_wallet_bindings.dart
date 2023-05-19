@@ -290,6 +290,24 @@ class ExonymWalletLibrary {
           ffi.Pointer<ffi.Char>,
           ffi.Pointer<ffi.Char>)>();
 
+  ffi.Pointer<ffi.Char> source_list_test(
+    ffi.Pointer<graal_isolatethread_t> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+  ) {
+    return _source_list_test(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _source_list_testPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<graal_isolatethread_t>,
+              ffi.Pointer<ffi.Char>)>>('source_list_test');
+  late final _source_list_test = _source_list_testPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<graal_isolatethread_t>, ffi.Pointer<ffi.Char>)>();
+
   ffi.Pointer<ffi.Char> spawn_network_map(
     ffi.Pointer<graal_isolatethread_t> arg0,
     ffi.Pointer<ffi.Char> arg1,

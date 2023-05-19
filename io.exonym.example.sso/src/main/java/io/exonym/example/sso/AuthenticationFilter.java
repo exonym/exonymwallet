@@ -1,14 +1,9 @@
 package io.exonym.example.sso;
 
-import com.ibm.zurich.idmx.jaxb.JaxbHelperClass;
-import com.ibm.zurich.idmx.parameters.system.SystemParametersWrapper;
-import eu.abc4trust.xml.SystemParameters;
 import io.exonym.lib.actor.XContainerExternal;
-import io.exonym.lib.exceptions.UxException;
-import io.exonym.lib.pojo.XContainerSchema;
 import io.exonym.lib.wallet.ExonymOwner;
-import org.apache.http.HttpRequest;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -19,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 @WebFilter(filterName="authFilter", urlPatterns = {"/*"})
 public class AuthenticationFilter implements Filter {
 
-	private static Logger logger = Logger.getLogger(AuthenticationFilter.class);
+	private static final Logger logger = LogManager.getLogger(AuthenticationFilter.class);
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {

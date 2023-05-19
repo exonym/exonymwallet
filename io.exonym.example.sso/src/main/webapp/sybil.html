@@ -34,6 +34,16 @@
 				</div>
 			</div>
 		</div>
+		
+		<div id="auth_users">
+
+		</div>
+
+
+		<div class="demos">
+			<div><a href="/basic.html">Basic Auth</a></div>
+			<div><a href="/rulebooks.html">Switch on Rulebooks</a></div>
+		</div>
 
 
 	</body>
@@ -43,6 +53,7 @@
 
 		function authCallBack(){
 			console.log("Called Auth Callback");
+			$("#auth_users").html("Authenticated");
 		}
 
 		exonym.ready(()=>{

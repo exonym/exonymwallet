@@ -17,7 +17,6 @@ class NetCommands{
         await _spawn();
 
       } else {
-        print("${selected.options}");
         String action = selected.options.length > 0 ? selected.options[0] : "";
         String subject = selected.options.length > 1 ? selected.options[1] : "";
 
@@ -27,6 +26,8 @@ class NetCommands{
           await _sourcesOrAdvocates(subject, action);
         } else if (selected.choice == NetMenu.advocates){
           await _sourcesOrAdvocates(subject, action);
+        } else if (selected.choice == NetMenu.add_source){
+          await _addSourceToSybilNode(action);
         } else {
           throw Exception("Unexpected");
         }
@@ -80,12 +81,27 @@ class NetCommands{
     }
   }
 
-
   Future<void> _spawn() async{
     exonymWallet.spawnNetworkMap(cliContext.rootPath());
 
   }
 
+  Future<void> _addSourceToSybilNode(String url) async {
+    try {
+      cliContext.rejectUnauthenticated();
+      if (cliContext.testNetwork){
+            var r = await exonymWallet.sourceListTest(url);
+            line.success(r);
+
+          } else {
+            line.error("There is no production network - see https://exonym.io for more information");
+
+          }
+    } catch (e) {
+      line.error("$e");
+
+    }
+  }
 }
 
 void _printTargetUsage(Object e) {
@@ -95,5 +111,6 @@ No command 'net $e': valid sub-commands are:
   rulebooks  :   navigate rulebooks - sub-commands [list, view]
   sources    :   navigate sources - sub-commands [list, view]
   advocates  :   navigate advocates - sub-commands [list, view]
+  add_source  :  broadcasts a new source to be accepted onto the network - proof required for production and so an open wallet is necessary.
   ''');
 }
