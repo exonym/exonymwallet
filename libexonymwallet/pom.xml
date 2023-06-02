@@ -17,7 +17,7 @@
 		<java.version>11</java.version>
 
 		<maven.compiler.release>11</maven.compiler.release>
-		<gluonfx.maven.plugin.version>1.0.16</gluonfx.maven.plugin.version>
+		<gluonfx.maven.plugin.version>1.0.18</gluonfx.maven.plugin.version>
 		<gluonfx.target>host</gluonfx.target>
 		<main.class>io.exonym.lib.wallet.WalletAPI</main.class>
 
@@ -30,7 +30,14 @@
 		<javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
 
 	</properties>
-	
+
+	<distributionManagement>
+		<repository>
+		<id>internal</id>
+		<url>https://repo.exonym.io/repository/internal/</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 
 		<dependency>
@@ -144,6 +151,8 @@
 			<version>3.3.0</version>
 		</dependency>
 
+
+
 	</dependencies>
   <build>
    	<plugins>
@@ -192,7 +201,11 @@
 			<configuration>
 				<target>${gluonfx.target}</target>
 				<mainClass>${main.class}</mainClass>
+				<graalvmHome>/Library/Java/JavaVirtualMachines/graalvm-svm-java11-darwin-gluon-22.1.0.1-Final/Contents/Home</graalvmHome>
+		
 			</configuration>
+
+
 		</plugin>
 
 	</plugins>
@@ -217,11 +230,33 @@
 		</profile>
 	</profiles>
 
+	<repositories>
+		<repository>
+		<id>internal</id>
+		<name>Archiva Managed Internal Repository</name>
+		<url>https://repo.exonym.io/repository/internal/</url>
+		<releases>
+			<enabled>true</enabled>
+		</releases>
+		<snapshots>
+			<enabled>false</enabled>
+		</snapshots>
+		</repository>
+	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>snapshot</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		<id>internal</id>
+		<name>Archiva Managed Internal Repository</name>
+		<url>https://repo.exonym.io/repository/internal/</url>
+		<releases>
+			<enabled>true</enabled>
+		</releases>
+		<snapshots>
+			<enabled>false</enabled>
+		</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	
+
 
 </project>

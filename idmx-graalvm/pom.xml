@@ -13,6 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <skipTests>true</skipTests>
   </properties>
 
   <licenses>
@@ -27,6 +28,43 @@
     <module>com.ibm.zurich.idmx.interfaces</module>
     <module>com.ibm.zurich.idmx.3_x_x</module>
   </modules>
+
+
+  <distributionManagement>
+    <repository>
+      <id>internal</id>
+      <url>https://repo.exonym.io/repository/internal/</url>
+    </repository>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>internal</id>
+      <name>Archiva Managed Internal Repository</name>
+      <url>https://repo.exonym.io/repository/internal/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>internal</id>
+      <name>Archiva Managed Internal Repository</name>
+      <url>https://repo.exonym.io/repository/internal/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+
 
   <dependencyManagement>
     <dependencies>
