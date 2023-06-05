@@ -201,6 +201,7 @@ public class WalletUtils {
             throw new UxException(ErrorMessages.UNEXPECTED_PSEUDONYM_REQUEST);
 
         }
+        // urn:exonym:<scope-representation>:<nibble6>-<pseudonym-hash>
         String n6 = Form.toHex(fullValue).substring(0,6);
         String shortValue = CryptoUtils.computeSha256HashAsHex(fullValue);
         String prefix = CryptoUtils.computeSha256HashAsHex(scope);

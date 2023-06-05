@@ -1,7 +1,15 @@
 name: exonymwallet
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+description: Responsible for managing Exonym wallets that facilitate accountability by rooting governance for a specific Internet activity in a public, immutable rulebook document.
+version: 0.1.0
+repository: https://github.com/exonym/exonymwallet.git
+homepage: https://exonym.io
+documentation: https://github.com/exonym/rulebook-node/wiki
+issue_tracker: https://github.com/exonym/exonymwallet/issues
+authors:
+  -Exonym
+
+platforms:
+  macos:
 
 environment:
   sdk: '>=2.19.0 <3.0.0'
@@ -13,3 +21,7 @@ dev_dependencies:
 dependencies:
   path: ^1.8.0
   ffigen: ^7.2.4
+  exonym_wallet_macos_m1:
+    path: lib/dylib/macOSm1
+  exonym_wallet_macos_x86:
+    path: lib/dylib/macOSx86

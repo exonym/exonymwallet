@@ -8,17 +8,14 @@ void main(){
   group("Issuance", () {
 
     setUpAll(() async {
-      print("setUpAll");
 
     });
 
     test("test0", () async {
-      print("test0");
 
     });
 
     tearDownAll(() {
-      print("tear down");
 
     });
   });

@@ -1,0 +1,5 @@
+environment:
+  sdk: '>=2.19.0 <3.0.0'
+
+name: exonym_wallet_macos_x86
+version: 0.1.0

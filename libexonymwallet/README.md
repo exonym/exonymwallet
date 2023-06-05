@@ -28,6 +28,13 @@ the need for specialized technical knowledge or experience.
 is secure, and their transactions are private and tamper-proof, enabling 
 them to participate in the Decentralized Rulebooks system with confidence.
 
+# Installation
+[Install Gluon's GraalVM for **Java 11**](https://github.com/gluonhq/graal/releases)
+
+```
+mvn gluonfx:sharedlib
+```
+
 # WalletAPI.class
 The `WalletAPI.class` provides an essential component of the Rulebooks system by 
 implementing a C-Callable interface through the use of __Gluon__ and __GraalVM__. This powerful 

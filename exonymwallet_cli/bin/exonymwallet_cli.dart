@@ -13,8 +13,7 @@ import 'package:exonymwallet_cli/src/target/target.dart';
 import 'package:exonymwallet_cli/src/wallet/wallet.dart';
 
 
-class ExonymCLI{
-
+class ExonymCLI {
 
   final GlobalContext context = GlobalContext();
   final WalletCommands wallet = WalletCommands();
@@ -46,7 +45,7 @@ class ExonymCLI{
 
   processCommands(String cmd) async {
     try {
-      ChoiceAndOptions command = ChoiceAndOptions<TopMenu>(cmd!, TopMenu.values);
+      ChoiceAndOptions command = ChoiceAndOptions<TopMenu>(cmd, TopMenu.values);
       if (command.choice==TopMenu.prove){
         await prove.execute(command.options);
 

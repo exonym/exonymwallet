@@ -718,7 +718,6 @@ class BuildingBlockDatabase {
   }
 
   public synchronized GeneralBuildingBlock get(final URI type) throws ConfigurationException {
-    System.out.println("Annoying URI Call" + type);
     return getInstanceByClass(blockURNToClassMap.get(type));
   }
   

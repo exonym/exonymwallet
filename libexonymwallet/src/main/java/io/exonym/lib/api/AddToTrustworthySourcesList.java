@@ -32,15 +32,4 @@ public class AddToTrustworthySourcesList {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        // addToSourcesTest("");
-        Http http = new Http();
-        JsonObject o = new JsonObject();
-        o.addProperty("test", true);
-        o.addProperty("sourceUrl", "https://example.com/x-source");
-        System.out.println(o.toString());
-
-        System.out.println(http.basicPost("https://node.t0.sybil.exonym.io/registerSource", o.toString()));
-
-    }
 }
