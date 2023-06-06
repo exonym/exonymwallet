@@ -2,4 +2,7 @@ environment:
   sdk: '>=2.19.0 <3.0.0'
 
 name: exonym_wallet_macos_x86
+homepage: https://exonym.io
+repository: https://github.com/exonym/exonymwallet.git
+description: libexonymwallet.dylib for exonymwallet compiled for macOS Pentium Processors
 version: 0.1.0
