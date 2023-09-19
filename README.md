@@ -1,5 +1,5 @@
 # Status
-> 🛠️  : In development
+> 🛠️  In development
 
 Please see [docs.exonym.io](https://docs.exonym.io) for full-documentation.
 
