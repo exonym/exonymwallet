@@ -36,6 +36,7 @@ public class SsoProperties  {
     public SsoProperties() throws UxException {
         String url = mandatory("SERVICE_URL");
         myDomain = URI.create(url);
+
         // The authentication request will be sent to domain provided.
         // The user identity (the endonym) will be unique within the context of the URL string
         SsoConfigWrapper basic = new SsoConfigWrapper(URI.create(myDomain + "/entry"));

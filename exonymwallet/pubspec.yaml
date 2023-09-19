@@ -25,3 +25,4 @@ dependencies:
     path: lib/dylib/macOSm1
   exonym_wallet_macos_x86:
     path: lib/dylib/macOSx86
+    

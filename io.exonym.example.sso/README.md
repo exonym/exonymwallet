@@ -5,8 +5,11 @@ This is a basic demonstration of Exonym's SSO.
 > There's no database, so if the server is restarted then all account 
 information is lost.
 
-Exonym's authentication capabilities are based on its decentralized 
-cryptographic identity system, which enables the creation and management of multiple pseudonymous identities. This system is designed to provide a high level of privacy and security while also allowing for trustworthy transactions without centralized control.
+Exonym's authentication capabilities are based on its distributed 
+cryptographic identity system, which enables the creation and management of 
+multiple pseudonymous identities. This system is designed to provide a 
+high level of privacy and security while also allowing for trustworthy 
+transactions without centralized control.
 
 In the context of a web server, Exonym's authentication capabilities can 
 be used to verify the identity of users accessing the server's resources. 

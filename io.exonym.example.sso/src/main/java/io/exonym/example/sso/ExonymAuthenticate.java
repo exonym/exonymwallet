@@ -7,7 +7,6 @@ import io.exonym.lib.pojo.SsoChallenge;
 import io.exonym.lib.pojo.SsoConfiguration;
 
 import java.net.URI;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class ExonymAuthenticate extends io.exonym.lib.api.ExonymAuthenticate {

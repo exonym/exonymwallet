@@ -26,14 +26,14 @@ var exonym = {
 
 	sendProbe: () =>{
 		exonym.swapVisibility();
-		exonym.post("exonym", {probe:true}).then(exonym.handleTimeout);
+		exonym.post(exonym.target, {probe:true})
+		    .then(exonym.handleTimeout);
 
 	}, 
 
 	insertAuthRequest: async (json) =>  {	
 		json = await json;
 		if (json.auth==true){
-			
 			exonym.executeCallback();
 
 		} else {
