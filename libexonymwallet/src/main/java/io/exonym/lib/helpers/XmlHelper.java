@@ -5,10 +5,10 @@ import com.sun.xml.ws.util.ByteArrayBuffer;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.abc.util.FileType;
 import io.exonym.lib.abc.util.JaxbHelper;
-import io.exonym.lib.actor.NodeVerifier;
 import io.exonym.lib.exceptions.HubException;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.pojo.*;
+import io.exonym.lib.standard.Const;
 
 import javax.xml.bind.JAXBElement;
 import java.io.BufferedInputStream;
@@ -171,25 +171,25 @@ public class XmlHelper {
 		String descUrl = null;
 		String filename = "/rulebook.json";
 		if (root.endsWith("/")){
-			if (root.contains("x-source")){
-				descUrl = root.replaceAll("/x-source/", filename);
+			if (root.contains(Const.LEAD)){
+				descUrl = root.replaceAll("/" + Const.LEAD +"/", filename);
 
-			} else if (root.contains("x-node")){
-				descUrl = root.replaceAll("/x-node/", filename);
+			} else if (root.contains(Const.MODERATOR)){
+				descUrl = root.replaceAll("/" + Const.MODERATOR +"/", filename);
 
 			}
 		} else {
-			if (root.contains("x-source")){
-				descUrl = root.replaceAll("/x-source", filename);
+			if (root.contains(Const.LEAD)){
+				descUrl = root.replaceAll("/" + Const.LEAD +"/", filename);
 
-			} else if (root.contains("x-node")){
-				descUrl = root.replaceAll("/x-node", filename);
+			} else if (root.contains(Const.MODERATOR)){
+				descUrl = root.replaceAll("/" + Const.MODERATOR, filename);
 
 			}
 		}
 		byte[] desc = UrlHelper.read(new URL(descUrl));
 
-		URL url = new URL(root + "/signatures.xml");
+		URL url = new URL(root + "/" + Const.SIGNATURES_XML);
 		
 		ConcurrentHashMap<String, ByteArrayBuffer> result = new ConcurrentHashMap<>();
 		result.put("description", new ByteArrayBuffer(desc));
@@ -201,7 +201,7 @@ public class XmlHelper {
 			result.put("signatures.xml", new ByteArrayBuffer(xmlString.getBytes()));
 			
 		} catch (Exception e1) {
-			throw new HubException("There was no signatures file at the URL " + nodeUrl);
+			throw new HubException("There were no signatures file at the URL " + nodeUrl);
 			
 		}
 		
@@ -213,7 +213,7 @@ public class XmlHelper {
 			if (!sig.getKeyUid().equals(KeyContainerWrapper.TN_ROOT_KEY) && 
 					!sig.getKeyUid().equals(KeyContainerWrapper.SIG_CHECKSUM)) {
 
-				String fileName = XContainer.uidToXmlFileName(sig.getKeyUid());
+				String fileName = IdContainer.uidToXmlFileName(sig.getKeyUid());
 				urlToFileName.put(new URL(root + "/" + fileName), fileName);
 				
 			}

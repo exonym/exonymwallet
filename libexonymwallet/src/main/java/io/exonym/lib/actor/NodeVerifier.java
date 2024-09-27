@@ -13,17 +13,15 @@ import io.exonym.lib.pojo.*;
 import io.exonym.lib.standard.AsymStoreKey;
 import io.exonym.lib.api.RulebookVerifier;
 import io.exonym.lib.helpers.Timing;
+import io.exonym.lib.standard.Const;
+import io.exonym.lib.standard.WhiteList;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
@@ -55,145 +53,30 @@ public class NodeVerifier {
 	private URI nodeUrl;
 
 	private long touched = Timing.currentTime();
-	private final boolean amISource;
+	private final boolean amILead;
 
 	private AsymStoreKey publicKey;
-
-	/**
-	 * Verify Node Regardless of whether Local Data is Up to Date, or not
-	 *
-	 * @param primary
-	 * @param secondary
-	 * @param isTargetSource
-	 * @param amISource
-	 * @return
-	 * @throws Exception
-	 */
-	public static NodeVerifier tryNode(String primary, String secondary,
-									   boolean isTargetSource, boolean amISource) throws Exception {
-//		throw new Exception();
-		try {
-			tryUrl(primary, isTargetSource, amISource);
-			return new NodeVerifier(URI.create(primary), isTargetSource, amISource);
-
-		} catch (FileNotFoundException e){
-			tryUrl(secondary, isTargetSource, amISource);
-			return new NodeVerifier(URI.create(secondary), isTargetSource, amISource);
-
-		} catch (UnknownHostException e){
-			tryUrl(secondary, isTargetSource, amISource);
-			return new NodeVerifier(URI.create(secondary), isTargetSource, amISource);
-
-		} catch (Exception e){
-			throw e;
-
-		}
-	}
-
-	/**
-	 * Verify Node Regardless of whether Local Data is Up to Data, or not
-	 *
-	 * @param primary
-	 * @param secondary
-	 * @return
-	 * @throws Exception
-	 */
-	public static void confrimPrimaryAndSecondary(String primary, String secondary) throws Exception {
-		try {
-			tryUrl(primary, false, false);
-			tryUrl(secondary, false, false);
-
-		} catch (Exception e){
-			throw new UxException("One or more of the publish locations is unavailable.  Check for errors and try again");
-
-		}
-	}
-
 
 
 	/**
 	 * To be used in conjunction with ping(), so the URL has already been established
 	 *
 	 * @param known
-	 * @param isTargetSource
+	 * @param isTargetLead, boolean amILead
 	 * @return
 	 * @throws Exception
 	 */
-	public static NodeVerifier openNode(URI known, boolean isTargetSource) throws Exception {
-		return new NodeVerifier(known, isTargetSource, false);
+	public static NodeVerifier openNode(URI known, boolean isTargetLead, boolean amILead) throws Exception {
+		return new NodeVerifier(known, isTargetLead, amILead);
 
 	}
 
-	/**
-	 * Establish which URL works
-	 * @param primary
-	 * @param secondary
-	 * @param lastUpdatedTime
-	 * @param isTargetSource
-	 * @return the URL that worked, or NULL if the lastUpdateTime matched that in the signatures.xml file at the URL
-	 *
-	 * @throws Exception
-	 */
-	public static URI ping(String primary, String secondary, String lastUpdatedTime,
-						   boolean isTargetSource) throws Exception {
-		try {
-			String t = tryUrl(primary, isTargetSource, false);
-			if (t.equals(lastUpdatedTime)){
-				return null;
+	private NodeVerifier(URI node, boolean isTargetLead, boolean amILead) throws Exception {
+		this.amILead =amILead;
 
-			} else {
-				return URI.create(primary);
-
-			}
-		} catch (FileNotFoundException e){
-			String t = tryUrl(secondary, isTargetSource, false);
-			if (t.equals(lastUpdatedTime)){
-				return null;
-
-			} else {
-				return URI.create(secondary);
-
-			}
-		} catch (UnknownHostException e){
-			String t = tryUrl(secondary, isTargetSource, false);
-			if (t.equals(lastUpdatedTime)){
-				return null;
-
-			} else {
-				return URI.create(secondary);
-
-			}
-		} catch (Exception e){
-			throw e;
-
-		}
-	}
-
-	public static NodeVerifier openLocal(URL url, KeyContainer localSourceSig) throws Exception {
-		return new NodeVerifier(url, localSourceSig, false);
-
-
-	}
-
-	private static String tryUrl(String url, boolean isTargetSource, boolean amISource) throws Exception {
-		try {
-			String sig = "/signatures.xml";
-			String xml = new String(UrlHelper.readXml(new URL(url + sig)), "UTF8");
-			KeyContainer kc = JaxbHelper.xmlToClass(xml, KeyContainer.class);
-			return kc.getLastUpdateTime();
-
-		} catch (Exception e){
-			throw e;
-
-		}
-	}
-
-	private NodeVerifier(URI node, boolean isTargetSource, boolean amISource) throws Exception {
-		this.amISource=amISource;
-
-		if (isTargetSource){
-			if (!node.toString().contains("x-source")){
-				throw new UxException("URL must be a Source-URL " + node);
+		if (isTargetLead){
+			if (!node.toString().contains(Const.LEAD)){
+				throw new UxException("URL must be a Lead-URL " + node);
 
 			}
 		}
@@ -227,7 +110,7 @@ public class NodeVerifier {
 		try {
 			networkName = null;
 
-			this.amISource = amISource;
+			this.amILead = amISource;
 			byteContent = readLocalBytes(url, keys);
 			signatureBytes = computeBytesThatWereSigned(byteContent);
 			contents = XmlHelper.deserializeOpenXml(byteContent);
@@ -252,7 +135,7 @@ public class NodeVerifier {
 
 		for (XKey key : keys.getKeyPairs()){
 			if (key.getKeyUid().toString().startsWith(Namespace.URN_PREFIX_COLON)){
-				String fn = XContainer.uidToXmlFileName(key.getKeyUid());
+				String fn = IdContainer.uidToXmlFileName(key.getKeyUid());
 				byte[] b = UrlHelper.read(new URL(url.toString() + "/" + fn));
 				result.put(fn, new ByteArrayBuffer(b));
 
@@ -407,7 +290,7 @@ public class NodeVerifier {
 			if (!uid.equals(KeyContainerWrapper.TN_ROOT_KEY) &&
 					!uid.equals(KeyContainerWrapper.SIG_CHECKSUM)) {
 				XKey sig = keys.getKey(uid);
-				String fn = XContainer.uidToXmlFileName(uid);
+				String fn = IdContainer.uidToXmlFileName(uid);
 				ByteArrayBuffer b = signatureBytes.get(fn);
 				signatures.put(sig, b);
 
@@ -478,26 +361,27 @@ public class NodeVerifier {
 
 	public static URI trainAtFolder(URI node) throws UxException {
 		String f = node.toString();
-		if (f.endsWith("x-node/") || f.endsWith("x-source/")){
+		if (f.endsWith(Const.MODERATOR + "/") || f.endsWith(Const.LEAD + "/")){
 			return node;
 
-		} else if (f.endsWith("x-node") || f.endsWith("x-source")){
-			return URI.create(node.toString() + "/");
+		} else if (f.endsWith(Const.MODERATOR) || f.endsWith(Const.LEAD)){
+			return URI.create(node + "/");
 
-		} else if (f.contains("x-node")){
-			return URI.create(f.substring(0, f.indexOf("x-node")) + "x-node/");
+		} else if (f.contains(Const.MODERATOR)){
+			return URI.create(f.substring(0, f.indexOf(Const.MODERATOR)) + (Const.MODERATOR + "/"));
 
-		} else if (f.contains("x-source")){
-			return URI.create(f.substring(0, f.indexOf("x-source")) + "x-source/");
+		} else if (f.contains(Const.LEAD)){
+			return URI.create(f.substring(0, f.indexOf(Const.LEAD)) + Const.LEAD + "/");
 
 		} else {
-			throw new UxException("Node Verification Error.  An inspectable url ends with either x-node or x-source (" + node + ")");
+			throw new UxException("Node Verification Error.  An inspectable url ends with either `moderator` or `lead` (" + node + ")");
 
 		}
 	}
 
 	public PresentationPolicyAlternatives getPresentationPolicyAlternatives() throws HubException {
-		throw new HubException("You should not be using Presentation Policy Alternatives.  Deprecated.  Moved to Presentation Policy :pp suffix files - check source materials");
+		throw new HubException("You should not be using Presentation Policy Alternatives.  " +
+				"Deprecated.  Moved to Presentation Policy :pp suffix files - check materials");
 
 	}
 
@@ -609,6 +493,11 @@ public class NodeVerifier {
 
 	public Rulebook getRulebook() {
 		return rulebook;
+	}
+
+	public static void main(String[] args) throws Exception {
+		logger.info("Hello " + WhiteList.isRulebookUid("800a5e641a0f9e6f2ba77c8a31384df2d034a969ccd565b8b9206fd4f8126296"));
+
 	}
 
 }

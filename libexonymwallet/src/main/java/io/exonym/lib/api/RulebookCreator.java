@@ -3,10 +3,8 @@ package io.exonym.lib.api;
 import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
-import io.exonym.lib.pojo.Interpretation;
-import io.exonym.lib.pojo.Rulebook;
-import io.exonym.lib.pojo.RulebookDescription;
-import io.exonym.lib.pojo.RulebookItem;
+import io.exonym.lib.helpers.NamespaceMngt;
+import io.exonym.lib.pojo.*;
 import io.exonym.lib.standard.CryptoUtils;
 
 import java.io.BufferedReader;
@@ -43,11 +41,20 @@ public class RulebookCreator {
         }
     }
 
-    private void writeFileToOut(Path out) throws UxException {
+    public RulebookCreator(Rulebook rulebook) throws Exception {
+        this.rulebook = rulebook;
+
+    }
+
+
+    public void writeFileToOut(Path out) throws UxException {
         try (BufferedWriter writer = Files.newBufferedWriter(out)) {
             writer.write(this.rulebookFile);
+            writer.flush();
+
         } catch (Exception e) {
             throw new UxException(ErrorMessages.WRITE_FILE_ERROR, out.toAbsolutePath().toString());
+
         }
     }
 
@@ -56,7 +63,11 @@ public class RulebookCreator {
         buildRulebookDescription(description);
         String rulebookId = computeRulebookHash(this.rulebook);
 
-        rulebook.setRulebookId("urn:rulebook:" + rulebookId);
+        rulebook.setRulebookId(Namespace.URN_PREFIX_COLON +
+                this.rulebook.getDescription().getName().toLowerCase() +
+                ":" +
+                rulebookId);
+
         this.rulebookFile = JaxbHelper.gson.toJson(rulebook, Rulebook.class);
 
         writeFileToOut(out);
@@ -137,19 +148,23 @@ public class RulebookCreator {
         try (BufferedReader reader = Files.newBufferedReader(rules)){
             String rule = null;
             while ((rule = reader.readLine())!=null){
-                if (rule!=null || rule.length()>0) {
-                    createRule(rule, index);
+                if (rule!=null && rule.length()>0) {
+                    RulebookItem item = createRule(rule, index);
+                    rulebook.getRules().add(item);
                     index++;
 
                 }
             }
+        } catch (UxException e){
+            throw e;
+
         } catch (Exception e){
             throw new UxException(ErrorMessages.SERVER_SIDE_PROGRAMMING_ERROR, e);
 
         }
     }
 
-    private void createRule(String rule, int index) throws UxException {
+    private RulebookItem createRule(String rule, int index) throws UxException {
         if (rule!=null && rule.length()  > 0 ){
             RulebookItem item = new RulebookItem();
             String[] parts = rule.split("#");
@@ -164,13 +179,16 @@ public class RulebookCreator {
             }
             addInterpretations(item, parts[1]);
             item.setDescription(parts[1]);
-            String id = "urn:rule:" +
+            String id = Namespace.URN_RULE_PREFIX +
                     index + ":" +
                     modifier + ":" +
                     CryptoUtils.computeSha256HashAsHex(item.getDescription()) + ":" +
                     this.rulebook.getRulebookId();
             item.setId(id);
-            rulebook.getRules().add(item);
+            return item;
+
+        } else {
+            throw new UxException("RULE_OR_INDEX_INVALID");
 
         }
     }
@@ -203,6 +221,13 @@ public class RulebookCreator {
             item.getInterpretations().get(i-1).setDefinition(iso);
 
         }
+    }
+
+    public void addRule(String ruleToAdd) throws UxException {
+        int index = this.rulebook.getRules().size() + this.rulebook.getRuleExtensions().size() - 1;
+        RulebookItem item = createRule(ruleToAdd, index);
+        this.rulebook.getRuleExtensions().add(item);
+
     }
 }
 

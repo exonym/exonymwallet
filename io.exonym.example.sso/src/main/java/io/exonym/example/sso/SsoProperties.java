@@ -2,28 +2,30 @@ package io.exonym.example.sso;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ibm.zurich.idmx.exception.SerializationException;
 import com.ibm.zurich.idmx.jaxb.JaxbHelperClass;
 import eu.abc4trust.xml.SystemParameters;
+import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.api.SsoConfigWrapper;
 import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.pojo.RulebookAuth;
 import io.exonym.lib.pojo.SsoConfiguration;
 import io.exonym.lib.standard.WhiteList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.ArrayList;
 
 public class SsoProperties  {
     
 
     private static final Logger logger = LogManager.getLogger(SsoProperties.class);
     
-
     private static SsoProperties instance;
+
 
     private SsoConfiguration basic;
     private SsoConfiguration sybil;
@@ -59,15 +61,15 @@ public class SsoProperties  {
         String excludeSource = optional("BLACKLIST_SOURCE", null);
 
         // You can black list specific advocates or sources.
-        if (WhiteList.isAdvocateUid(excludeAdvocate)){
-            rulebooks.addAdvocateToBlacklist(URI.create(excludeAdvocate));
+        if (WhiteList.isModeratorUid(excludeAdvocate)){
+            rulebooks.addModeratorToBlacklist(URI.create(excludeAdvocate));
 
         } else {
             logger.warn("BLACKLIST_ADVOCATE=" + excludeAdvocate);
 
         }
-        if (WhiteList.isSourceUid(excludeSource)){
-            rulebooks.addSourceToBlacklist(URI.create(excludeSource));
+        if (WhiteList.isLeadUid(excludeSource)){
+            rulebooks.addLeadToBlacklist(URI.create(excludeSource));
 
         } else {
             logger.warn("BLACKLIST_SOURCE=" + excludeAdvocate);
@@ -138,7 +140,25 @@ public class SsoProperties  {
         }
     }
 
-    public static void main(String[] args) throws UxException, SerializationException, IOException {
+    public static void main(String[] args) throws Exception {
+        SsoConfiguration configuration = new SsoConfiguration();
+        configuration.setDomain(URI.create("https://example.com/transact"));
+        RulebookAuth r = new RulebookAuth();
+        r.setRulebookUID(URI.create("urn:rulebook:29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c"));
+        ArrayList<URI> ads = new ArrayList<>();
+        ads.add(URI.create("urn:rulebook:lead-name:moderator-name:29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c"));
+        r.setModBlacklist(ads);
+
+        ArrayList<URI> leads = new ArrayList<>();
+        r.setLeadBlacklist(leads);
+        leads.add(URI.create("urn:rulebook:another-lead-name:29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c"));
+
+        configuration.getHonestUnder().put(r.getRulebookUID().toString(), r);
+
+        String j = JaxbHelper.serializeToJson(configuration, SsoConfiguration.class);
+        System.out.println(j);
+
+
         try(InputStream stream = ClassLoader.getSystemResourceAsStream("lambda.xml")){
             if (stream!=null){
                 byte[] in = new byte[stream.available()];

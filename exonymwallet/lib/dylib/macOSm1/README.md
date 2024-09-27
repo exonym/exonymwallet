@@ -1,6 +1,6 @@
 # Exonym Wallet (macOS M1)
 
-Exonym Wallet is a dylib compiled for macOS M1 devices that provides functionality for managing and interacting with wallets in the Exonym application.
+Exonym Wallet is a dylib compiled for macOS Apple Silicon devices that provides functionality for managing and interacting with wallets in the Exonym application.
 
 ## Installation
 

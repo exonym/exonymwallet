@@ -3,20 +3,26 @@ package io.exonym.lib.helpers;
 import eu.abc4trust.xml.CredentialInPolicy;
 import eu.abc4trust.xml.CredentialInToken;
 import eu.abc4trust.xml.PresentationToken;
+import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.HubException;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.pojo.Namespace;
-import io.exonym.lib.pojo.XContainer;
+import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.standard.WhiteList;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UIDHelper {
 
 
-    private String sourceName;
-    private String advocateName;
+    private final static Logger logger = Logger.getLogger(UIDHelper.class.getName());
+
+    private String leadName;
+    private String moderatorName;
     private  URI credentialSpec;
     private  URI presentationPolicy;
     private  URI issuedCredential;
@@ -25,9 +31,7 @@ public class UIDHelper {
     private  URI issuancePolicy;
     private  URI issuerParameters;
     private  URI inspectorParams;
-
     private  URI rulebookUID;
-
     private  String credentialSpecFileName;
     private  String presentationPolicyFileName;
     private  String issuedCredentialFileName;
@@ -37,10 +41,13 @@ public class UIDHelper {
     private  String issuerParametersFileName;
     private  String inspectorParamsFileName;
     private  String rulebookFileName;
+    private String rulebookTopic;
+    private String rulebookLeadTopic;
+    private String rulebookModTopic;
+    private  URI moderatorUid;
+    private  URI leadUid;
 
-    private  URI nodeUid;
-
-    private  URI sourceUid;
+    public static final String MQTT_WILDCARD = "/#";
 
 
     public UIDHelper(URI issuerParameters) throws Exception {
@@ -53,104 +60,122 @@ public class UIDHelper {
 
     }
 
-
     private void assemble(String issuerParameters) throws Exception {
         String[] parts = issuerParameters.split(":");
-        if (parts.length < 5){
-            throw new RuntimeException(issuerParameters + " not valid");
-        }
-        String b0 = parts[0] + ":" +parts[1] + ":" +parts[2] + ":" +parts[3] + ":" +parts[4];
-        String base = parts[0] + ":" +parts[1] + ":" +parts[2] + ":" +parts[4];
+        String mod = parts[0] + ":" +parts[1] + ":" +parts[2] + ":" +parts[3]+ ":" +parts[4] + ":" +parts[5];
+        String lead = parts[0] + ":" +parts[1] + ":" +parts[2] + ":" +parts[3] + ":" +parts[5];
+        boolean isIssuer = parts[parts.length-1]=="i";
 
-        this.sourceName = parts[2];
-        this.advocateName = parts[3];
-        this.sourceUid = URI.create(base);
-        this.nodeUid = URI.create(b0);
-        this.issuerParameters = URI.create(issuerParameters);
-        this.issuerParametersFileName = XContainer.uidToXmlFileName(issuerParameters);
-        this.rulebookUID = URI.create(Namespace.URN_PREFIX_COLON + parts[4]);
-        int suffixLength = parts[parts.length-1].length();
+        this.leadName = parts[3];
+        this.moderatorName = parts[4];
+        this.leadUid = URI.create(lead);
+        this.moderatorUid = URI.create(mod);
+        this.issuerParameters = (isIssuer ? URI.create(issuerParameters) :
+                URI.create(Namespace.URN_PREFIX_COLON + IdContainer.stripUidSuffix(issuerParameters,
+                                parts[parts.length-1].length()) + ":i"));
 
-        String root = Namespace.URN_PREFIX_COLON + XContainer.stripUidSuffix(this.issuerParameters, suffixLength);
+        this.issuerParametersFileName = IdContainer.uidToXmlFileName(issuerParameters);
+        this.rulebookUID = URI.create(Namespace.URN_PREFIX_COLON + parts[2] + ":" + parts[5]);
 
-        this.issuerParameters = URI.create(root + ":i");
+        String root = Namespace.URN_PREFIX_COLON  + IdContainer
+                .stripUidSuffix(this.issuerParameters, 1);
 
         issuedCredential = URI.create(root + ":ic");
-        issuedCredentialFileName  = XContainer.uidToXmlFileName(issuedCredential);
+        issuedCredentialFileName  = IdContainer.uidToXmlFileName(issuedCredential);
 
-        this.presentationPolicy = URI.create(base + ":pp");
-        presentationPolicyFileName = XContainer.uidToXmlFileName(presentationPolicy);
+        this.presentationPolicy = URI.create(lead + ":pp");
+        presentationPolicyFileName = IdContainer.uidToXmlFileName(presentationPolicy);
 
         revocationAuthority = URI.create(root + ":ra");
-        revocationAuthorityFileName = XContainer.uidToXmlFileName(revocationAuthority);
+        revocationAuthorityFileName = IdContainer.uidToXmlFileName(revocationAuthority);
 
         revocationAuthorityInfo = URI.create(root + ":rai");
-        revocationInfoFileName = XContainer.uidToXmlFileName(revocationAuthorityInfo);
+        revocationInfoFileName = IdContainer.uidToXmlFileName(revocationAuthorityInfo);
 
         issuancePolicy = URI.create(root + ":ip");
-        issuancePolicyFileName = XContainer.uidToXmlFileName(issuancePolicy);
+        issuancePolicyFileName = IdContainer.uidToXmlFileName(issuancePolicy);
 
-        this.inspectorParams = URI.create(b0 + ":ins");
-        inspectorParamsFileName = XContainer.uidToXmlFileName(inspectorParams);
+        this.inspectorParams = URI.create(mod + ":ins");
+        inspectorParamsFileName = IdContainer.uidToXmlFileName(inspectorParams);
 
-        this.credentialSpec = credentialSpecFromSourceUID(this.sourceUid);
-        credentialSpecFileName = XContainer.uidToXmlFileName(credentialSpec);
+        this.credentialSpec = credentialSpecFromLeadUID(this.leadUid);
+        credentialSpecFileName = IdContainer.uidToXmlFileName(credentialSpec);
 
-        this.rulebookFileName = XContainer.uidToFileName(rulebookUID) + ".json";
+        this.rulebookFileName = IdContainer.uidToFileName(rulebookUID) + ".json";
+
+        this.rulebookTopic = computeTopicFromRulebook(rulebookUID);
+
+        this.rulebookLeadTopic = this.rulebookTopic  + "/" + leadName;
+
+        this.rulebookModTopic = this.rulebookLeadTopic + "/" + moderatorName;
+
+//        this.rulebookTopic = this.rulebookTopic + "/*";
+//
+//        this.rulebookLeadTopic = this.rulebookLeadTopic + "/*";
 
     }
 
-    public static String computeSourceNameFromAdvocateOrSourceUid(URI sourceOrAdvocateUid){
-        if (sourceOrAdvocateUid==null){
+
+    public static String computeTopicFromRulebook(URI rulebookUID) {
+        return rulebookUID.toString()
+                .replaceAll("urn:", "")
+                .replaceAll(":", "/");
+    }
+
+    public static String computeLeadNameFromModOrLeadUid(URI leadOrModUid){
+        if (leadOrModUid==null){
             throw new NullPointerException();
         }
-        return sourceOrAdvocateUid.toString().split(":")[2];
+        return leadOrModUid.toString().split(":")[3];
     }
 
-    public static String computeRulebookIdFromSourceUid(URI sourceUid){
-        if (sourceUid==null){
+    public static String computeModNameFromModUid(URI modUid){
+        if (modUid==null){
             throw new NullPointerException();
         }
-        return Namespace.URN_PREFIX_COLON + sourceUid.toString().split(":")[3];
+        return modUid.toString().split(":")[4];
     }
 
-    public static String computeAdvocateNameFromAdvocateUid(URI advocateUid){
-        if (advocateUid==null){
+    public static String computeShortRulebookHashUid(URI leadUid) throws UxException {
+        String r = computeRulebookHashUid(leadUid);
+        return r.substring(0,3) + "_" + r.substring(r.length()-3, r.length());
+    }
+
+    public static String computeRulebookHashUid(URI leadUid) throws UxException {
+        Pattern pattern = Pattern.compile("[0-9a-fA-F]{64}");
+        Matcher matcher = pattern.matcher(leadUid.toString());
+
+        if (matcher.find()){
+            return matcher.group();
+        } else {
+            throw new UxException(ErrorMessages.INCORRECT_PARAMETERS + " " + leadUid);
+        }
+    }
+
+    public static URI computeRulebookUidFromNodeUid(URI nodeUid) throws UxException {
+        if (nodeUid==null){
             throw new NullPointerException();
         }
-        return advocateUid.toString().split(":")[3];
+        return URI.create(Namespace.URN_PREFIX_COLON +
+                nodeUid.toString().split(":")[2] + ":" +
+                computeRulebookHashUid(nodeUid));
     }
 
-    public static String computeRulebookHashFromSourceUid(URI sourceUid){
-        if (sourceUid==null){
-            return null;
+    public static URI computeRulebookIdFromLeadUid(URI leadUid){
+        if (WhiteList.isRulebookUid(leadUid)){
+            return leadUid;
+        } else {
+            String[] parts = leadUid.toString().split(":");
+            return URI.create(Namespace.URN_PREFIX_COLON + parts[2] + ":" + parts[4]);
+
         }
-        return sourceUid.toString().split(":")[3];
-    }
-
-    public static String computeRulebookHashFromAdvocateUid(URI uid) {
-        if (uid==null){
-            return null;
-        }
-        return uid.toString().split(":")[4];
     }
 
 
-    public static String computeRulebookHashFromRulebookId(String rulebookId){
-        return rulebookId.split(":")[2];
-    }
 
-    public static String computeRulebookIdFromAdvocateUid(URI advocateUid){
-        if (advocateUid==null){
-            throw new NullPointerException();
-        }
-        return Namespace.URN_PREFIX_COLON + advocateUid.toString().split(":")[4];
-    }
-
-
-    public static URI credentialSpecFromSourceUID(URI sourceUid){
-        String[] parts = sourceUid.toString().split(":");
-        return URI.create(Namespace.URN_PREFIX_COLON + parts[3] + ":c");
+    public static URI credentialSpecFromLeadUID(URI leadUid){
+        String[] parts = leadUid.toString().split(":");
+        return URI.create(Namespace.URN_PREFIX_COLON + parts[2] + ":" + parts[4] + ":c");
 
     }
 
@@ -164,18 +189,18 @@ public class UIDHelper {
 
     }
 
-    public static boolean isSourceUid(URI uid){
-        return WhiteList.isSourceUid(uid);
+    public static boolean isLeadUid(URI uid){
+        return WhiteList.isLeadUid(uid);
 
     }
 
-    public static boolean isAdvocateUid(URI uid){
-        return WhiteList.isAdvocateUid(uid);
+    public static boolean isModeratorUid(URI uid){
+        return WhiteList.isModeratorUid(uid);
 
     }
 
     public static String uidToFileName(String uri) throws Exception{
-        return XContainer.uidToFileName(uri);
+        return IdContainer.uidToFileName(uri);
     }
 
     public ArrayList<CredentialInPolicy.IssuerAlternatives.IssuerParametersUID> computeIssuerParametersUIDAsList(){
@@ -183,7 +208,6 @@ public class UIDHelper {
         list.add(computeIssuerParametersUID());
         return list;
     }
-
 
     public CredentialInPolicy.IssuerAlternatives.IssuerParametersUID computeIssuerParametersUID(){
         CredentialInPolicy.IssuerAlternatives.IssuerParametersUID params = new
@@ -204,7 +228,7 @@ public class UIDHelper {
 
 
     public static URI fileNameToUid(String filename) throws Exception{
-        return URI.create(XContainer.fileNameToUid(filename));
+        return URI.create(IdContainer.fileNameToUid(filename));
     }
 
 
@@ -259,12 +283,12 @@ public class UIDHelper {
         return inspectorParams;
     }
 
-    public URI getNodeUid() {
-        return nodeUid;
+    public URI getModeratorUid() {
+        return moderatorUid;
     }
 
-    public URI getSourceUid() {
-        return sourceUid;
+    public URI getLeadUid() {
+        return leadUid;
     }
 
     public String getCredentialSpecFileName() {
@@ -299,19 +323,27 @@ public class UIDHelper {
         return inspectorParamsFileName;
     }
 
-    public String getSourceName() {
-        return sourceName;
+    public String getLeadName() {
+        return leadName;
     }
 
-    public String getAdvocateName() {
-        return advocateName;
+    public String getModeratorName() {
+        return moderatorName;
     }
 
-    public static URI computeAdvocateUidFromMaterialUID(URI advocateMaterialUID) throws Exception {
-        if (advocateMaterialUID==null){
+    public String getRulebookLeadTopic() {
+        return rulebookLeadTopic;
+    }
+
+    public String getRulebookModTopic() {
+        return rulebookModTopic;
+    }
+
+    public static URI computeModUidFromMaterialUID(URI modMaterialUID) throws Exception {
+        if (modMaterialUID==null){
             throw new NullPointerException();
         }
-        String[] parts = advocateMaterialUID.toString().split(":");
+        String[] parts = modMaterialUID.toString().split(":");
         StringBuilder result = new StringBuilder();
         result.append(Namespace.URN_PREFIX_COLON);
         result.append(parts[2]);
@@ -319,38 +351,41 @@ public class UIDHelper {
         result.append(parts[3]);
         result.append(":");
         result.append(parts[4]);
-        URI advocateUid = URI.create(result.toString());
-        if (WhiteList.isAdvocateUid(advocateUid)) {
-            return advocateUid;
+        result.append(":");
+        result.append(parts[5]);
+        URI moderatorUid = URI.create(result.toString());
+        if (WhiteList.isModeratorUid(moderatorUid)) {
+            return moderatorUid;
 
         } else {
-            throw new UxException(advocateUid.toString());
+            throw new UxException(moderatorUid + " " + modMaterialUID);
 
         }
     }
     /**
      *
-     * @param nodeUid
+     * @param modUid
      * @return [sourceUid, nodeUid]
      * @throws Exception
      */
-    public static URI computeSourceUidFromNodeUid(URI nodeUid) throws Exception {
+    public static URI computeLeadUidFromModUid(URI modUid) throws Exception {
         try {
-            if (nodeUid!=null){
-                String[] discovery = nodeUid.toString().split(":");
-                if (discovery.length>4) {
-                    URI sourceUid = URI.create(
+            if (modUid!=null){
+                String[] discovery = modUid.toString().split(":");
+                if (discovery.length>=6) {
+                    URI leadUid = URI.create(
                             discovery[0] + ":"
                                     + discovery[1] + ":"
                                     + discovery[2] + ":"
-                                    + discovery[4]);
-                    return sourceUid;
+                                    + discovery[3] + ":"
+                                    + discovery[5]);
+                    return leadUid;
 
-                } else if (discovery.length==4){
-                    return nodeUid;
+                } else if (discovery.length==5){
+                    return modUid;
 
                 } else {
-                    throw new HubException("Invalid Node UID (5 components expected)" + nodeUid + " got " + discovery.length);
+                    throw new HubException("Invalid Node UID (6 components expected)" + modUid + " got " + discovery.length);
 
                 }
             } else {
@@ -365,7 +400,7 @@ public class UIDHelper {
 
     public static String tokenFileName(URI advocateUid) throws Exception {
         return DateHelper.currentIsoUtcDateTime()
-                + "-" + XContainer.uidToFileName(advocateUid)
+                + "-" + IdContainer.uidToFileName(advocateUid)
                 + ".t.xml";
     }
 
@@ -375,4 +410,68 @@ public class UIDHelper {
         return credential.getIssuerParametersUID();
 
     }
+
+    public static URI ensureTrailingSlash(String uri){
+        return ensureTrailingSlash(URI.create(uri));
+    }
+
+    public static URI ensureTrailingSlash(URI uri){
+        logger.info("Trailing slash path" + uri);
+        String path = uri.getPath();
+        logger.info("Trailing slash path" + path);
+        if (path == null || path.isEmpty()) {
+            return uri.resolve("/");
+
+        } else if (!path.endsWith("/")) {
+            return uri.resolve(path + "/");
+
+        }
+        return uri;
+
+    }
+
+    public URI getRevocationAuthorityInfo() {
+        return revocationAuthorityInfo;
+    }
+
+    public String getRulebookTopic() {
+        return rulebookTopic;
+    }
+
+    public void out(){
+        logger.info(">>>>>>>>>>>>> ");
+        logger.info("> Output Projected UIDS");
+        logger.info("");
+        logger.info(leadName);
+        logger.info(moderatorName);
+        logger.info(leadUid.toString());
+        logger.info(moderatorUid.toString());
+        logger.info(rulebookUID.toString());
+        logger.info("");
+        logger.info(rulebookFileName);
+        logger.info(credentialSpec.toString());
+        logger.info(credentialSpecFileName);
+        logger.info(presentationPolicy.toString());
+        logger.info(presentationPolicyFileName);
+        logger.info(issuedCredential.toString());
+        logger.info(issuedCredentialFileName);
+        logger.info(revocationAuthority.toString());
+        logger.info(revocationAuthorityFileName);
+        logger.info(revocationAuthorityInfo.toString());
+        logger.info(revocationInfoFileName);
+        logger.info(issuancePolicy.toString());
+        logger.info(issuancePolicyFileName);
+        logger.info(inspectorParams.toString());
+        logger.info(inspectorParamsFileName);
+        logger.info(issuerParameters.toString());
+        logger.info(issuerParametersFileName);
+        logger.info("");
+        logger.info(rulebookTopic);
+        logger.info(rulebookLeadTopic);
+        logger.info(rulebookModTopic);
+        logger.info(">>>>>>>>>>>>> ");
+
+    }
+
+
 }

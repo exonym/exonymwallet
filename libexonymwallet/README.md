@@ -2,31 +2,11 @@
 
 ## About
 
-`libexonymwallet` enables the creation and management of secure 
-wallets that are essential for interacting with the Decentralized 
-Rulebooks system. 
+`libexonymwallet` provides the tools to create and manage secure wallets essential for interacting with the Decentralized Rulebooks system. This system enables multi-stakeholder governance, ensuring trust and accountability online without centralised control.
 
-Decentralized Rulebooks are a distributed software system that facilitates 
-multi-stakeholder governance, ensuring trust and accountability in online 
-activities without the need for centralized control.
+The library supports secure storage of private keys, SFTP credentials, wallet creation, transaction management, and moderator list retrieval. It powers our command-line utility and device app, allowing seamless interaction with the Decentralized Rulebooks.
 
-`libexonymwallet` makes it possible to create secure wallets that are 
-capable of managing the complex transactions and activities that are 
-inherent in the governance of online activities. The library offers a 
-range of features that are essential for the effective management of 
-wallets, including secure storage of private keys, SFTP credentials, 
-the creation of new wallets, retrieval of advocate lists, and management 
-of transactions.
-
-`libexonymwallet` is used by our command-line utility and device App 
-so that producers and consumers can interact with the Decentralized 
-Rulebooks system seamlessly. This makes it possible for users to 
-easily participate in the governance of online activities, without 
-the need for specialized technical knowledge or experience. 
-
-`libexonymwallet` is responsbile for making sure that the user's wallet 
-is secure, and their transactions are private and tamper-proof, enabling 
-them to participate in the Decentralized Rulebooks system with confidence.
+`libexonymwallet` ensures user wallets remain secure and transactions private, enabling confident participation in the governance of online activities.
 
 # Installation
 [Install Gluon's GraalVM for **Java 11**](https://github.com/gluonhq/graal/releases)
@@ -36,24 +16,13 @@ mvn gluonfx:sharedlib
 ```
 
 # WalletAPI.class
-The `WalletAPI.class` provides an essential component of the Rulebooks system by 
-implementing a C-Callable interface through the use of __Gluon__ and __GraalVM__. This powerful 
-virtual machine enables seamless interoperability between different programming 
-languages and platforms.
 
-In order to maintain the integrity and security of wallet data, especially considering 
-the large volume of information required for Identity Mixer operations, the WalletAPI.class 
-avoids returning structs. This design choice minimizes the risk of data corruption that 
-could render wallets unusable. Instead, the WalletAPI.class focuses on providing a 
-reliable and efficient interface for the Decentralized Rulebooks ecosystem, ensuring 
-smooth interaction between various components and enabling deployment to iOS devices.
+The `WalletAPI.class` implements a C-Callable interface using __Gluon__ and __GraalVM__ for cross-language and cross-platform compatibility.
 
-`libexonymwallet` serves a dual purpose as it is utilized as a jar file by services 
-that aim to verify proofs generated within the Decentralized Rulebook system. This 
-functionality ensures that the verification process is streamlined and easily accessible 
-for a wide range of services. By incorporating `libexonymwallet` as a jar file, these 
-services can efficiently validate proofs and maintain the security and trust within the 
-Rulebooks ecosystem. 
+To safeguard wallet data, especially for Identity Mixer operations, `WalletAPI.class` avoids returning structs, reducing the risk of data corruption. It provides a reliable interface for the Decentralized Rulebooks ecosystem, ensuring smooth component interaction and iOS deployment.
+
+`libexonymwallet` is also used as a jar file by services verifying proofs within the Decentralized Rulebooks system, ensuring streamlined and secure validation processes across the ecosystem.
+
 
 `openSystemParams()` A test function to ensure that serialization is functioning correctly,  
 that resources are being packaged properly, and they are available.
@@ -76,7 +45,7 @@ Lists the identifiers of all the rulebooks in existence.
 Produces a network map item for the identified actor from the network map.
 
 `listActors()`
-Produces a list of actors that are the sources for a rule, book, or advocates for a source.
+Produces a list of actors that are the sources for a rule, book, or moderators for a lead.
 
 `networkMap()`
 Generates a network map based on the current state of the system.
@@ -109,10 +78,10 @@ Once the template is complete, the user calls this function to add it to the ope
 
 `onboardSybilTestnet()` Executes the adoption protocol for the Sybil Test Net.
 
-`onboardRulebook()` Executes the adoption protocol for a permissionless Advocate, this function works via the universal link and is designed for use with the smartphone app.
+`onboardRulebook()` Executes the adoption protocol for a permissionless Moderator, this function works via the universal link and is designed for use with the smartphone app.
 
-`onboardRulebookAdvocateUID(advocate_UID)`
-Executes the adoption protocol for a permissioned advocate via the advocate UID.
+`onboardRulebookModeratorUID(moderator_UID)`
+Executes the adoption protocol for a permissioned moderator via the moderator UID.
 
 `authenticate()`
 Authenticates an existing wallet to open it.

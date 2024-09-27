@@ -15,13 +15,11 @@ public class NodeInformation {
 
 	private String nodeName;
 	private URI staticNodeUrl0;
-	private URI staticNodeUrl1;
-	private URI staticSourceUrl0;
-	private URI staticSourceUrl1;
+	private URI staticLeadUrl0;
 	private URI nodeUid;
 	private URI rulebookNodeUrl;
 	private URI broadcastAddress;
-	private URI sourceUid;
+	private URI leadUid;
 	private String region;
 	private String lastUpdateReceived;
 	private LinkedList<URI> issuerParameterUids = null;
@@ -53,15 +51,6 @@ public class NodeInformation {
 		this.staticNodeUrl0 = staticNodeUrl0;
 	}
 
-	@XmlElement(name = "StaticNodeURL1", namespace = Namespace.EX)
-	public URI getStaticNodeUrl1() {
-		return staticNodeUrl1;
-	}
-
-	public void setStaticNodeUrl1(URI staticNodeUrl1) {
-		this.staticNodeUrl1 = staticNodeUrl1;
-	}
-
 	@XmlElement(name = "BroadcastAddress", namespace = Namespace.EX)
 	public URI getBroadcastAddress() {
 		return broadcastAddress;
@@ -81,30 +70,21 @@ public class NodeInformation {
 	}
 
 	@XmlElement(name = "StaticSourceURL0", namespace = Namespace.EX)
-	public URI getStaticSourceUrl0() {
-		return staticSourceUrl0;
+	public URI getStaticLeadUrl0() {
+		return staticLeadUrl0;
 	}
 
-	public void setStaticSourceUrl0(URI staticSourceUrl0) {
-		this.staticSourceUrl0 = staticSourceUrl0;
-	}
-
-	@XmlElement(name = "StaticSourceURL1", namespace = Namespace.EX)
-	public URI getStaticSourceUrl1() {
-		return staticSourceUrl1;
-	}
-
-	public void setStaticSourceUrl1(URI staticSourceUrl1) {
-		this.staticSourceUrl1 = staticSourceUrl1;
+	public void setStaticLeadUrl0(URI staticLeadUrl0) {
+		this.staticLeadUrl0 = staticLeadUrl0;
 	}
 
 	@XmlElement(name = "SourceUID", namespace = Namespace.EX)
-	public URI getSourceUid() {
-		return sourceUid;
+	public URI getLeadUid() {
+		return leadUid;
 	}
 
-	public void setSourceUid(URI sourceUid) {
-		this.sourceUid = sourceUid;
+	public void setLeadUid(URI leadUid) {
+		this.leadUid = leadUid;
 	}
 
 	@XmlElement(name = "LastUpdatedReceivedUTC", namespace = Namespace.EX)

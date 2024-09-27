@@ -4,7 +4,7 @@
   
 	<groupId>io.exonym</groupId>
 	<artifactId>libexonymwallet</artifactId>
-	<version>0.1</version>
+	<version>0.2</version>
 	<packaging>jar</packaging>
 	<name>libexonymwallet</name>
 	<description>Wallet API for Command Line and Device</description>
@@ -12,16 +12,18 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<abc4TrustVersion>1.1.36</abc4TrustVersion>
-		<idmxVersion>3.1.0</idmxVersion>
+		<idmxVersion>3.1.3</idmxVersion>
 		<skipTests>true</skipTests>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 
-		<maven.compiler.release>11</maven.compiler.release>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<gluonfx.maven.plugin.version>1.0.18</gluonfx.maven.plugin.version>
 		<gluonfx.target>host</gluonfx.target>
 		<main.class>io.exonym.lib.wallet.WalletAPI</main.class>
 
-		<javafx.version>11</javafx.version>
+		<javafx.version>${java.version}</javafx.version>
 		<charm.version>6.2.2</charm.version>
 		<charm.cloudlink.version>6.0.7</charm.cloudlink.version>
 		<glisten.afterburner.version>2.1.0</glisten.afterburner.version>
@@ -32,10 +34,10 @@
 	</properties>
 
 	<distributionManagement>
-		<repository>
-		<id>internal</id>
-		<url>https://repo.exonym.io/repository/internal/</url>
-		</repository>
+<!--		<repository>-->
+<!--		<id>internal</id>-->
+<!--		<url>https://repo.exonym.io/repository/internal/</url>-->
+<!--		</repository>-->
 	</distributionManagement>
 
 	<dependencies>
@@ -82,6 +84,12 @@
 			<groupId>com.ibm.zurich.idmx</groupId>
 			<artifactId>com.ibm.zurich.idmx.3_x_x</artifactId>
 			<version>${idmxVersion}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>jakarta.xml.bind</groupId>
+					<artifactId>jakarta.xml.bind-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -90,22 +98,50 @@
 			<version>2.44.2</version>
 		</dependency>
 
+
+		<!-- JAXB Core -->
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.3.0.1</version>
 			<exclusions>
 				<exclusion>
-					<groupId>javax.activation</groupId>
-					<artifactId>activation</artifactId>
+					<groupId>jakarta.xml.bind</groupId>
+					<artifactId>jakarta.xml.bind-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>jakarta.activation</groupId>
+					<artifactId>jakarta.activation-api</artifactId>
 				</exclusion>
 			</exclusions>
+
 		</dependency>
 
 		<dependency>
-			<groupId>com.sun.xml.security</groupId>
-			<artifactId>xml-security-impl</artifactId>
-			<version>1.0</version>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.3.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun.activation</groupId>
+					<artifactId>jakarta.activation</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>jakarta.xml.bind</groupId>
+					<artifactId>jakarta.xml.bind-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>jakarta.activation</groupId>
+					<artifactId>jakarta.activation-api</artifactId>
+				</exclusion>
+			</exclusions>
+
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.santuario</groupId>
+			<artifactId>xmlsec</artifactId>
+			<version>4.0.2</version>
 		</dependency>
 
 		<!-- We need this dependency for the namespace prefix mapper -->
@@ -113,18 +149,32 @@
 			<groupId>com.sun.xml.ws</groupId>
 			<artifactId>webservices-rt</artifactId>
 			<version>2.0.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.14.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.xml.bind</groupId>
+					<artifactId>jaxb-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.xml.bind</groupId>
+					<artifactId>jaxb-impl</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
 			<version>2.14.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>jakarta.xml.bind</groupId>
+					<artifactId>jakarta.xml.bind-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>jakarta.activation</groupId>
+					<artifactId>jakarta.activation-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -151,8 +201,6 @@
 			<version>3.3.0</version>
 		</dependency>
 
-
-
 	</dependencies>
   <build>
    	<plugins>
@@ -170,7 +218,14 @@
 			</dependencies>
 			<version>3.8.1</version>
 			<configuration>
-				<release>11</release>
+				<fork>true</fork>
+				<release>${java.version}</release>
+				<compilerArgs>
+					<arg>--add-opens</arg>
+					<arg>java.base/java.lang=ALL-UNNAMED</arg>
+					<arg>--add-opens</arg>
+					<arg>java.base/java.util=ALL-UNNAMED</arg>
+				</compilerArgs>
 			</configuration>
 		</plugin>
 
@@ -201,11 +256,20 @@
 			<configuration>
 				<target>${gluonfx.target}</target>
 				<mainClass>${main.class}</mainClass>
-				<graalvmHome>/Library/Java/JavaVirtualMachines/graalvm-svm-java11-darwin-gluon-22.1.0.1-Final/Contents/Home</graalvmHome>
-		
+				<graalvmHome>/Library/Java/JavaVirtualMachines/graalvm-svm-java17-darwin-m1-gluon-22.1.0.1-Final/Contents/Home</graalvmHome>
+				<nativeImageArgs>
+					<arg>-H:-CheckToolchain</arg>
+					<arg>--enable-url-protocols=https</arg>
+					<!-- Optimization Flags -->
+					<arg>--no-fallback</arg>
+					<arg>-O2</arg>
+					<arg>-H:+RemoveUnusedSymbols</arg>
+					<arg>--gc=serial</arg>
+					<!-- Logging -->
+					<arg>--initialize-at-build-time=java.util.logging.LogManager</arg>
+					<arg>--trace-class-initialization=java.util.logging.LogManager</arg>
+				</nativeImageArgs>
 			</configuration>
-
-
 		</plugin>
 
 	</plugins>
@@ -231,32 +295,30 @@
 	</profiles>
 
 	<repositories>
-		<repository>
-		<id>internal</id>
-		<name>Archiva Managed Internal Repository</name>
-		<url>https://repo.exonym.io/repository/internal/</url>
-		<releases>
-			<enabled>true</enabled>
-		</releases>
-		<snapshots>
-			<enabled>false</enabled>
-		</snapshots>
-		</repository>
+<!--		<repository>-->
+<!--			<id>internal</id>-->
+<!--			<name>Archiva Managed Internal Repository</name>-->
+<!--			<url>https://repo.exonym.io/repository/internal/</url>-->
+<!--			<releases>-->
+<!--				<enabled>true</enabled>-->
+<!--			</releases>-->
+<!--			<snapshots>-->
+<!--				<enabled>false</enabled>-->
+<!--			</snapshots>-->
+<!--		</repository>-->
 	</repositories>
 	<pluginRepositories>
-		<pluginRepository>
-		<id>internal</id>
-		<name>Archiva Managed Internal Repository</name>
-		<url>https://repo.exonym.io/repository/internal/</url>
-		<releases>
-			<enabled>true</enabled>
-		</releases>
-		<snapshots>
-			<enabled>false</enabled>
-		</snapshots>
-		</pluginRepository>
+<!--		<pluginRepository>-->
+<!--			<id>internal</id>-->
+<!--			<name>Archiva Managed Internal Repository</name>-->
+<!--			<url>https://repo.exonym.io/repository/internal/</url>-->
+<!--			<releases>-->
+<!--				<enabled>true</enabled>-->
+<!--			</releases>-->
+<!--			<snapshots>-->
+<!--				<enabled>false</enabled>-->
+<!--			</snapshots>-->
+<!--		</pluginRepository>-->
 	</pluginRepositories>
-	
-
 
 </project>

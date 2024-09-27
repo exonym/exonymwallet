@@ -2,7 +2,7 @@ package io.exonym.lib.wallet;
 
 import io.exonym.lib.api.Cache;
 import io.exonym.lib.api.PkiExternalResourceContainer;
-import io.exonym.lib.api.XContainerJSON;
+import io.exonym.lib.api.IdContainerJSON;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.standard.PassStore;
@@ -14,7 +14,8 @@ public class ExonymToolset {
     private NetworkMap networkMap;
     private Cache cache;
     private ExonymOwner owner;
-    private XContainerJSON x;
+    private IdContainerJSON x;
+    private PassStore store;
 
 
     public ExonymToolset(PassStore store, Path rootPath) throws Exception {
@@ -26,9 +27,10 @@ public class ExonymToolset {
         cache = new Cache(rootPath);
         PkiExternalResourceContainer external = PkiExternalResourceContainer.getInstance();
         external.setNetworkMapAndCache(networkMap, cache);
-        x = new XContainerJSON(pathToContainers(rootPath), store.getUsername());
+        x = new IdContainerJSON(pathToContainers(rootPath), store.getUsername());
         owner = new ExonymOwner(x);
         owner.openContainer(store);
+        this.store = store;
 
     }
 
@@ -53,7 +55,11 @@ public class ExonymToolset {
         return owner;
     }
 
-    protected XContainerJSON getX() {
+    protected void reopen(){
+        this.owner.openContainer(store);
+    }
+
+    protected IdContainerJSON getX() {
         return x;
     }
 }

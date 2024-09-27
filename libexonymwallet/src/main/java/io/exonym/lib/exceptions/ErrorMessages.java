@@ -9,11 +9,11 @@ public class ErrorMessages {
      */
     public static final String INCORRECT_PARAMETERS = "ERROR_INCORRECT_PARAMETERS";
     public static final String SSO_END_POINT_404 = "SSO_END_POINT_404";
-    public static final String ADVOCATE_DOES_NOT_ACCEPT_OPEN_ADOPTION = "ADVOCATE_DOES_NOT_ACCEPT_OPEN_ADOPTION";
+    public static final String MODERATOR_DOES_NOT_ACCEPT_OPEN_JOIN_REQUESTS = "MODERATOR_DOES_NOT_ACCEPT_OPEN_JOIN_REQUESTS";
     public static final String TIME_OUT = "TIME_OUT";
 
-    public static final String BLACKLISTED_ADVOCATE = "BLACKLISTED_ADVOCATE";
-    public static final String BLACKLISTED_SOURCE = "BLACKLISTED_SOURCE";
+    public static final String BLACKLISTED_MODERATOR = "BLACKLISTED_MODERATOR";
+    public static final String BLACKLISTED_LEAD = "BLACKLISTED_LEAD";
 
     /**
      * Generic error, when we reset a cors condition
@@ -80,7 +80,7 @@ public class ErrorMessages {
     /**
      *
      */
-    public static final String ADVOCATE_NOT_FOUND_ON_NETWORK_MAP = "ADVOCATE_NOT_FOUND_ON_NETWORK_MAP";
+    public static final String MODERATOR_NOT_FOUND_ON_NETWORK_MAP = "MODERATOR_NOT_FOUND_ON_NETWORK_MAP";
     /**
      *
      */

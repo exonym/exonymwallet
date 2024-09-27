@@ -75,7 +75,7 @@ public abstract class ExternalResourceContainer {
 	}
 	
 	protected String fileNameFromUid(URI groupUid) throws Exception {
-		return XContainer.uidToFileName(groupUid) + ".gp.xml";
+		return IdContainer.uidToFileName(groupUid) + ".gp.xml";
 		
 	}
 	

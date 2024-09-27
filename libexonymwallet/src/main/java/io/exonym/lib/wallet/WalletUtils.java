@@ -9,7 +9,7 @@ import eu.abc4trust.xml.PseudonymInToken;
 import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.pojo.IssuanceSigma;
 import io.exonym.lib.pojo.Namespace;
-import io.exonym.lib.pojo.NetworkMapItemAdvocate;
+import io.exonym.lib.pojo.NetworkMapItemModerator;
 import io.exonym.lib.helpers.UrlHelper;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
@@ -60,9 +60,15 @@ public class WalletUtils {
 
     protected static void rejectOnError(IssuanceSigma in) throws UxException {
         if (in.getError()!=null){
-            String[] errors = new String[in.getInfo().size()];
-            for (int i=0; i<errors.length; i++){
-                errors[i] = in.getInfo().get(i);
+            String[] errors;
+            if (in.getInfo()!=null){
+                errors = new String[in.getInfo().size()];
+                for (int i=0; i < errors.length; i++){
+                    errors[i] = in.getInfo().get(i);
+
+                }
+            } else {
+                errors = new String[] {"Unspecified Error from Moderator"};
 
             }
             throw new UxException(in.getError(), errors);
@@ -71,23 +77,23 @@ public class WalletUtils {
     }
 
 
-    protected static NetworkMapItemAdvocate determinedSearchForAdvocate(Path path, URI advocateUID) throws Exception {
+    protected static NetworkMapItemModerator determinedSearchForAdvocate(Path path, URI advocateUID) throws Exception {
         NetworkMap map = new NetworkMap(path.resolve("network-map"));
         return determinedSearchForAdvocate(map, advocateUID);
 
     }
 
-    protected static NetworkMapItemAdvocate determinedSearchForAdvocate(NetworkMap map, URI advocateUID) throws Exception {
+    protected static NetworkMapItemModerator determinedSearchForAdvocate(NetworkMap map, URI advocateUID) throws Exception {
         try {
-            return (NetworkMapItemAdvocate) map.nmiForNode(advocateUID);
+            return (NetworkMapItemModerator) map.nmiForNode(advocateUID);
 
         } catch (Exception e) {
             try {
                 map.spawn();
-                return (NetworkMapItemAdvocate) map.nmiForNode(advocateUID);
+                return (NetworkMapItemModerator) map.nmiForNode(advocateUID);
 
             } catch (Exception ex) {
-                throw new UxException(ErrorMessages.ADVOCATE_NOT_FOUND_ON_NETWORK_MAP, ex,
+                throw new UxException(ErrorMessages.MODERATOR_NOT_FOUND_ON_NETWORK_MAP, ex,
                         "Also attempted real-time refresh - the advocate is unknown");
 
             }

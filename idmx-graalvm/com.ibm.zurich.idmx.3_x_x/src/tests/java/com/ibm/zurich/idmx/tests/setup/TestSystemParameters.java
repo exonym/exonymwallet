@@ -113,7 +113,7 @@ public class TestSystemParameters extends TestInitialisation {
   }
 
   @Test
-  public void testSystemParametersGeneration() throws SerializationException,
+  public void testSystemParametersGeneration() throws Exception,
       ConfigurationException, IOException {
 
     String spFilename = DEFAULT_SYSTEM_PARAMETERS_FILENAME;
@@ -135,6 +135,34 @@ public class TestSystemParameters extends TestInitialisation {
     assertEquals(spt.getSecurityLevel(), Configuration.defaultSecurityLevel());
   }
 
+//  @Test
+//  public void testJacksonSystemParametersGeneration() throws Exception {
+//
+//    // Create a template
+//    EcryptSystemParametersTemplateWrapper spt = initSystemParametersTemplate();
+//
+//    SystemParameters systemParameters =
+//            cryptoEngineIssuer.setupSystemParameters(spt.getSystemParametersTemplate());
+//    com.ibm.zurich.idmx.jackson.SystemParameters sp = new com.ibm.zurich.idmx.jackson.SystemParameters();
+//    sp.setVersion(systemParameters.getVersion());
+//    sp.setCryptoParams(systemParameters.getCryptoParams());
+//    sp.setSystemParametersUID(systemParameters.getSystemParametersUID());
+//
+//    com.ibm.zurich.idmx.jackson.SystemParametersWrapper systemParametersFacade =
+//            new com.ibm.zurich.idmx.jackson.SystemParametersWrapper(sp);
+//
+//    String xml = systemParametersFacade.serialize();
+//
+//    System.out.println(xml);
+//
+//
+//    // verify that the parameters have been set properly
+//      assertEquals(spt.getSecurityLevel(), Configuration.defaultSecurityLevel());
+//  }
+
+
+//  com.ibm.zurich.idmx.jackson
+
   @Test
   public void testSystemParametersInitialisation() throws SerializationException,
       ConfigurationException, KeyManagerException, IOException {
@@ -154,8 +182,7 @@ public class TestSystemParameters extends TestInitialisation {
   }
 
   @Test
-  public void testSystemParametersTemplateConfiguration() throws SerializationException,
-      ConfigurationException, IOException {
+  public void testSystemParametersTemplateConfiguration() throws Exception {
 
     String spTemplateFilename = SYSTEM_PARAMETERS_TEMPLATE_BASE_FILENAME + "templateChange.xml";
     String spFilename = SYSTEM_PARAMETERS_BASE_FILENAME + "templateChange.xml";

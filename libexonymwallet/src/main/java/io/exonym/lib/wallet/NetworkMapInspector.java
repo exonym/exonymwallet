@@ -49,10 +49,10 @@ public class NetworkMapInspector {
             if (WhiteList.isRulebookUid(uidString)){
                 return viewBaseRulebook(uidString);
 
-            } else if (WhiteList.isAdvocateUid(uidString)){
+            } else if (WhiteList.isModeratorUid(uidString)){
                 return view(uid);
 
-            } else if (WhiteList.isSourceUid(uidString)){
+            } else if (WhiteList.isLeadUid(uidString)){
                 return view(uid);
 
             } else {
@@ -70,26 +70,27 @@ public class NetworkMapInspector {
 
 
     private String viewBaseRulebook(String uid) throws Exception {
+        String file = IdContainer.uidToFileName(uid) + ".json";
         try {
-            Rulebook rulebook = this.map.getCache().open(XContainer.uidToFileName(uid) + ".json");
+            Rulebook rulebook = this.map.getCache().open(file);
             rulebook.setPenalties(null);
             rulebook.setRuleExtensions(new ArrayList<>());
 
-            ArrayList<String> sources = computeSourcesForRulebook(rulebook.getRulebookId());
+            ArrayList<String> sources = computeLeadsForRulebook(rulebook.getRulebookId());
             ActorOverview result = new ActorOverview();
             result.setRulebook(rulebook);
-            result.setSourcesForRulebook(sources);
+            result.setLeadsForRulebook(sources);
             return serializeResult(result);
 
         } catch (Exception e) {
-            throw new UxException(ErrorMessages.FILE_NOT_FOUND, e);
+            throw new UxException(ErrorMessages.FILE_NOT_FOUND + " " + file , e);
 
         }
     }
 
 
-    private ArrayList<String> computeSourcesForRulebook(String rulebookId) throws UxException {
-        List<String> sources = map.getSourceFilenamesForRulebook(rulebookId);
+    private ArrayList<String> computeLeadsForRulebook(String rulebookId) throws UxException {
+        List<String> sources = map.getLeadFileNamesForRulebook(rulebookId);
         ArrayList<String> sourceUIDs = new ArrayList<>();
         for (String f : sources){
             sourceUIDs.add(map.fromNmiFilename(f).toString());
@@ -101,16 +102,17 @@ public class NetworkMapInspector {
 
     private String view(URI uid) throws Exception {
         NetworkMapItem item = map.nmiForNode(uid);
-        String rulebookUID = UIDHelper.computeRulebookIdFromSourceUid(item.getSourceUID());
-        ArrayList<String> sources = computeSourcesForRulebook(rulebookUID);
+        URI rulebookUid = UIDHelper.computeRulebookUidFromNodeUid(uid);
+        ArrayList<String> sources = computeLeadsForRulebook(rulebookUid.toString());
 
-        Rulebook rulebook = map.getCache().open(rulebookUID);
+        Rulebook rulebook = map.getCache().open(rulebookUid);
+
         rulebook.setPenalties(null);
         rulebook.setRuleExtensions(new ArrayList<>());
 
         ActorOverview result = new ActorOverview();
         result.setRulebook(rulebook);
-        result.setSourcesForRulebook(sources);
+        result.setLeadsForRulebook(sources);
         result.setActor(item);
         return serializeResult(result);
 
@@ -143,41 +145,37 @@ public class NetworkMapInspector {
 
     private String listRulebooks() throws Exception {
         List<String> rulebooks = map.listRulebooks();
-        List<String> result = new ArrayList<>();
-        for (String r : rulebooks){
-            result.add(Namespace.URN_PREFIX_COLON + r);
-        }
-        return JaxbHelper.gson.toJson(result, List.class);
+        return JaxbHelper.gson.toJson(rulebooks, List.class);
 
     }
 
     private String list(URI uid) throws Exception {
-        URI source = null;
-        if (WhiteList.isSourceUid(uid)){
-            source = uid;
+        URI lead = null;
+        if (WhiteList.isLeadUid(uid)){
+            lead = uid;
 
-        } else if (WhiteList.isAdvocateUid(uid)) {
-            source = UIDHelper.computeSourceUidFromNodeUid(uid);
+        } else if (WhiteList.isModeratorUid(uid)) {
+            lead = UIDHelper.computeLeadUidFromModUid(uid);
 
         } else if (WhiteList.isRulebookUid(uid)) {
-            return JaxbHelper.gson.toJson(
-                    computeSourcesForRulebook(uid.toString()));
+            ArrayList<String> list = computeLeadsForRulebook(uid.toString());
+            return JaxbHelper.gson.toJson(list);
 
         } else {
-            throw new UxException(ErrorMessages.INCORRECT_PARAMETERS, "Not an Advocate or a Source UID");
+            throw new UxException(ErrorMessages.INCORRECT_PARAMETERS, "Neither a Moderator nor a Lead UID");
 
         }
-        NetworkMapItemSource s = (NetworkMapItemSource) map.nmiForNode(source);
-        return JaxbHelper.gson.toJson(s, NetworkMapItemSource.class);
+        NetworkMapItemLead s = (NetworkMapItemLead) map.nmiForNode(lead);
+        return JaxbHelper.gson.toJson(s, NetworkMapItemLead.class);
 
     }
 
     private String nmiForNode(String uid) throws Exception {
-        if (WhiteList.isAdvocateUid(uid)){
-            return JaxbHelper.serializeToJson(map.nmiForNode(URI.create(uid)), NetworkMapItemSource.class);
+        if (WhiteList.isModeratorUid(uid)){
+            return JaxbHelper.serializeToJson(map.nmiForNode(URI.create(uid)), NetworkMapItemLead.class);
 
-        } else if (WhiteList.isSourceUid(uid)){
-            return JaxbHelper.serializeToJson(map.nmiForNode(URI.create(uid)), NetworkMapItemAdvocate.class);
+        } else if (WhiteList.isLeadUid(uid)){
+            return JaxbHelper.serializeToJson(map.nmiForNode(URI.create(uid)), NetworkMapItemModerator.class);
 
         } else {
             throw new UxException(ErrorMessages.INVALID_UID, uid);

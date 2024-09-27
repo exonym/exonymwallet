@@ -4,15 +4,16 @@ import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.api.AbstractNetworkMap;
 import io.exonym.lib.api.Cache;
 import io.exonym.lib.exceptions.UxException;
-import io.exonym.lib.pojo.NetworkMapItemAdvocate;
-import io.exonym.lib.pojo.NetworkMapItemSource;
+import io.exonym.lib.helpers.UIDHelper;
+import io.exonym.lib.pojo.NetworkMapItemModerator;
+import io.exonym.lib.pojo.NetworkMapItemLead;
 import io.exonym.lib.actor.NodeVerifier;
 import io.exonym.lib.api.CacheContainer;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -48,28 +49,27 @@ public class NetworkMap extends AbstractNetworkMap {
     }
 
     @Override
-    protected void writeVerifiedSource(String rulebookId, String source, NetworkMapItemSource nmis,
-                                     ArrayList<NetworkMapItemAdvocate> advocatesForSource) throws Exception {
+    protected void writeVerifiedLead(URI leadUid, NetworkMapItemLead nmis,
+                                     ArrayList<NetworkMapItemModerator> modForLead) throws Exception {
 
-        Path pathSource = pathToSourcePath(rulebookId, source);
-        Files.createDirectories(pathSource);
-        Path pathSourceNMI = pathToRootPath()
-                .resolve(rulebookId)
-                .resolve(toNmiFilename(nmis.getSourceUID()));
+        Path pathLead = pathToLeadPath(leadUid);
+        Files.createDirectories(pathLead);
+        Path pathLeadNMI = pathLead.getParent().resolve(
+                toNmiFilename(nmis.getLeadUID()));
 
-        try (BufferedWriter bw = Files.newBufferedWriter(pathSourceNMI)) {
-            bw.write(JaxbHelper.serializeToJson(nmis, NetworkMapItemSource.class));
+        try (BufferedWriter bw = Files.newBufferedWriter(pathLeadNMI)) {
+            bw.write(JaxbHelper.serializeToJson(nmis, NetworkMapItemLead.class));
             bw.flush();
 
         } catch (Exception e) {
             throw e;
 
         }
-        for (NetworkMapItemAdvocate advocate : advocatesForSource){
+        for (NetworkMapItemModerator advocate : modForLead){
             String advocateFileName = toNmiFilename(advocate.getNodeUID());
-            Path path = pathSource.resolve(advocateFileName);
+            Path path = pathLead.resolve(advocateFileName);
             try (BufferedWriter bw = Files.newBufferedWriter(path)) {
-                bw.write(JaxbHelper.serializeToJson(advocate, NetworkMapItemAdvocate.class));
+                bw.write(JaxbHelper.serializeToJson(advocate, NetworkMapItemModerator.class));
                 bw.flush();
 
             } catch (Exception e) {
@@ -86,10 +86,10 @@ public class NetworkMap extends AbstractNetworkMap {
     }
 
     @Override
-    protected NodeVerifier openNodeVerifier(URL staticNodeUrl0, URL staticNodeUrl1, boolean isTargetSource) throws Exception {
-        return NodeVerifier.tryNode(staticNodeUrl0.toString(), staticNodeUrl1.toString(), isTargetSource, false);
-
+    protected NodeVerifier openNodeVerifier(URI staticNodeUrl0, boolean isTargetLead) throws Exception {
+        return NodeVerifier.openNode(staticNodeUrl0, isTargetLead, false);
     }
+
 
     @Override
     public void delete() throws IOException {

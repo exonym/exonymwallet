@@ -1,6 +1,6 @@
 package io.exonym.lib.api;
 
-import io.exonym.lib.pojo.XContainer;
+import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.standard.WhiteList;
 
 import java.io.FileNotFoundException;
@@ -9,16 +9,16 @@ import java.nio.file.Path;
 
 public class Cache implements CacheContainer {
 
-    private XContainerJSON x;
+    private IdContainerJSON x;
     private final Path path;
 
     public Cache(Path path) throws Exception {
         this.path = path;
         try {
-            x = new XContainerJSON(path, "cache", true);
+            x = new IdContainerJSON(path, "cache", true);
 
         } catch (Exception e) {
-            x = new XContainerJSON(path, "cache", false);
+            x = new IdContainerJSON(path, "cache", false);
 
         }
     }
@@ -37,10 +37,10 @@ public class Cache implements CacheContainer {
         try {
             if (!(filename.endsWith(".json") || filename.endsWith(".xml"))){
                 if (WhiteList.isRulebookUid(filename)){
-                    filename = XContainer.uidToFileName(filename) + ".json";
+                    filename = IdContainer.uidToFileName(filename) + ".json";
 
                 } else {
-                    filename = XContainer.uidToXmlFileName(filename);
+                    filename = IdContainer.uidToXmlFileName(filename);
 
                 }
             }
@@ -59,12 +59,12 @@ public class Cache implements CacheContainer {
 
     public void clear() throws Exception {
         x.delete();
-        x = new XContainerJSON(this.path, "cache", true);
+        x = new IdContainerJSON(this.path, "cache", true);
 
     }
 
     @Override
-    public AbstractXContainer getContainer() throws Exception {
+    public AbstractIdContainer getContainer() throws Exception {
         return x;
     }
 }

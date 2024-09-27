@@ -2,7 +2,7 @@ package io.exonym.lib.helpers;
 
 import eu.abc4trust.xml.*;
 import io.exonym.lib.pojo.Namespace;
-import io.exonym.lib.pojo.XContainer;
+import io.exonym.lib.pojo.IdContainer;
 
 import java.net.URI;
 
@@ -29,7 +29,7 @@ public class BuildIssuancePolicy {
 	}
 	
 	private void definePresentationPolicyUid(URI issuerParameters) throws Exception {
-		String value = XContainer.stripUidSuffix(issuerParameters, 1);
+		String value = IdContainer.stripUidSuffix(issuerParameters, 1);
 		URI policyUid = URI.create(Namespace.URN_PREFIX_COLON + value + ":pp");
 		ip.getPresentationPolicy().setPolicyUID(policyUid);
 		

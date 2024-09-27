@@ -6,7 +6,7 @@ public class CacheInMemory implements CacheContainer {
     
     private static CacheInMemory instance;
 
-    private XContainerJsonMemory x;
+    private IdContainerJsonMemory x;
     
     static {
         try {
@@ -17,7 +17,7 @@ public class CacheInMemory implements CacheContainer {
     }
     
     private CacheInMemory() throws Exception {
-        this.x = new XContainerJsonMemory();
+        this.x = new IdContainerJsonMemory();
 
     }
     
@@ -46,7 +46,7 @@ public class CacheInMemory implements CacheContainer {
     }
 
     @Override
-    public AbstractXContainer getContainer() throws Exception {
+    public AbstractIdContainer getContainer() throws Exception {
         return x;
     }
 }

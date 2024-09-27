@@ -7,7 +7,7 @@ public class ActorOverview {
     private NetworkMapItem actor;
     private Rulebook rulebook;
 
-    private ArrayList<String> sourcesForRulebook = new ArrayList<>();
+    private ArrayList<String> leadsForRulebook = new ArrayList<>();
 
     public NetworkMapItem getActor() {
         return actor;
@@ -25,11 +25,11 @@ public class ActorOverview {
         this.rulebook = rulebook;
     }
 
-    public ArrayList<String> getSourcesForRulebook() {
-        return sourcesForRulebook;
+    public ArrayList<String> getLeadsForRulebook() {
+        return leadsForRulebook;
     }
 
-    public void setSourcesForRulebook(ArrayList<String> sourcesForRulebook) {
-        this.sourcesForRulebook = sourcesForRulebook;
+    public void setLeadsForRulebook(ArrayList<String> sourcesForRulebook) {
+        this.leadsForRulebook = sourcesForRulebook;
     }
 }

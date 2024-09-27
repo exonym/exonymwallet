@@ -1,6 +1,6 @@
 package io.exonym.example.sso;
 
-import io.exonym.lib.actor.XContainerExternal;
+import io.exonym.lib.actor.IdContainerExternal;
 import io.exonym.lib.wallet.ExonymOwner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +10,12 @@ import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.sql.Date;
+import java.time.Instant;
+import java.util.UUID;
 
 @WebFilter(filterName="authFilter", urlPatterns = {"/*"})
 public class AuthenticationFilter implements Filter {
@@ -28,7 +34,8 @@ public class AuthenticationFilter implements Filter {
 				byte[] in = new byte[stream.available()];
 				stream.read(in);
 				String lambdaXml = new String(in, StandardCharsets.UTF_8);
-				XContainerExternal.loadSystemParams(lambdaXml);
+				IdContainerExternal.loadSystemParams(lambdaXml);
+//				testFileWrite();
 
 			} catch (Exception e) {
 				throw e;
@@ -45,6 +52,20 @@ public class AuthenticationFilter implements Filter {
 		logger.debug("Filter Active");
 
 	}
+
+	private void testFileWrite() throws IOException {
+		Path writeLocation = Path.of("/var", "www", "html", "tokens");
+		Files.createDirectories(writeLocation);
+		Path filePath = writeLocation.resolve("test.json");
+		Files.write(filePath,
+				("{'test':'If you can read this, the server successfully wrote to the replication directory'," +
+						"'time':'" + Date.from(Instant.now()) + "'}")
+						.getBytes(StandardCharsets.UTF_8),
+				StandardOpenOption.CREATE);
+		logger.info("Written file" + filePath);
+
+	}
+
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

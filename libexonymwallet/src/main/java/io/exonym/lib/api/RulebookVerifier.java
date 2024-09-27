@@ -3,12 +3,14 @@ package io.exonym.lib.api;
 import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.helpers.UrlHelper;
 import io.exonym.lib.pojo.Rulebook;
 import io.exonym.lib.pojo.RulebookDescription;
 import io.exonym.lib.pojo.RulebookItem;
 import io.exonym.lib.standard.CryptoUtils;
 
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -23,6 +25,7 @@ public class RulebookVerifier {
         verifyRulebook(rulebook);
 
     }
+
     public RulebookVerifier(Rulebook rulebook) throws Exception {
         this.rulebook = rulebook;
         verifyRulebook(rulebook);
@@ -58,7 +61,8 @@ public class RulebookVerifier {
 
         }
         String rulebookId = CryptoUtils.computeSha256HashAsHex(builder.toString());
-        String id = rulebook.getRulebookId().split(":")[2];
+        String id = UIDHelper.computeRulebookHashUid(URI.create(rulebook.getRulebookId()));
+
         if (!id.equals(rulebookId)){
             throw new UxException(ErrorMessages.FAILED_TO_AUTHORIZE, "The Rulebook ID is invalid.");
 

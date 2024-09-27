@@ -3,7 +3,7 @@ package io.exonym.lib.helpers;
 import eu.abc4trust.xml.*;
 import eu.abc4trust.xml.CredentialInPolicy.IssuerAlternatives;
 import io.exonym.lib.pojo.Namespace;
-import io.exonym.lib.pojo.XContainer;
+import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.standard.Const;
 
 import java.net.URI;
@@ -125,7 +125,7 @@ public class PresentationPolicyManager {
 		}
 		URI iUid = i.getParametersUID();
 		URI rapUid = i.getRevocationParametersUID();
-		String raiStart = Namespace.URN_PREFIX_COLON + XContainer.stripUidSuffix(rapUid, 2) + ":rai";
+		String raiStart = Namespace.URN_PREFIX_COLON + IdContainer.stripUidSuffix(rapUid, 2) + ":rai";
 
 		IssuerAlternatives.IssuerParametersUID ip = new IssuerAlternatives.IssuerParametersUID();
 		ip.setRevocationInformationUID(URI.create(raiStart));
@@ -199,7 +199,7 @@ public class PresentationPolicyManager {
 	}
 
 	private CredentialInPolicy buildCredentialInPolicy(CredentialSpecification cred, IssuerParameters ip, URI inspectorUid) throws Exception {
-		String root = Namespace.URN_PREFIX_COLON + XContainer.stripUidSuffix(ip.getRevocationParametersUID().toString(), 2);
+		String root = Namespace.URN_PREFIX_COLON + IdContainer.stripUidSuffix(ip.getRevocationParametersUID().toString(), 2);
 		URI cUid = cred.getSpecificationUID();
 		URI raiUid = URI.create(root + ":rai");
 

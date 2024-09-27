@@ -144,8 +144,9 @@ mvn install
 ```
 
 Open `libexonymwallet` in IntelliJ 
-- press `cmd+;` to launch the project properties.
-- select `+` then `JAR~From modules with dependencies`
+- press `⌘;` to launch the project properties.
+- select Artifacts from the left then 
+- `+` then `JAR~From modules with dependencies`
 - select `libexonymwallet` from the Module combo.
 - add `io.exonym.wallet.GraalVMProbeMain` as the main class.
 - select `OK`
@@ -190,7 +191,28 @@ If you need to rebuild the FFI class, edit the `config.yaml` to reference the co
 ```
 dart run ffigen --config config.yaml
 ```
-You may also need to update the `ExonymWallet` class in `exonym_wallet.dart`.
+
+To generate the bindings for a new method you will need to run:
+
+```
+./generate_bindings.sh
+
+```
+
+This file will display the header file; where you will need to make the following change: 
+
+```
+#include "graal_isolate.h"
+```
+
+it will be displayed in angled brackets:
+
+```
+#include <graal_isolate.h>
+```
+
+You will likely need to update the `ExonymWallet` class in `exonym_wallet.dart` to facilitate the call through to the changed binding.
+
 ___
 
 > TODO: CLI and APP

@@ -19,21 +19,17 @@ import com.ibm.zurich.idmx.interfaces.proofEngine.ZkDirector;
 import com.ibm.zurich.idmx.interfaces.util.BigInt;
 import com.ibm.zurich.idmx.util.bigInt.BigIntFactoryImpl;
 import eu.abc4trust.abce.internal.user.credentialManager.CredentialManagerException;
+import eu.abc4trust.cryptoEngine.CryptoEngineException;
 import eu.abc4trust.cryptoEngine.user.CryptoEngineUser;
 import eu.abc4trust.keyManager.KeyManagerException;
 import eu.abc4trust.returnTypes.IssuMsgOrCredDesc;
 import eu.abc4trust.xml.*;
+import io.exonym.lib.exceptions.*;
 import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.abc.util.UidType;
-import io.exonym.lib.exceptions.AttributePredicateException;
-import io.exonym.lib.exceptions.CredentialInTokenException;
-import io.exonym.lib.exceptions.PolicyNotSatisfiedException;
-import io.exonym.lib.exceptions.PseudonymException;
 import io.exonym.lib.helpers.BuildPresentationTokenDescription;
 import io.exonym.lib.helpers.CredentialWrapper;
-import io.exonym.lib.exceptions.HubException;
-import io.exonym.lib.exceptions.UxException;
-import io.exonym.lib.api.AbstractXContainer;
+import io.exonym.lib.api.AbstractIdContainer;
 import io.exonym.lib.lite.SFTPLogonData;
 import io.exonym.lib.pojo.AnonCredentialParameters;
 import io.exonym.lib.pojo.KeyContainer;
@@ -92,7 +88,7 @@ public abstract class AbstractExonymOwner extends AbstractBaseActor {
 	 * 
 	 * @param container
 	 */
-	protected AbstractExonymOwner(AbstractXContainer container) {
+	protected AbstractExonymOwner(AbstractIdContainer container) {
 		super(container);
 		cryptoEngineUser = INJECTOR.provideCryptoEngineUser();
 		credentialManagerUser = INJECTOR.providesCredentialManagerUser();
@@ -122,6 +118,10 @@ public abstract class AbstractExonymOwner extends AbstractBaseActor {
 
 
 	}
+
+//	protected boolean openResourceIfNotLoaded(URI uid, int tmp) throws Exception {
+//		return openResourceIfNotLoaded(uid, false);
+//	}
 
 	protected boolean openResourceIfNotLoaded(URI uid) throws Exception {
 		if (!super.openResourceIfNotLoaded(uid)) {
@@ -626,10 +626,26 @@ public abstract class AbstractExonymOwner extends AbstractBaseActor {
 				(ArrayList<CredentialInToken>) token.getCredential());
 		
 		resolveInspectorParams(token.getCredential());
-		
-		return cryptoEngineProver.createPresentationToken(container.getUsername(), 
-				token, ppa.getVerifierParameters(), credentialUris, pseudonymUris);
-		
+
+		try {
+			return cryptoEngineProver.createPresentationToken(container.getUsername(),
+					token, ppa.getVerifierParameters(), credentialUris, pseudonymUris);
+
+		} catch (RuntimeException e) {
+			throw new UxException(ErrorMessages.REVOKED, e);
+
+		}
+	}
+
+	public ArrayList<URI> listAllMods(PresentationTokenDescription token) throws Exception {
+		List<CredentialInToken> tokens = token.getCredential();
+		ArrayList<URI> mods = new ArrayList<>();
+		for (CredentialInToken creds : tokens){
+			mods.add(UIDHelper.computeModUidFromMaterialUID(creds.getIssuerParametersUID()));
+
+		}
+		return mods;
+
 	}
 
 	private ArrayList<URI> resolvePseudonyms(ArrayList<PseudonymInToken> nyms)

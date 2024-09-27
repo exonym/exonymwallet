@@ -12,7 +12,6 @@ import 'package:exonymwallet_cli/src/rulebook/rulebook.dart';
 import 'package:exonymwallet_cli/src/target/target.dart';
 import 'package:exonymwallet_cli/src/wallet/wallet.dart';
 
-
 class ExonymCLI {
 
   final GlobalContext context = GlobalContext();
@@ -28,7 +27,6 @@ class ExonymCLI {
     exonymWallet.ping();
 
     shell.loop().listen((cmd) async {
-
       if (['stop', 'quit', 'exit'].contains(cmd.toLowerCase().trim())) {
         _terminateApplication();
         shell.stop();

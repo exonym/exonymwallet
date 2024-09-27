@@ -9,7 +9,7 @@ import io.exonym.lib.actor.PolicyReviewItem;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.pojo.ExternalResourceContainer;
-import io.exonym.lib.pojo.XContainer;
+import io.exonym.lib.pojo.IdContainer;
 
 import java.net.URI;
 import java.util.*;
@@ -242,7 +242,7 @@ public class BuildPresentationTokenDescription {
 			String[] ps = new String[policies.size()];
 			int i = 0;
 			for (PresentationPolicy policy : policies){
-				ps[i] = XContainer.convertObjectToXml(policy);
+				ps[i] = IdContainer.convertObjectToXml(policy);
 				i++;
 
 			}

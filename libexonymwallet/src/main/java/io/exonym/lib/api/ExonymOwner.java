@@ -23,7 +23,7 @@ public class ExonymOwner extends AbstractExonymOwner {
      *
      * @param container
      */
-    protected ExonymOwner(AbstractXContainer container) {
+    protected ExonymOwner(AbstractIdContainer container) {
         super(container);
     }
 
@@ -89,7 +89,7 @@ public class ExonymOwner extends AbstractExonymOwner {
     }
 
     @Override
-    protected AbstractXContainer getContainer() {
+    protected AbstractIdContainer getContainer() {
         return super.getContainer();
     }
 

@@ -20,6 +20,9 @@
       "pattern":"\\QMETA-INF/services/javax.xml.stream.XMLInputFactory\\E"
     }, 
     {
+      "pattern":"\\Qcom/sun/xml/bind/v2/ContextFactory.class\\E"
+    }, 
+    {
       "pattern":"\\Qcom/sun/xml/bind/v2/runtime/reflect/opt/FieldAccessor_Boolean.class\\E"
     }, 
     {
@@ -56,9 +59,6 @@
       "pattern":"\\Qorg/apache/http/client/version.properties\\E"
     }, 
     {
-      "pattern":"\\Qorg/apache/xml/security/resource/config.xml\\E"
-    }, 
-    {
       "pattern":"\\Qxsd/schema-idmx.xsd\\E"
     }, 
     {
@@ -79,15 +79,7 @@
   ]},
   "bundles":[
     {
-      "name":"com.sun.org.apache.xerces.internal.impl.msg.XMLMessages",
-      "locales":[""]
-    }, 
-    {
       "name":"com.sun.org.apache.xerces.internal.impl.xpath.regex.message",
-      "locales":[""]
-    }, 
-    {
-      "name":"com.sun.xml.bind.v2.runtime.reflect.Messages",
       "locales":[""]
     }, 
     {

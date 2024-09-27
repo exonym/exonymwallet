@@ -2,12 +2,13 @@ package io.exonym.lib.wallet;
 
 import com.google.gson.JsonObject;
 import eu.abc4trust.xml.*;
+import io.exonym.lib.actor.NodeVerifier;
 import io.exonym.lib.helpers.BuildPresentationPolicy;
 import io.exonym.lib.helpers.DateHelper;
 import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.abc.util.FileType;
 import io.exonym.lib.abc.util.JaxbHelper;
-import io.exonym.lib.api.AbstractXContainer;
+import io.exonym.lib.api.AbstractIdContainer;
 import io.exonym.lib.api.PkiExternalResourceContainer;
 import io.exonym.lib.lite.*;
 import io.exonym.lib.pojo.*;
@@ -105,7 +106,7 @@ public class Prove {
                                        JsonObject metadata) throws Exception {
         PresentationPolicy pp = proofRequest(issuerUids, pseudonyms, metadata);
         PresentationToken token = proveFromPresentationPolicy(pp);
-        return XContainer.convertObjectToXml(token);
+        return IdContainer.convertObjectToXml(token);
 
     }
 
@@ -238,7 +239,7 @@ public class Prove {
 
         } else {
             RulebookAuth auth = new RulebookAuth();
-            auth.setRulebookUID(Rulebook.SYBIL_RULEBOOK_ID);
+            auth.setRulebookUID(Rulebook.SYBIL_RULEBOOK_UID_TEST);
             report.getMissing().add(auth);
 
         }
@@ -286,7 +287,7 @@ public class Prove {
                 List<String> nyms = List.of(pseudonym);
                 PresentationPolicy pp = proofRequest(issuerUids, nyms, metadata, true);
                 PresentationToken token = proveFromPresentationPolicy(pp);
-                String xml = XContainer.convertObjectToXml(token);
+                String xml = IdContainer.convertObjectToXml(token);
                 String[] parts = pseudonym.split("//");
                 String protocol = parts[0];
                 String domain = parts[1].split("/")[0];
@@ -311,15 +312,38 @@ public class Prove {
         PresentationTokenDescription ptd = owner.canProveClaimFromPolicy(pp);
         PresentationPolicyAlternatives ppa = WalletUtils.openPPA(pp);
 
-
         if (ptd==null){
             determineUnfulfilled(ptd, ppa);
             return null;
 
         } else {
-            return owner.proveClaim(ptd, ppa);
+            try {
+                return owner.proveClaim(ptd, ppa);
 
+            } catch (UxException e) {
+                logger.info("Witness error - attempting to update revocation information");
+                ArrayList<URI> mods = owner.listAllMods(ptd);
+                for (URI mod : mods){
+                    refreshNode(mod);
+
+                }
+                this.exo.getOwner().clearStale();
+                this.exo.reopen();
+                return owner.proveClaim(ptd, ppa);
+            }
         }
+    }
+
+    private void refreshNode(URI mod) throws Exception {
+        NetworkMapItemModerator nmiMod = (NetworkMapItemModerator)
+                this.exo.getNetworkMap().nmiForNode(mod);
+        NodeVerifier verified = this.exo.getNetworkMap()
+                .openNodeVerifier(nmiMod.getStaticURL0(), false);
+        ArrayList<String> rais = new ArrayList<>(verified.getAllRevocationInformationFileNames());
+        // TODO if we need multiple parameters
+        this.exo.getCache().store(
+                verified.getRevocationInformation(rais.get(0)));
+
     }
 
     protected PresentationPolicy proofRequest(ArrayList<String> issuerUids,
@@ -459,7 +483,7 @@ public class Prove {
         PresentationTokenDescription ptd = owner.canProveClaimFromPolicy(ppa);
         if (ptd!=null){
             PresentationToken proof = owner.proveClaim(ptd, ppa);
-            return XContainer.convertObjectToXml(proof);
+            return IdContainer.convertObjectToXml(proof);
 
         } else {
             return determineUnfulfilled(ptd, ppa);
@@ -528,7 +552,7 @@ public class Prove {
 
     }
 
-    private static WalletReport peekInWallet(AbstractXContainer x) throws  Exception{
+    private static WalletReport peekInWallet(AbstractIdContainer x) throws  Exception{
         ArrayList<String> issuers =  x.getOwnerSecretList();
         WalletReport report = new WalletReport();
 //        HashMap<String, HashSet<URI>> map = report.getRulebooksToIssuers();
@@ -536,11 +560,11 @@ public class Prove {
         for (String assetInWallet : issuers){
 
             if (FileType.isCredential(assetInWallet)){
-                UIDHelper h =  new UIDHelper(XContainer.fileNameToUid(assetInWallet));
+                UIDHelper h =  new UIDHelper(IdContainer.fileNameToUid(assetInWallet));
                 report.add(h.getRulebookUID().toString(), h.getIssuerParameters());
 
             } else if (FileType.isSftp(assetInWallet)){
-                report.getSftpAccess().add(XContainer.fileNameToUid(assetInWallet));
+                report.getSftpAccess().add(IdContainer.fileNameToUid(assetInWallet));
 
             }
         }

@@ -19,10 +19,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AbstractNetworkMap {
+    
+    private final static Logger logger = Logger.getLogger(AbstractNetworkMap.class.getName());
 
     private Path rootPath = null;
     private final CacheContainer cache;
@@ -63,14 +66,10 @@ public abstract class AbstractNetworkMap {
     /**
      * Write the NMIS and the NMIAs to your chosen repository
      *
-     * @param rulebookId
-     * @param source
-     * @param nmis
-     * @param advocatesForSource
      * @throws Exception
      */
-    protected abstract void writeVerifiedSource(String rulebookId, String source, NetworkMapItemSource nmis,
-                                       ArrayList<NetworkMapItemAdvocate> advocatesForSource) throws Exception;
+    protected abstract void writeVerifiedLead(URI leadUid, NetworkMapItemLead nmis,
+                                              ArrayList<NetworkMapItemModerator> modForLead) throws Exception;
 
 
     protected Path pathToRootPath() {
@@ -81,39 +80,48 @@ public abstract class AbstractNetworkMap {
 
     }
 
-    protected Path pathToSourcePath(String rulebook, String source) {
-        return rootPath.resolve(rulebook).resolve(source);
+    protected Path pathToLeadPath(URI leadUid) {
+        Path path = pathToRulebookPath(leadUid);
+        String name = UIDHelper.computeLeadNameFromModOrLeadUid(leadUid);
+        return path.resolve(name);
     }
 
-    protected Path pathToRulebookPath(String rulebook) {
-        return rootPath.resolve(rulebook);
+    protected Path pathToRulebookPath(URI leadOrRulebookUid) {
+        if (leadOrRulebookUid==null){
+            throw new NullPointerException();
+        }
+        String[] parts = UIDHelper.computeRulebookIdFromLeadUid(leadOrRulebookUid).toString().split(":");
+        if (parts.length==4){
+            return rootPath.resolve(parts[2]).resolve(parts[3]);
+        } else {
+            return rootPath.resolve(parts[2]).resolve(parts[4]);
+        }
     }
 
     public void spawn() throws Exception {
         cleanupExisting();
-        TrustNetworkWrapper tnw = new TrustNetworkWrapper(openSourceSet());
-        Collection<NetworkParticipant> allSources = tnw.getAllParticipants();
-        for (NetworkParticipant source : allSources){
-            buildMapForSource(source);
+        TrustNetworkWrapper tnw = new TrustNetworkWrapper(openLeadSet());
+        Collection<NetworkParticipant> allLeads = tnw.getAllParticipants();
+        for (NetworkParticipant lead : allLeads){
+            buildMapForLead(lead);
 
         }
     }
 
-    private void buildMapForSource(NetworkParticipant source) throws Exception {
-        NetworkMapItemSource nmis = new NetworkMapItemSource();
-        buildBasisNMI(nmis, source);
-        nmis.setSourceUID(source.getNodeUid());
-        ArrayList<URI> advocateListForSource = new ArrayList<>();
-        ArrayList<NetworkMapItemAdvocate> advocatesForSource = verifySource(advocateListForSource, source);
-        nmis.setAdvocatesForSource(advocateListForSource);
-        String[] parts = source.getNodeUid().toString().split(":");
-        writeVerifiedSource(parts[3], parts[2], nmis, advocatesForSource);
+    private void buildMapForLead(NetworkParticipant lead) throws Exception {
+        NetworkMapItemLead nmis = new NetworkMapItemLead();
+        buildBasisNMI(nmis, lead);
+        nmis.setLeadUID(lead.getNodeUid());
+        ArrayList<URI> modListForLead = new ArrayList<>();
+        ArrayList<NetworkMapItemModerator> modsForLead = verifyLead(modListForLead, lead);
+        nmis.setModeratorsForLead(modListForLead);
+        writeVerifiedLead(lead.getNodeUid(), nmis, modsForLead);
 
     }
 
 
-    public String toNmiFilename(URI advocate) {
-        return advocate.toString()
+    public String toNmiFilename(URI moderator) {
+        return moderator.toString()
 //                .replaceAll(":" + rulebookId, "") // overly complex to recompute UID
                 .replaceAll(":", ".") + ".nmi";
 
@@ -132,9 +140,8 @@ public abstract class AbstractNetworkMap {
     protected void cleanupExisting() {
     }
 
-    private ArrayList<NetworkMapItemAdvocate> verifySource(ArrayList<URI> advocateListForSource, NetworkParticipant source) throws Exception {
-        NodeVerifier verifier = openNodeVerifier(source.getStaticNodeUrl0(),
-                source.getStaticNodeUrl1(), true);
+    private ArrayList<NetworkMapItemModerator> verifyLead(ArrayList<URI> modListForLead, NetworkParticipant lead) throws Exception {
+        NodeVerifier verifier = openNodeVerifier(lead.getStaticNodeUrl0(), true);
 
         Rulebook rulebook = verifier.getRulebook();
         cache.store(rulebook);
@@ -142,26 +149,25 @@ public abstract class AbstractNetworkMap {
         cache.store(verifier.getCredentialSpecification());
 
         TrustNetworkWrapper tnw = new TrustNetworkWrapper(verifier.getTargetTrustNetwork());
-        Collection<NetworkParticipant> allAdvocates = tnw.getAllParticipants();
-        ArrayList<NetworkMapItemAdvocate> advocatesForSource = new ArrayList<>();
-        for (NetworkParticipant advocate : allAdvocates){
-            URI sourceUid = source.getNodeUid();
-            advocateListForSource.add(advocate.getNodeUid());
-            advocatesForSource.add(buildAdvocateNMIA(sourceUid, advocate));
+        Collection<NetworkParticipant> allMods = tnw.getAllParticipants();
+        ArrayList<NetworkMapItemModerator> modsForLead = new ArrayList<>();
+        for (NetworkParticipant mod : allMods){
+            URI leadUid = lead.getNodeUid();
+            modListForLead.add(mod.getNodeUid());
+            modsForLead.add(buildModNMIA(leadUid, mod));
 
         }
-        return advocatesForSource;
+        return modsForLead;
 
     }
 
-    protected abstract NodeVerifier openNodeVerifier(URL staticNodeUrl0,
-                                                     URL staticNodeUrl1,
-                                                     boolean isTargetSource) throws Exception;
+    protected abstract NodeVerifier openNodeVerifier(URI staticNodeUrl0,
+                                                     boolean isTargetLead) throws Exception;
 
-    private NetworkMapItemAdvocate buildAdvocateNMIA(URI sourceUid, NetworkParticipant participant) throws Exception {
-        NetworkMapItemAdvocate nmia = new NetworkMapItemAdvocate();
+    private NetworkMapItemModerator buildModNMIA(URI leadUid, NetworkParticipant participant) throws Exception {
+        NetworkMapItemModerator nmia = new NetworkMapItemModerator();
         buildBasisNMI(nmia, participant);
-        nmia.setSourceUID(sourceUid);
+        nmia.setLeadUID(leadUid);
         return nmia;
 
     }
@@ -170,7 +176,6 @@ public abstract class AbstractNetworkMap {
         nmi.setNodeUID(participant.getNodeUid());
         nmi.setPublicKeyB64(participant.getPublicKey().getPublicKey());
         nmi.setStaticURL0(participant.getStaticNodeUrl0());
-        nmi.setStaticURL1(participant.getStaticNodeUrl1());
         nmi.setLastUpdated(participant.getLastUpdateTime());
         nmi.setBroadcastAddress(participant.getBroadcastAddress());
         nmi.setRulebookNodeURL(participant.getRulebookNodeUrl());
@@ -179,21 +184,21 @@ public abstract class AbstractNetworkMap {
         if (lastUid!=null){
             UIDHelper helper = new UIDHelper(lastUid);
             nmi.setLastIssuerUID(lastUid);
-            nmi.setSourceName(helper.getSourceName());
-            nmi.setAdvocateName(helper.getAdvocateName());
+            nmi.setLeadName(helper.getLeadName());
+            nmi.setModeratorName(helper.getModeratorName());
 
         } else {
-            nmi.setSourceName(
-                    UIDHelper.computeSourceNameFromAdvocateOrSourceUid(
-                    nmi.getNodeUID()));
+            nmi.setLeadName(UIDHelper
+                    .computeLeadNameFromModOrLeadUid(
+                            nmi.getNodeUID()));
 
         }
     }
 
-    private TrustNetwork openSourceSet() throws Exception {
+    private TrustNetwork openLeadSet() throws Exception {
         try {
-            String sources = "https://trust.exonym.io/sources.xml";
-            byte[] s = UrlHelper.readXml(new URL(sources));
+            String leads = "https://trust.exonym.io/leads.xml";
+            byte[] s = UrlHelper.readXml(new URL(leads));
             return JaxbHelper.xmlToClass(s, TrustNetwork.class);
 
         } catch (Exception e) {
@@ -203,31 +208,31 @@ public abstract class AbstractNetworkMap {
     }
 
 
-    public NetworkMapItem findNetworkMapItem(URI sourceOrAdvocate) throws Exception {
-        if (sourceOrAdvocate==null){
+    public NetworkMapItem findNetworkMapItem(URI leadOrMod) throws Exception {
+        if (leadOrMod==null){
             throw new HubException("Null URL - Programming Error");
         }
-        URI sourceUid = UIDHelper.computeSourceUidFromNodeUid(sourceOrAdvocate);
-        String sourceName = UIDHelper.computeSourceNameFromAdvocateOrSourceUid(sourceUid);
-        String rulebookId = UIDHelper.computeRulebookHashFromSourceUid(sourceUid);
+        URI leadUid = UIDHelper.computeLeadUidFromModUid(leadOrMod);
+        String leadName = UIDHelper.computeLeadNameFromModOrLeadUid(leadUid);
+        String rulebookId = UIDHelper.computeRulebookHashUid(leadUid);
         Path path = null;
-        if (UIDHelper.isAdvocateUid(sourceOrAdvocate)){
-            path = pathToSourcePath(rulebookId, sourceName)
-                    .resolve(toNmiFilename(sourceOrAdvocate));
+        if (UIDHelper.isModeratorUid(leadOrMod)){
+            path = pathToLeadPath(leadUid)
+                    .resolve(toNmiFilename(leadOrMod));
 
             if (Files.exists(path)){
-                return JaxbHelper.jsonFileToClass(path, NetworkMapItemAdvocate.class);
+                return JaxbHelper.jsonFileToClass(path, NetworkMapItemModerator.class);
 
             } else {
                 throw new UxException(ErrorMessages.FILE_NOT_FOUND,
                         path.toAbsolutePath().toString());
 
             }
-        } else if (UIDHelper.isSourceUid(sourceOrAdvocate)){
-            path = pathToRulebookPath(rulebookId).resolve(toNmiFilename(sourceOrAdvocate));
+        } else if (UIDHelper.isLeadUid(leadOrMod)){
+            path = pathToRulebookPath(leadUid).resolve(toNmiFilename(leadOrMod));
 
             if (Files.exists(path)){
-                return JaxbHelper.jsonFileToClass(path, NetworkMapItemSource.class);
+                return JaxbHelper.jsonFileToClass(path, NetworkMapItemLead.class);
 
             } else {
                 throw new UxException(ErrorMessages.FILE_NOT_FOUND,
@@ -235,20 +240,39 @@ public abstract class AbstractNetworkMap {
 
             }
         } else {
-            throw new UxException(ErrorMessages.INCORRECT_PARAMETERS, sourceOrAdvocate.toString());
+            throw new UxException(ErrorMessages.INCORRECT_PARAMETERS, leadOrMod.toString());
 
         }
     }
 
-    public List<String> getSourceFilenamesForRulebook(String rulebookId) throws UxException {
+    public List<String> getLeadNamesForRulebook(String rulebookId) throws UxException {
         if (rulebookId==null){
             throw new NullPointerException();
 
-        } if (rulebookId.startsWith(Namespace.URN_PREFIX_COLON)){
-            rulebookId = rulebookId.replaceAll(Namespace.URN_PREFIX_COLON, "");
+        }
+        Path path = pathToRulebookPath(URI.create(rulebookId));
+
+        if (Files.exists(path)){
+            return Stream.of(new File(path.toString()).listFiles())
+                    .filter(file -> file.isDirectory())
+                    .map(File::getName)
+                    .collect(Collectors.toList());
+
+        } else {
+            logger.info("Searching for path " + path);
+            throw new UxException(ErrorMessages.FILE_NOT_FOUND,
+                    "No such rulebook", path.toString());
 
         }
-        Path path = pathToRulebookPath(rulebookId);
+    }
+
+    public List<String> getLeadFileNamesForRulebook(String rulebookId) throws UxException {
+        if (rulebookId==null){
+            throw new NullPointerException();
+
+        }
+        Path path = pathToRulebookPath(URI.create(rulebookId));
+
         if (Files.exists(path)){
             return Stream.of(new File(path.toString()).listFiles())
                     .filter(file -> !file.isDirectory())
@@ -256,6 +280,7 @@ public abstract class AbstractNetworkMap {
                     .collect(Collectors.toList());
 
         } else {
+            logger.info("Searching for path " + path);
             throw new UxException(ErrorMessages.FILE_NOT_FOUND,
                     "No such rulebook", path.toString());
 
@@ -263,18 +288,46 @@ public abstract class AbstractNetworkMap {
     }
 
     public List<String> listRulebooks() throws UxException {
-        if (Files.exists(rootPath)){
-            return Stream.of(new File(rootPath.toString()).listFiles())
-                    .filter(file -> file.isDirectory())
-                    .map(File::getName)
-                    .collect(Collectors.toList());
-
+        if (Files.exists(rootPath)) {
+            try (Stream<Path> walk = Files.walk(rootPath)) {
+                return walk.filter(Files::isDirectory)
+                        .filter(this::isTargetDirectory)
+                        .map(this::createUrnFromPath)
+                        .collect(Collectors.toList());
+            } catch (IOException e) {
+                throw new UxException(ErrorMessages.FILE_NOT_FOUND,
+                        "Error accessing files", rootPath.toString());
+            }
         } else {
             throw new UxException(ErrorMessages.FILE_NOT_FOUND,
                     "No such rulebook", rootPath.toString());
-
         }
     }
+
+    private boolean isTargetDirectory(Path path) {
+        String fileName = path.getFileName().toString();
+        return fileName.matches("[a-fA-F0-9]{64}");
+    }
+
+    private String createUrnFromPath(Path path) {
+        String type = path.getParent().getFileName().toString();
+        String id = path.getFileName().toString();
+        return "urn:rulebook:" + type + ":" + id;
+    }
+
+//    public List<String> listRulebooks() throws UxException {
+//        if (Files.exists(rootPath)){
+//            return Stream.of(new File(rootPath.toString()).listFiles())
+//                    .filter(file -> file.isDirectory())
+//                    .map(File::getName)
+//                    .collect(Collectors.toList());
+//
+//        } else {
+//            throw new UxException(ErrorMessages.FILE_NOT_FOUND,
+//                    "No such rulebook", rootPath.toString());
+//
+//        }
+//    }
 
     public NetworkMapItem nmiForNode(URI uid) throws Exception {
         if (uid==null){
@@ -283,52 +336,50 @@ public abstract class AbstractNetworkMap {
         }
         String fileName = toNmiFilename(uid);
 
-        if (UIDHelper.isSourceUid(uid)){
-            String rulebookId = UIDHelper.computeRulebookHashFromSourceUid(uid);
-            Path nmiPath = pathToRulebookPath(rulebookId).resolve(fileName);
-            return JaxbHelper.jsonFileToClass(nmiPath, NetworkMapItemSource.class);
+        if (UIDHelper.isLeadUid(uid)){
+            Path nmiPath = pathToLeadPath(uid).getParent().resolve(fileName);
+            return JaxbHelper.jsonFileToClass(nmiPath, NetworkMapItemLead.class);
 
-        } else if (UIDHelper.isAdvocateUid(uid)){
-            String rulebookId = UIDHelper.computeRulebookHashFromAdvocateUid(uid);
-            String sourceName = UIDHelper.computeSourceNameFromAdvocateOrSourceUid(uid);
-            Path nmiPath = pathToSourcePath(rulebookId, sourceName).resolve(fileName);
-            return JaxbHelper.jsonFileToClass(nmiPath, NetworkMapItemAdvocate.class);
+        } else if (UIDHelper.isModeratorUid(uid)){
+            URI leadUid = UIDHelper.computeLeadUidFromModUid(uid);
+            Path nmiPath = pathToLeadPath(leadUid).resolve(fileName);
+            return JaxbHelper.jsonFileToClass(nmiPath, NetworkMapItemModerator.class);
 
         } else {
-            throw new UxException(ErrorMessages.FILE_NOT_FOUND + ":" + uid.toString());
+            throw new UxException(ErrorMessages.FILE_NOT_FOUND + ":" + uid);
 
         }
     }
 
-    public NetworkMapItemSource nmiForSybilSource() throws Exception {
-        return (NetworkMapItemSource) nmiForNode(Rulebook.SYBIL_SOURCE_UID);
+    public NetworkMapItemLead nmiForSybilLead() throws Exception {
+        return (NetworkMapItemLead) nmiForNode(Rulebook.SYBIL_LEAD_UID_TEST);
     }
 
-    public NetworkMapItemAdvocate nmiForSybilTestNet() throws Exception {
-        return (NetworkMapItemAdvocate) nmiForNode(Rulebook.SYBIL_TEST_NET_UID);
+    public NetworkMapItemModerator nmiForSybilTestNet() throws Exception {
+        return (NetworkMapItemModerator) nmiForNode(Rulebook.SYBIL_MOD_UID_TEST);
     }
 
-    public NetworkMapItemAdvocate nmiForSybilMainNet() throws Exception {
-        return (NetworkMapItemAdvocate) nmiForNode(Rulebook.SYBIL_MAIN_NET_UID);
+    public NetworkMapItemModerator nmiForSybilMainNet() throws Exception {
+        return (NetworkMapItemModerator) nmiForNode(Rulebook.SYBIL_MOD_UID_MAIN);
     }
 
-    public NetworkMapItemSource nmiForMyNodesSource() throws Exception{
-        throw new UxException(ErrorMessages.INCORRECT_PARAMETERS, "Wallets do not have sources");
+    public NetworkMapItemLead nmiForMyNodesLead() throws Exception{
+        throw new UxException(ErrorMessages.INCORRECT_PARAMETERS, "Wallets do not have leads");
     }
 
-    public NetworkMapItemAdvocate nmiForMyNodesAdvocate() throws Exception{
-        throw new UxException(ErrorMessages.INCORRECT_PARAMETERS, "Wallets do not have advocates");
+    public NetworkMapItemModerator nmiForMyNodesMod() throws Exception{
+        throw new UxException(ErrorMessages.INCORRECT_PARAMETERS, "Wallets do not have moderators");
     }
 
-    protected NetworkMapItem findRandomAdvocateForSource(String source) throws Exception {
-        List<NetworkMapItem> hosts = findAdvocatesForSource(source);
+    protected NetworkMapItem findRandomModForLead(String lead) throws Exception {
+        List<NetworkMapItem> hosts = findModeratorsForLead(lead);
         int size = hosts.size();
         int target = (int)(Math.random() * 1000000) % size;
         return hosts.get(target);
 
     }
 
-    protected List<NetworkMapItem> findAdvocatesForSource(String source) throws Exception {
+    protected List<NetworkMapItem> findModeratorsForLead(String lead) throws Exception {
         return null;
 
     }

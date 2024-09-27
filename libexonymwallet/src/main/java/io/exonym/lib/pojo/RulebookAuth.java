@@ -7,9 +7,9 @@ public class RulebookAuth {
 
     private URI rulebookUID;
 
-    private ArrayList<URI> sourceBlacklist = new ArrayList<>();
+    private ArrayList<URI> leadBlacklist = new ArrayList<>();
 
-    private ArrayList<URI> advocateBlacklist = new ArrayList<>();
+    private ArrayList<URI> modBlacklist = new ArrayList<>();
 
     public URI getRulebookUID() {
         return rulebookUID;
@@ -19,19 +19,19 @@ public class RulebookAuth {
         this.rulebookUID = rulebookUID;
     }
 
-    public ArrayList<URI> getSourceBlacklist() {
-        return sourceBlacklist;
+    public ArrayList<URI> getLeadBlacklist() {
+        return leadBlacklist;
     }
 
-    public void setSourceBlacklist(ArrayList<URI> sourceBlacklist) {
-        this.sourceBlacklist = sourceBlacklist;
+    public void setLeadBlacklist(ArrayList<URI> leadBlacklist) {
+        this.leadBlacklist = leadBlacklist;
     }
 
-    public ArrayList<URI> getAdvocateBlacklist() {
-        return advocateBlacklist;
+    public ArrayList<URI> getModBlacklist() {
+        return modBlacklist;
     }
 
-    public void setAdvocateBlacklist(ArrayList<URI> advocateBlacklist) {
-        this.advocateBlacklist = advocateBlacklist;
+    public void setModBlacklist(ArrayList<URI> modBlacklist) {
+        this.modBlacklist = modBlacklist;
     }
 }

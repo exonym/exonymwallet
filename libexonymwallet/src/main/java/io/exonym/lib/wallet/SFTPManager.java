@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 public class SFTPManager {
 
-    public static final String CRED_FILE_NAME = "_sftp-credential.xml";
+    public static final String CRED_FILE_NAME = "non-resources/_sftp-credential.xml";
     private final PassStore store;
     private final Path  root;
     private final ExonymToolset exo;

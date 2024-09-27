@@ -10,7 +10,7 @@ import io.exonym.lib.abc.attributeType.MyAttributeValue;
 import io.exonym.lib.actor.VerifiedClaim;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.pojo.ExternalResourceContainer;
-import io.exonym.lib.pojo.XContainer;
+import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.standard.CryptoUtils;
 import org.apache.commons.codec.binary.Base64;
 
@@ -139,7 +139,7 @@ public class BuildPresentationPolicy {
 			try {
 				CredentialSpecification spec;
 				if (credentialSpecification==null){
-					spec = container.openResource(XContainer.uidToXmlFileName(uid));
+					spec = container.openResource(IdContainer.uidToXmlFileName(uid));
 				} else {
 					spec = credentialSpecification;
 				}

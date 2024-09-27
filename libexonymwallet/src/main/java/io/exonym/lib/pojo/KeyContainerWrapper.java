@@ -10,6 +10,7 @@ import io.exonym.lib.standard.SymStoreKey;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Set;
 
 public final class KeyContainerWrapper {
@@ -18,6 +19,8 @@ public final class KeyContainerWrapper {
 	private HashMap<URI, HashMap<URI, XKey>> dynamicKeyRing = new HashMap<>();
 	private KeyContainer keyContainer;
 	private ConnectKeyContainer connectKeyContainer;
+
+	private LinkedList<URI> revocationAuthInfo = new LinkedList<>();
 
 	// AsymStoreKey
 	public static final URI SIGN_VOTE_PARTS = URI.create("urn:keys:rsa:sign:vote-share");
@@ -52,7 +55,11 @@ public final class KeyContainerWrapper {
 	
 	private void openKeySet(ArrayList<XKey> keys){
 		for (XKey key: keys){
-			URI d = dynamicUri(key.getKeyUid());
+			URI keyUid = key.getKeyUid();
+			URI d = dynamicUri(keyUid);
+			if (keyUid.toString().endsWith(":rai")){
+				revocationAuthInfo.add(keyUid);
+			}
 			if (d==null){
 				keyRing.put(key.getKeyUid(), key);
 				
@@ -274,5 +281,9 @@ public final class KeyContainerWrapper {
 		
 		return result;
 		
+	}
+
+	public LinkedList<URI> getRevocationAuthInfo() {
+		return revocationAuthInfo;
 	}
 }

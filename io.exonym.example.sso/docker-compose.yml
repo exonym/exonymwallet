@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   exonym-example-sso:
     container_name: exonym-example-sso
@@ -15,8 +13,11 @@ services:
      - HTTPS_METHOD=noredirect
      - VIRTUAL_HOST=localhost
      - VIRTUAL_PORT=20001
+    volumes:
+      - ~/github/exonymwallet/io.exonym.example.sso/tokens:/var/www/html/tokens
     networks:
       - net0
+
 
 networks:
  net0:

@@ -3,18 +3,16 @@ package io.exonym.lib.api;
 import io.exonym.lib.actor.NodeVerifier;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.pojo.NetworkMapItem;
-import io.exonym.lib.pojo.NetworkMapItemAdvocate;
-import io.exonym.lib.pojo.NetworkMapItemSource;
+import io.exonym.lib.pojo.NetworkMapItemModerator;
+import io.exonym.lib.pojo.NetworkMapItemLead;
 import io.exonym.lib.standard.WhiteList;
-import org.graalvm.collections.EconomicMap;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -27,36 +25,37 @@ public class NetworkMapMemory extends AbstractNetworkMap {
     private final static Logger logger = Logger.getLogger(NetworkMapMemory.class.getName());
     
     private final HashSet<String> rulebookIds = new HashSet<>();
-    private final ConcurrentHashMap<URI, NetworkMapItemSource> sourceMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<URI, NetworkMapItemAdvocate> advocateMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<URI, NetworkMapItemLead> sourceMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<URI, NetworkMapItemModerator> advocateMap = new ConcurrentHashMap<>();
 
     private NetworkMapMemory() throws Exception {
         this.spawn();
     }
 
     @Override
-    protected void writeVerifiedSource(String rulebookId, String source, NetworkMapItemSource nmis,
-                                       ArrayList<NetworkMapItemAdvocate> advocatesForSource) throws Exception {
-        rulebookIds.add(rulebookId);
-        sourceMap.put(nmis.getSourceUID(), nmis);
-        for (NetworkMapItemAdvocate nmia : advocatesForSource){
+    protected void writeVerifiedLead(URI leadUid, NetworkMapItemLead nmis,
+                                     ArrayList<NetworkMapItemModerator> modForLead) throws Exception {
+        URI rulebookId = UIDHelper.computeRulebookIdFromLeadUid(leadUid);
+        rulebookIds.add(rulebookId.toString());
+        sourceMap.put(nmis.getLeadUID(), nmis);
+        for (NetworkMapItemModerator nmia : modForLead){
             advocateMap.put(nmia.getNodeUID(), nmia);
 
         }
     }
 
     @Override
-    public NetworkMapItemSource nmiForSybilSource() throws Exception {
-        return super.nmiForSybilSource();
+    public NetworkMapItemLead nmiForSybilLead() throws Exception {
+        return super.nmiForSybilLead();
     }
 
     @Override
     public NetworkMapItem nmiForNode(URI uid) throws Exception {
-        if (WhiteList.isAdvocateUid(uid)){
+        if (WhiteList.isModeratorUid(uid)){
             return advocateMap.get(uid);
 
 
-        } else if (WhiteList.isSourceUid(uid)){
+        } else if (WhiteList.isLeadUid(uid)){
             return sourceMap.get(uid);
 
         } else {
@@ -66,10 +65,8 @@ public class NetworkMapMemory extends AbstractNetworkMap {
     }
 
     @Override
-    protected NodeVerifier openNodeVerifier(URL staticNodeUrl0, URL staticNodeUrl1, boolean isTargetSource) throws Exception {
-        return NodeVerifier.tryNode(
-                staticNodeUrl0.toString(), staticNodeUrl1.toString(),
-                isTargetSource, false);
+    protected NodeVerifier openNodeVerifier(URI staticNodeUrl0, boolean isTargetLead) throws Exception {
+        return NodeVerifier.openNode(staticNodeUrl0, isTargetLead, false);
     }
 
     @Override

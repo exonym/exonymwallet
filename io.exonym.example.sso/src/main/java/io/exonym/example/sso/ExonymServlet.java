@@ -1,12 +1,13 @@
 package io.exonym.example.sso;
 
 import com.google.gson.JsonObject;
-import io.exonym.lib.exceptions.AlreadyAuthException;
-import io.exonym.lib.exceptions.ErrorMessages;
-import io.exonym.lib.exceptions.HubException;
-import io.exonym.lib.exceptions.UxException;
+import com.ibm.zurich.idmx.exception.ProofException;
+import io.exonym.lib.exceptions.*;
 import io.exonym.lib.helpers.Timing;
+import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.pojo.AuthenticationWrapper;
+import io.exonym.lib.pojo.EndonymToken;
+import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.pojo.SsoChallenge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,9 +21,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 @WebServlet("/exonym/*")
 public class ExonymServlet extends HttpServlet {
+
+    private final Path PATH_TO_STATIC = Path.of("/var", "www", "html", "tokens");
     
 
     private static final Logger logger = LogManager.getLogger(ExonymServlet.class);
@@ -98,14 +105,15 @@ public class ExonymServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            String p = buildParamsAsString(req);
-            logger.debug(p);
-            if (p.startsWith("{\"probe")){
+            String probeOrXmlToken = buildParamsAsString(req);
+            logger.debug(probeOrXmlToken);
+            if (probeOrXmlToken.startsWith("{\"probe")){
                 probeIn(req, resp);
 
             } else {
                 ExonymAuthenticate auth = ExonymAuthenticate.getInstance();
-                auth.authenticate(p);
+                auth.authenticate(probeOrXmlToken);
+
 
             }
         } catch (UxException e) {
@@ -113,14 +121,11 @@ public class ExonymServlet extends HttpServlet {
             o.addProperty("error", e.getMessage());
             resp.getWriter().write(o.toString());
 
-        } catch (HubException e) {
+        } catch (Exception e) {
             JsonObject o = new JsonObject();
             logger.info("Error ", e);
             o.addProperty("error", ErrorMessages.FAILED_TO_AUTHORIZE);
             resp.getWriter().write(o.toString());
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
 
         }
     }
@@ -141,10 +146,14 @@ public class ExonymServlet extends HttpServlet {
 
                 } else {
                     // you have an authenticated identifier for this user associated with a session.
-                    URI endonym = auth.isAuthenticated(sessionId, context);
-                    logger.debug("GOT ID=" + endonym);
+                    EndonymToken endonym = auth.isAuthenticated(sessionId, context);
+                    logger.debug("GOT ID=" + endonym.getEndonym());
                     o.addProperty("auth", true);
+                    o.addProperty("endonym", endonym.getEndonym().toString());
                     resp.getWriter().write(o.toString());
+                    Files.write(PATH_TO_STATIC.resolve(endonym.computeIndex()),
+                            endonym.getXmlPresentationToken().getBytes(StandardCharsets.UTF_8),
+                            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
 
                 }
             } catch (InterruptedException e) {

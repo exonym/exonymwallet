@@ -2,11 +2,11 @@ package io.exonym.lib.wallet;
 
 import com.google.gson.Gson;
 import io.exonym.lib.abc.util.JaxbHelper;
+import io.exonym.lib.api.RulebookCreator;
 import io.exonym.lib.api.RulebookVerifier;
-import io.exonym.lib.api.XContainerJSON;
-import io.exonym.lib.pojo.NetworkMapItemAdvocate;
-import io.exonym.lib.pojo.NetworkMapItemSource;
-import io.exonym.lib.pojo.Namespace;
+import io.exonym.lib.api.IdContainerJSON;
+import io.exonym.lib.pojo.NetworkMapItemModerator;
+import io.exonym.lib.pojo.NetworkMapItemLead;
 import io.exonym.lib.pojo.Rulebook;
 import io.exonym.lib.standard.PassStore;
 import io.exonym.lib.standard.WhiteList;
@@ -29,13 +29,15 @@ public class TestRulebookToolkit {
     @Test
     public void buildSybilRulebook() {
         try {
-//            RulebookCreator creator = new RulebookCreator("sources", "resource");
-//            RulebookCreator creator0 = new RulebookCreator("sybil", "resource");
-            RulebookVerifier verifier = new RulebookVerifier(Path.of("resource", "sybil-rulebook.json").toString());
+            String root = "non-resources";
+            RulebookCreator creator = new RulebookCreator("leads", root);
+            RulebookCreator creator0 = new RulebookCreator("sybil", root);
+            RulebookVerifier verifier = new RulebookVerifier(
+                    Path.of(root, "sybil-rulebook-test.json").toString());
 
         } catch (Exception e) {
             String a = ExceptionUtils.getStackTrace(e);
-            logger.info(a);
+            System.out.println(a);
             assert false;
 
         }
@@ -46,13 +48,13 @@ public class TestRulebookToolkit {
     public void sftpSetup() {
         try {
             // sftp template
-            Path working = Path.of("resource");
+            Path working = Path.of("non-resources");
 //            SFTPManager.createTemplate(working);
             String username = "mharris";
 
 
-            XContainerJSON x = new XContainerJSON(
-                    ExonymToolset.pathToContainers(working), username, false);
+            IdContainerJSON x = new IdContainerJSON(
+                    ExonymToolset.pathToContainers(working), username, true);
 
             ExonymOwner owner = new ExonymOwner(x);
             PassStore passStore = new PassStore("password", false);
@@ -63,7 +65,7 @@ public class TestRulebookToolkit {
 
             sftp.add();
 
-//            sftp.remove("urn:rulebook:exonym-trust:sftp");
+            // sftp.remove("urn:rulebook:exonym-trust:sftp");
 
             // sftp add filename
             // sftp remove name
@@ -80,6 +82,7 @@ public class TestRulebookToolkit {
             Gson gson = JaxbHelper.gson;
             NetworkMapInspector inspector = new NetworkMapInspector(
                     new NetworkMap(Path.of("resource", "network-map")));
+
             String r0 = inspector.listActors(null);
             System.out.println("rulebooks list");
             System.out.println(r0);
@@ -90,27 +93,25 @@ public class TestRulebookToolkit {
             System.out.println("rulebooks list --uid--");
             System.out.println(r1);
 
-            String source = ((ArrayList<String>)
+            String lead = ((ArrayList<String>)
                     gson.fromJson(r1, ArrayList.class)).get(0);
-            String r2 = inspector.listActors(source);
-            System.out.println("sources list --uid--");
+            String r2 = inspector.listActors(lead);
+            System.out.println("leads list --uid--");
             System.out.println(r2);
 
-
-            String r2s = inspector.viewActor(source);
-            System.out.println("sources view --uid--");
+            String r2s = inspector.viewActor(lead);
+            System.out.println("leads view --uid--");
             System.out.println(r2s);
 
-            NetworkMapItemSource nmis = JaxbHelper.gson.fromJson(r2, NetworkMapItemSource.class);
-            ArrayList<URI> advocates = nmis.getAdvocatesForSource();
-            URI advocate = advocates.get(0);
+            NetworkMapItemLead nmis = JaxbHelper.gson.fromJson(r2, NetworkMapItemLead.class);
+            ArrayList<URI> mods = nmis.getModeratorsForLead();
+            URI advocate = mods.get(0);
             String r3 = inspector.listActors(advocate.toString());
-            System.out.println("avocates list --uid--");
+            System.out.println("mods list --uid--");
             System.out.println(r3);
             String r4 = inspector.viewActor(advocate.toString());
-            System.out.println("avocates view --uid--");
+            System.out.println("mods view --uid--");
             System.out.println(r4);
-
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -120,30 +121,29 @@ public class TestRulebookToolkit {
     @Test
     public void networkMapCreateAndDelete() {
         try {
-            NetworkMap map = new NetworkMap(Path.of("resource", "test-network-map"));
-            assert !map.networkMapExists();
+            Path nmPath = Path.of("resource", "test-network-map");
+
+            NetworkMap map = new NetworkMap(nmPath);
+//            assert !map.networkMapExists();
             map.spawn();
 
             NetworkMapInspector inspector = new NetworkMapInspector(map);
             String s = inspector.listActors(null);
-            String ruid = "urn:rulebook:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa";
+            String ruid = Rulebook.SYBIL_RULEBOOK_UID_TEST.toString();
             System.out.println(s);
             System.out.println(inspector.viewActor(ruid));
-            String sybilSource = inspector.viewActor("urn:rulebook:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa");
+            String sybilSource = inspector.viewActor(Rulebook.SYBIL_LEAD_UID_TEST.toString());
             System.out.println(sybilSource);
-            String sybilTest = inspector.viewActor("urn:rulebook:sybil:test-net:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa");
+            String sybilTest = inspector.viewActor(Rulebook.SYBIL_MOD_UID_TEST.toString());
             System.out.println(sybilTest);
-
-            String v = inspector.listActors("urn:rulebook:sybil:test-net:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa");
+            String v = inspector.listActors(Rulebook.SYBIL_MOD_UID_TEST.toString());
             System.out.println(v);
-            String t = inspector.listActors("urn:rulebook:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa");
+            String t = inspector.listActors(Rulebook.SYBIL_LEAD_UID_TEST.toString());
             System.out.println(t);
 
             assert map.networkMapExists();
             map.delete();
             assert !map.networkMapExists();
-
-
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -156,22 +156,25 @@ public class TestRulebookToolkit {
         try {
             NetworkMap networkMap = new NetworkMap(Path.of("resource", "network-map"));
             networkMap.spawn();
-            String rulebookId = Namespace.URN_PREFIX_COLON + "69bb840695e4fd79a00577de5f0071b311bbd8600430f6d0da8f865c5c459d44";
-            String sybilId = Rulebook.SYBIL_RULEBOOK_ID.toString();
+            // TODO
 
-            List<String> sources = networkMap.getSourceFilenamesForRulebook(rulebookId);
-            for (String source : sources){
-                URI sourceUid = networkMap.fromNmiFilename(source);
-                NetworkMapItemSource smi = (NetworkMapItemSource) networkMap.nmiForNode(sourceUid);
-                List<URI> advocates = smi.getAdvocatesForSource();
-                System.out.println(smi.getNodeUID() + " " + WhiteList.isSourceUid(smi.getNodeUID()) + " ");
-                for (URI advocate : advocates){
+            String rulebookId = Rulebook.SYBIL_RULEBOOK_UID_TEST.toString();
+            URI sybilId = Rulebook.SYBIL_RULEBOOK_UID_TEST;
+
+            List<String> leads = networkMap.getLeadFileNamesForRulebook(rulebookId);
+
+            for (String lead : leads){
+                URI leadUid = networkMap.fromNmiFilename(lead);
+                NetworkMapItemLead smi = (NetworkMapItemLead) networkMap.nmiForNode(leadUid);
+                List<URI> moderators = smi.getModeratorsForLead();
+                System.out.println(smi.getNodeUID() + " isLeadUid=" + WhiteList.isLeadUid(smi.getNodeUID()) + " ");
+                for (URI moderator : moderators){
                     long t = Timing.currentTime();
-                    NetworkMapItemAdvocate nmia = (NetworkMapItemAdvocate) networkMap.nmiForNode(advocate);
+                    NetworkMapItemModerator nmia = (NetworkMapItemModerator) networkMap.nmiForNode(moderator);
                     long e = Timing.hasBeenMs(t);
                     System.out.println(nmia.getNodeUID()
                             + " " + e + " " +
-                            WhiteList.isAdvocateUid(nmia.getNodeUID()));
+                            WhiteList.isModeratorUid(nmia.getNodeUID()));
 
                 }
             }
@@ -186,25 +189,25 @@ public class TestRulebookToolkit {
 
     @Test
     public void uidWhitelist() {
-        assert(WhiteList.isAdvocateUid(
-                URI.create("urn:rulebook:sybil-a:main-a:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
-        assert(WhiteList.isAdvocateUid(
-                URI.create("urn:rulebook:sybil:main:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
-        assert(!WhiteList.isAdvocateUid(
-                URI.create("urn:ruleboo:sybil:main:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
-        assert(!WhiteList.isAdvocateUid(
-                URI.create("urn:rulebook:sybil:main:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa:")));
+        assert(WhiteList.isModeratorUid(
+                URI.create("urn:rulebook:sybil:sybil-a:main-a:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
+        assert(WhiteList.isModeratorUid(
+                URI.create("urn:rulebook:sybil:sybil:main:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
+        assert(!WhiteList.isModeratorUid(
+                URI.create("urn:ruleboo:sybil:sybil:main:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
+        assert(!WhiteList.isModeratorUid(
+                URI.create("urn:rulebook:sybil:sybil:main:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa:")));
 
-        assert(WhiteList.isSourceUid(
-                URI.create("urn:rulebook:sybi-a:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
-        assert(WhiteList.isSourceUid(
-                URI.create("urn:rulebook:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
-        assert(!WhiteList.isSourceUid(
-                URI.create("urn:ruleboo:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
-        assert(!WhiteList.isSourceUid(
-                URI.create("urn:rulebook:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa:")));
-        assert(!WhiteList.isSourceUid(
-                URI.create("urn:rulebook:sybil:main:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa:")));
+        assert(WhiteList.isLeadUid(
+                URI.create("urn:rulebook:sybil:sybi-a:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
+        assert(WhiteList.isLeadUid(
+                URI.create("urn:rulebook:sybil:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
+        assert(!WhiteList.isLeadUid(
+                URI.create("urn:ruleboo:sybil:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa")));
+        assert(!WhiteList.isLeadUid(
+                URI.create("urn:rulebook:sybil:sybil:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa:")));
+        assert(!WhiteList.isLeadUid(
+                URI.create("urn:rulebook:sybil:sybil:main:7a13071495188f94e6bc1432f90981160ce730d7d7cd01f3f539d7e4f0e55afa:")));
 
     }
 

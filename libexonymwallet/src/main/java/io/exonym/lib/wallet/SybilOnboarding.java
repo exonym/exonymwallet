@@ -4,22 +4,17 @@ import eu.abc4trust.xml.*;
 import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.api.Cache;
-import io.exonym.lib.api.XContainerJSON;
-import io.exonym.lib.pojo.NetworkMapItemAdvocate;
-import io.exonym.lib.pojo.NetworkMapItemSource;
+import io.exonym.lib.api.IdContainerJSON;
+import io.exonym.lib.pojo.*;
 import io.exonym.lib.actor.NodeVerifier;
 import io.exonym.lib.api.PkiExternalResourceContainer;
 import io.exonym.lib.helpers.Parser;
 import io.exonym.lib.lite.Http;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
-import io.exonym.lib.pojo.Namespace;
-import io.exonym.lib.pojo.Rulebook;
 import io.exonym.lib.standard.PassStore;
-import io.exonym.lib.pojo.IssuanceSigma;
 
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +24,7 @@ public class SybilOnboarding {
     
     private final static Logger logger = Logger.getLogger(SybilOnboarding.class.getName());
 
-//     private final static String sybilUrl = "http://exonym-x-03:8080/";
+    private final static String sybilUrl = "http://exonym-x-03:8079/";
 //    private final static String sybilUrl = "https://t0.sybil.exonym.io/";
 
     public static String testNet(PassStore store, Path rootPath, String sybilClass) throws Exception {
@@ -39,16 +34,18 @@ public class SybilOnboarding {
         PkiExternalResourceContainer external = PkiExternalResourceContainer.getInstance();
         external.setNetworkMapAndCache(map, cache);
 
-        URI sybilRulebookID = URI.create(Namespace.URN_PREFIX_COLON + Rulebook.SYBIL_RULEBOOK_HASH);
-        URI sybilCSpecUID = URI.create(Namespace.URN_PREFIX_COLON + Rulebook.SYBIL_RULEBOOK_HASH + ":c");
-        CredentialSpecification cSpec = external.openResource(XContainerJSON.uidToXmlFileName(sybilCSpecUID));
+        URI sybilRulebookID = Rulebook.SYBIL_RULEBOOK_UID_TEST;
+        URI sybilCSpecUID = URI.create(Rulebook.SYBIL_RULEBOOK_UID_TEST + ":c");
+        CredentialSpecification cSpec = external.openResource(IdContainerJSON.uidToXmlFileName(sybilCSpecUID));
 
-        NetworkMapItemSource sybilSourceTarget = openSybilSource(sybilRulebookID.toString(), map);
-        NetworkMapItemAdvocate testNetTarget = targetSybil(sybilSourceTarget, map, false);
-        NodeVerifier verifiedAdvocate = NodeVerifier.openNode(testNetTarget.getStaticURL0().toURI(), false);
+        NetworkMapItemLead sybilLeadTarget = openSybilLead(sybilRulebookID.toString(), map);
+        NetworkMapItemModerator testNetTarget = targetSybil(sybilLeadTarget, map, false);
+        NodeVerifier verifiedAdvocate = NodeVerifier.openNode(testNetTarget.getStaticURL0(), false, false);
         UIDHelper helper = verifiedAdvocate.getUidHelperForMostRecentIssuerParameters();
 
-        XContainerJSON x = new XContainerJSON(ExonymToolset.pathToContainers(rootPath), store.getUsername());
+        IdContainerJSON x = new IdContainerJSON(ExonymToolset.pathToContainers(rootPath),
+                store.getUsername());
+
         ExonymOwner owner = new ExonymOwner(x);
         owner.openContainer(store);
         owner.addCredentialSpecification(cSpec);
@@ -73,8 +70,10 @@ public class SybilOnboarding {
         hello.setSybilClass(sybilClass);
 
         Http client = new Http();
-        String target = (testNetTarget.getRulebookNodeURL().toString() + "/register")
-                .replaceAll("node.", "");
+//        String target = (testNetTarget.getRulebookNodeURL().toString() + "register")
+//                .replaceAll("node.", "");
+
+        String target = (sybilUrl + "register");
 
         logger.info(">>>>>>>>> " + target);
 
@@ -85,17 +84,20 @@ public class SybilOnboarding {
         WalletUtils.rejectOnError(in);
 
         IssuanceMessageAndBoolean imab = Parser.parseIssuanceMessageAndBoolean(in.getImab());
+        System.out.println(IdContainer.convertObjectToXml(imab.getIssuanceMessage()));
 
         IssuanceMessage message = owner.issuanceStep(imab, store.getEncrypt());
+        System.out.println(IdContainer.convertObjectToXml(message));
+
 
         IssuanceSigma hello2 = new IssuanceSigma();
         hello2.setTestNet(true);
         hello2.setHello(hello.getHello());
         hello2.setIm(Parser.parseIssuanceMessage(message));
 
-        response = client.basicPost(target, JaxbHelper.serializeToJson(hello2, IssuanceSigma.class));
+        String responseB = client.basicPost(target, JaxbHelper.serializeToJson(hello2, IssuanceSigma.class));
 
-        IssuanceSigma in2 = JaxbHelper.jsonToClass(response, IssuanceSigma.class);
+        IssuanceSigma in2 = JaxbHelper.jsonToClass(responseB, IssuanceSigma.class);
         WalletUtils.rejectOnError(in2);
 
         in2.setTestNet(true);
@@ -109,23 +111,23 @@ public class SybilOnboarding {
     }
 
 
-    private static NetworkMapItemAdvocate targetSybil(NetworkMapItemSource sybilSourceTarget, NetworkMap map, boolean mainNet) throws Exception {
-        List<URI> advocates = sybilSourceTarget.getAdvocatesForSource();
-        for (URI advocateUid : advocates){
-            if (mainNet && (advocateUid.toString().contains("main"))){
-                return (NetworkMapItemAdvocate) map.nmiForNode(advocateUid);
+    private static NetworkMapItemModerator targetSybil(NetworkMapItemLead sybilLeadTarget, NetworkMap map, boolean mainNet) throws Exception {
+        List<URI> mods = sybilLeadTarget.getModeratorsForLead();
+        for (URI modUid : mods){
+            if (mainNet && (modUid.toString().contains("main"))){
+                return (NetworkMapItemModerator) map.nmiForNode(modUid);
 
-            } else if ((advocateUid.toString().contains("test"))) {
-                return (NetworkMapItemAdvocate) map.nmiForNode(advocateUid);
+            } else if ((modUid.toString().contains("test"))) {
+                return (NetworkMapItemModerator) map.nmiForNode(modUid);
 
             }
         }
         throw new UxException(ErrorMessages.SYBIL_WARN + ":main-net=" + mainNet);
     }
 
-    private static NetworkMapItemSource openSybilSource(String rulebookId, NetworkMap map) throws Exception {
-        List<String> sources = map.getSourceFilenamesForRulebook(rulebookId);
-        return (NetworkMapItemSource) map.nmiForNode(map.fromNmiFilename(sources.get(0)));
+    private static NetworkMapItemLead openSybilLead(String rulebookId, NetworkMap map) throws Exception {
+        List<String> leads = map.getLeadFileNamesForRulebook(rulebookId);
+        return (NetworkMapItemLead) map.nmiForNode(map.fromNmiFilename(leads.get(0)));
     }
 
     private static NetworkMap openNetworkMap(Path path) throws Exception {

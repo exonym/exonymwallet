@@ -3,6 +3,7 @@ package io.exonym.example.sso;
 import io.exonym.lib.exceptions.AlreadyAuthException;
 import io.exonym.lib.exceptions.HubException;
 import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.pojo.EndonymToken;
 import io.exonym.lib.pojo.SsoChallenge;
 import io.exonym.lib.pojo.SsoConfiguration;
 
@@ -45,7 +46,7 @@ public class ExonymAuthenticate extends io.exonym.lib.api.ExonymAuthenticate {
 
 
     @Override
-    protected URI isAuthenticated(String sessionId, URI context) throws UxException {
+    protected EndonymToken isAuthenticated(String sessionId, URI context) throws UxException {
         return super.isAuthenticated(sessionId, context);
     }
 

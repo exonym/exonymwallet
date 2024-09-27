@@ -6,8 +6,8 @@ import eu.abc4trust.keyManager.KeyManagerException;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.lite.AbstractExonymIssuer;
 import io.exonym.lib.actor.VerifiedClaim;
-import io.exonym.lib.api.AbstractXContainer;
-import io.exonym.lib.api.XContainerJSON;
+import io.exonym.lib.api.AbstractIdContainer;
+import io.exonym.lib.api.IdContainerJSON;
 import io.exonym.lib.pojo.ExternalResourceContainer;
 
 import javax.crypto.Cipher;
@@ -16,7 +16,7 @@ import java.net.URI;
 
 public class ExonymIssuer extends AbstractExonymIssuer {
 
-    public ExonymIssuer(XContainerJSON container) throws Exception {
+    public ExonymIssuer(IdContainerJSON container) throws Exception {
         super(container);
     }
 
@@ -136,7 +136,7 @@ public class ExonymIssuer extends AbstractExonymIssuer {
     }
 
     @Override
-    protected AbstractXContainer getContainer() {
+    protected AbstractIdContainer getContainer() {
         return super.getContainer();
     }
 

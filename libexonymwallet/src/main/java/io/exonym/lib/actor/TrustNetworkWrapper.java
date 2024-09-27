@@ -91,11 +91,10 @@ public class TrustNetworkWrapper {
 		}
 		NetworkParticipant p = new NetworkParticipant();
 		p.setNodeUid(nodeUid);
-		p.setStaticNodeUrl0(nodeUrl.toURL());
-		p.setRulebookNodeUrl(xNodeUrl.toURL());
+		p.setStaticNodeUrl0(nodeUrl);
+		p.setRulebookNodeUrl(xNodeUrl);
 		p.setBroadcastAddress(multicastUrl);
 		p.setPublicKey(publicKey);
-		p.setStaticNodeUrl1(failover.toURL());
 		p.setRegion(region);
 		p.setLastUpdateTime(DateHelper.currentIsoUtcDateTime());
 		p.setAvailableOnMostRecentRequest(true);

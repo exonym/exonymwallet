@@ -13,10 +13,8 @@ dependencies:
   intl: ^0.17.0
   exonymwallet:
     path: ../exonymwallet/
-
   logger: ^1.1.0
   console: ^4.1.0
-
 
 dev_dependencies:
   build_cli: ^2.0.0

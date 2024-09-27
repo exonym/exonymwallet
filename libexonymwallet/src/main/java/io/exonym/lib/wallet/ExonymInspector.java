@@ -6,9 +6,9 @@ import eu.abc4trust.cryptoEngine.CryptoEngineException;
 import eu.abc4trust.keyManager.KeyManagerException;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.lite.AbstractExonymInspector;
-import io.exonym.lib.api.XContainerJSON;
+import io.exonym.lib.api.IdContainerJSON;
 import io.exonym.lib.standard.PassStore;
-import io.exonym.lib.api.AbstractXContainer;
+import io.exonym.lib.api.AbstractIdContainer;
 import io.exonym.lib.pojo.ExternalResourceContainer;
 
 import java.net.URI;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ExonymInspector extends AbstractExonymInspector {
 
 
-    public ExonymInspector(XContainerJSON container) throws Exception {
+    public ExonymInspector(IdContainerJSON container) throws Exception {
         super(container);
     }
 
@@ -102,7 +102,7 @@ public class ExonymInspector extends AbstractExonymInspector {
     }
 
     @Override
-    protected AbstractXContainer getContainer() {
+    protected AbstractIdContainer getContainer() {
         return super.getContainer();
     }
 

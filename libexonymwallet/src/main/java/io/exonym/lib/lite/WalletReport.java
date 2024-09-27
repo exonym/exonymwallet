@@ -41,27 +41,27 @@ public class WalletReport {
     }
 
     public static HashSet<URI> safeList(HashSet<URI> issuers, RulebookAuth required) throws Exception {
-        HashSet<URI> advocateUids = new HashSet<>();
-        HashMap<URI,URI> advocateToIssuer = new HashMap<>();
+        HashSet<URI> mods = new HashSet<>();
+        HashMap<URI,URI> modToIssuer = new HashMap<>();
 
         for (URI issuer : issuers){
-            URI aUid = UIDHelper.computeAdvocateUidFromMaterialUID(issuer);
-            advocateUids.add(aUid);
-            advocateToIssuer.put(aUid, issuer);
+            URI aUid = UIDHelper.computeModUidFromMaterialUID(issuer);
+            mods.add(aUid);
+            modToIssuer.put(aUid, issuer);
 
         }
-        advocateUids.removeAll(required.getAdvocateBlacklist());
-        ArrayList<URI> sourceBlacklist = required.getSourceBlacklist();
-        HashSet<URI> safeAdvocates = new HashSet<>();
-        for (URI advocate : advocateUids){
-            URI source = UIDHelper.computeSourceUidFromNodeUid(advocate);
-            if (!sourceBlacklist.contains(source)){
-                safeAdvocates.add(advocate);
+        mods.removeAll(required.getModBlacklist());
+        ArrayList<URI> leadBlacklist = required.getLeadBlacklist();
+        HashSet<URI> safeMods = new HashSet<>();
+        for (URI mod : mods){
+            URI lead = UIDHelper.computeLeadUidFromModUid(mod);
+            if (!leadBlacklist.contains(lead)){
+                safeMods.add(mod);
             }
         }
         HashSet<URI> safeIssuers = new HashSet<>();
-        for (URI advocate : safeAdvocates){
-            safeIssuers.add(advocateToIssuer.get(advocate));
+        for (URI mod : safeMods){
+            safeIssuers.add(modToIssuer.get(mod));
         }
         return safeIssuers;
 
@@ -72,7 +72,7 @@ public class WalletReport {
     }
 
     public boolean hasSybil(){
-        HashSet<URI> sybil = rulebooksToIssuers.get(Rulebook.SYBIL_RULEBOOK_ID.toString());
+        HashSet<URI> sybil = rulebooksToIssuers.get(Rulebook.SYBIL_RULEBOOK_UID_TEST.toString());
         return (sybil!=null && sybil.size()>0);
 
 

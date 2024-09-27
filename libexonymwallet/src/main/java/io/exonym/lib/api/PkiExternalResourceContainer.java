@@ -85,8 +85,12 @@ public final class PkiExternalResourceContainer extends ExternalResourceContaine
 
 	private <T> T verifySource(String fileName) throws Exception {
 		if (FileType.isCredentialSpecification(fileName)){
-			if (Rulebook.isSybil(fileName)){
-				RulebookVerifier verifier = new RulebookVerifier(new URL("https://trust.exonym.io/sybil-rulebook.json"));
+			if (Rulebook.isSybilMain(fileName)){
+				RulebookVerifier verifier = new RulebookVerifier(new URL(Rulebook.SYBIL_URL_MAIN));
+				return (T) BuildCredentialSpecification.buildSybilCredentialSpecification(verifier);
+
+			} else if (Rulebook.isSybilTest(fileName)){
+				RulebookVerifier verifier = new RulebookVerifier(new URL(Rulebook.SYBIL_URL_TEST));
 				return (T) BuildCredentialSpecification.buildSybilCredentialSpecification(verifier);
 
 			} else {
@@ -95,10 +99,9 @@ public final class PkiExternalResourceContainer extends ExternalResourceContaine
 						.getCredentialSpecification();
 			}
 		} else {
-			URI sourceUID = UIDHelper.computeSourceUidFromNodeUid(UIDHelper.fileNameToUid(fileName));
+			URI sourceUID = UIDHelper.computeLeadUidFromModUid(UIDHelper.fileNameToUid(fileName));
 			NetworkMapItem nmi = getNetworkMap().nmiForNode(sourceUID);
-			NodeVerifier sourceVerifier = NodeVerifier.tryNode(nmi.getStaticURL0().toString(),
-					nmi.getStaticURL1().toString(), true, false);
+			NodeVerifier sourceVerifier = NodeVerifier.openNode(nmi.getStaticURL0(), true, false);
 			CacheContainer cache = this.getCache();
 			cache.store(sourceVerifier.getPresentationPolicy());
 			cache.store(sourceVerifier.getCredentialSpecification());
@@ -132,10 +135,9 @@ public final class PkiExternalResourceContainer extends ExternalResourceContaine
 
 	private <T> T verifyAdvocate(String fileName) throws Exception {
 		URI searchingFor = UIDHelper.fileNameToUid(fileName);
-		URI advocateUID = UIDHelper.computeAdvocateUidFromMaterialUID(searchingFor);
+		URI advocateUID = UIDHelper.computeModUidFromMaterialUID(searchingFor);
 		NetworkMapItem nmi = getNetworkMap().nmiForNode(advocateUID);
-		NodeVerifier advocateVerifier = NodeVerifier.tryNode(nmi.getStaticURL0().toString(),
-				nmi.getStaticURL1().toString(), false, false);
+		NodeVerifier advocateVerifier = NodeVerifier.openNode(nmi.getStaticURL0(), false, false);
 
 		CacheContainer cache = this.getCache();
 		TrustNetworkWrapper tnw = new TrustNetworkWrapper(advocateVerifier.getTargetTrustNetwork());

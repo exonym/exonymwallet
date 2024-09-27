@@ -20,10 +20,10 @@ import io.exonym.idmx.managers.KeyManagerExonym;
 import io.exonym.lib.helpers.UrlHelper;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
-import io.exonym.lib.api.AbstractXContainer;
+import io.exonym.lib.api.AbstractIdContainer;
 import io.exonym.lib.pojo.ExternalResourceContainer;
 import io.exonym.lib.pojo.Namespace;
-import io.exonym.lib.pojo.XContainer;
+import io.exonym.lib.pojo.IdContainer;
 
 import java.io.BufferedInputStream;
 import java.net.URI;
@@ -49,10 +49,10 @@ public abstract class AbstractBaseActor {
 
 	protected final ArrayList<URI> credentialSpecificationList = new ArrayList<>();
 	protected final ArrayList<URI> issuerList = new ArrayList<>();
-	protected final AbstractXContainer container;
+	protected final AbstractIdContainer container;
 	protected ExternalResourceContainer externalResource = null;
 	protected static ExonymComponent INJECTOR = DaggerExonymComponent.create();
-	protected AbstractBaseActor(AbstractXContainer container) {
+	protected AbstractBaseActor(AbstractIdContainer container) {
 
 		this.container=container;
 		// Utils
@@ -92,6 +92,7 @@ public abstract class AbstractBaseActor {
 	}
 	
 	protected boolean openResourceIfNotLoaded(URI uid) throws Exception {
+		logger.fine("Trying to open resource: " + uid);
 		if (uid!=null){
 
 			if (UidType.isCredentialSpecification(uid)) {
@@ -136,7 +137,7 @@ public abstract class AbstractBaseActor {
 			logger.info("Failed to find parameters in local container " + uid);
 			
 		}
-		String fn = XContainer.uidToXmlFileName(uid);
+		String fn = IdContainer.uidToXmlFileName(uid);
 		// TODO - Check local resources -- if fail -->
 		// Checking external resource 
 		try {
@@ -183,9 +184,11 @@ public abstract class AbstractBaseActor {
 	}
 	
 	private void loadRevocationInformationIf(URI uid) throws Exception {
-		URI raUid = URI.create(Namespace.URN_PREFIX_COLON + XContainer.stripUidSuffix(uid, 1) + "a");
-		if (this.keyManager.getRevocationInformation(raUid, uid)==null){
-			openResourceIfNotLoaded(raUid);
+		URI raUid = URI.create(Namespace.URN_PREFIX_COLON + IdContainer.stripUidSuffix(uid, 1) + "a");
+		// TODO This needs to be updated to the correct protocol: try -> reject -> poll+sub -> try {success}{fail}.
+		// Notes under Exonym~Tech~arch on remarkable.
+		 if (this.keyManager.getRevocationInformation(raUid, uid)==null){
+			openResourceIfNotLoaded(raUid); // make sure RA are open first.
 			RevocationAuthorityParameters rap = this.keyManager.getRevocationAuthorityParameters(raUid);
 			RevocationInformation ri = publicParameterOpener(uid);
 			this.addRevocationInformation(rap.getParametersUID(), ri);
@@ -207,24 +210,15 @@ public abstract class AbstractBaseActor {
 
 	}
 
-	/**
-	 * All containers require knowledge of Global System Parameters.  
-	 * 
-	 * The term global applies to IDMX systems outside of Existence. 
-	 * 
-	 * The principle of Universal Composibility allows for cryptosystems that
-	 * share the same parameters to facilitate cross-compatibility.
-	 * 
-	 * TODO Confirm System Parameters with the distributed ledger.
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
+	@Deprecated
 	public SystemParametersWrapper initSystemParameters() throws Exception {
 	  	return initSystemParameters(NamespaceMngt.DEFAULT_SYSTEM_PARAMETERS_FILENAME);
 	    
 	}
 	
+	@ Deprecated
+	// The system parameters are actually packaged with the code,
+	// and therefore this shouldn't be needed anymore.
 	protected SystemParametersWrapper initSystemParameters(String spFilename) throws Exception{
 		try {
 			if (keyManager.getSystemParameters()==null){
@@ -240,7 +234,7 @@ public abstract class AbstractBaseActor {
 //					}
 //					String systemParameters = new String(l0);
 
-					SystemParameters params = XContainerExternal.openSystemParameters();
+					SystemParameters params = IdContainerExternal.openSystemParameters();
 					SystemParametersWrapper systemParametersFacade = new SystemParametersWrapper(params);
 					
 					// Load the parameters to the key manager
@@ -356,7 +350,7 @@ public abstract class AbstractBaseActor {
 		}
 	}
 	
-	protected AbstractXContainer getContainer() {
+	protected AbstractIdContainer getContainer() {
 		return container;
 	}
 

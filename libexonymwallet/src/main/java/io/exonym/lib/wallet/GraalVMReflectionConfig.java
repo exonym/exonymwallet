@@ -1,5 +1,7 @@
 package io.exonym.lib.wallet;
 
+import com.ctc.wstx.compat.Jdk13Impl;
+import com.ctc.wstx.compat.Jdk14Impl;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.exonym.lib.abc.util.JaxbHelper;
@@ -126,6 +128,8 @@ public class GraalVMReflectionConfig {
             HashSet.class,
             JsonObject.class,
             JsonArray.class,
+            Jdk14Impl.class,
+            Jdk13Impl.class,
             eu.abc4trust.xml.SmartcardPinRequests.class,
             eu.abc4trust.xml.ABCEBoolean.class,
             eu.abc4trust.xml.NreUpdateMessage.class,
@@ -290,7 +294,7 @@ public class GraalVMReflectionConfig {
 
 
     public static void parseGraalWarnings() {
-        Path path = Path.of("resource", "reflect", "not_found.log");
+        Path path = Path.of("resource", "non-resources/reflect", "not_found.log");
         HashSet<String> classes = new HashSet<>();
         try (BufferedReader reader = Files.newBufferedReader(path)){
             String line = null;
@@ -318,7 +322,7 @@ public class GraalVMReflectionConfig {
 
 
     public static void createReflectionConfig(Class<?>[] classes) throws Exception {
-        Path path = Path.of("resource", "reflect", "reflection-config.json");
+        Path path = Path.of("non-resources", "reflect", "reflection-config.json");
         Files.createDirectories(path.getParent());
         Files.deleteIfExists(path);
         Files.createFile(path);

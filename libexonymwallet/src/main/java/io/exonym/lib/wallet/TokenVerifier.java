@@ -2,7 +2,7 @@ package io.exonym.lib.wallet;
 
 import eu.abc4trust.keyManager.KeyManagerException;
 import eu.abc4trust.xml.*;
-import io.exonym.lib.api.XContainerJSON;
+import io.exonym.lib.api.IdContainerJSON;
 import io.exonym.lib.exceptions.UxException;
 
 import java.net.URI;
@@ -10,9 +10,9 @@ import java.net.URI;
 public class TokenVerifier {
 
 	private final ExonymOwner owner;
-	private final XContainerJSON x;
+	private final IdContainerJSON x;
 
-	public TokenVerifier(XContainerJSON nodeContainer) throws Exception {
+	public TokenVerifier(IdContainerJSON nodeContainer) throws Exception {
 		this.owner = new ExonymOwner(nodeContainer);
 		this.owner.initSystemParameters();
 		this.x=nodeContainer;

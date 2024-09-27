@@ -1,17 +1,14 @@
 package io.exonym.lib.wallet;
 
 import eu.abc4trust.xml.SystemParameters;
-import io.exonym.lib.api.AddToTrustworthySourcesList;
-import io.exonym.lib.api.RulebookCreator;
+import io.exonym.lib.api.*;
 import io.exonym.lib.abc.util.JaxbHelper;
-import io.exonym.lib.actor.XContainerExternal;
-import io.exonym.lib.api.AbstractNetworkMap;
-import io.exonym.lib.api.XContainerJSON;
+import io.exonym.lib.actor.IdContainerExternal;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.lite.FulfillmentReport;
 import io.exonym.lib.standard.CryptoUtils;
 import io.exonym.lib.standard.PassStore;
-import io.exonym.lib.pojo.XContainer;
+import io.exonym.lib.pojo.IdContainer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.graalvm.nativeimage.IsolateThread;
 import org.graalvm.nativeimage.c.function.CEntryPoint;
@@ -47,8 +44,8 @@ public class WalletAPI {
     @CEntryPoint(name = "open_system_params")
     public static CCharPointer openSystemParams(IsolateThread thread){
         try {
-            SystemParameters params = XContainerExternal.openSystemParameters();
-            String xml =  XContainer.convertObjectToXml(params);
+            SystemParameters params = IdContainerExternal.openSystemParameters();
+            String xml =  IdContainer.convertObjectToXml(params);
             return toCString(xml);
 
         } catch (Exception e) {
@@ -75,6 +72,24 @@ public class WalletAPI {
         }
     }
 
+    @CEntryPoint(name = "add_new_rule")
+    public static CCharPointer addNewRuleToRulebook(IsolateThread thread, CCharPointer rule_, CCharPointer path_){
+        try {
+            String rule = CTypeConversion.toJavaString(rule_);
+            String path = CTypeConversion.toJavaString(path_);
+            RulebookVerifier verifier = new RulebookVerifier(path);
+            RulebookCreator creator = new RulebookCreator(verifier.getRulebook());
+            creator.addRule(rule);
+            creator.writeFileToOut(Path.of(path));
+            return toCString("rulebook updated @ " + path);
+
+        } catch (Exception e) {
+            return handleError(e);
+
+        }
+    }
+
+
     private static CCharPointer handleError(Exception e) {
         String info = "";
         if (e instanceof UxException){
@@ -84,7 +99,7 @@ public class WalletAPI {
         }
         String a = ExceptionUtils.getStackTrace(e);
         logger.severe(a);
-        return toCString(e.getMessage() + info);
+        return toCString(a + info);
 
     }
 
@@ -139,12 +154,12 @@ public class WalletAPI {
         }
     }
 
-    @CEntryPoint(name = "source_list_test")
-    public static CCharPointer sourceListTest(IsolateThread thread,
-                                               CCharPointer url_){
+    @CEntryPoint(name = "lead_list_test")
+    public static CCharPointer leadListTest(IsolateThread thread,
+                                            CCharPointer url_){
         try {
             String url = CTypeConversion.toJavaString(url_);
-            String result = AddToTrustworthySourcesList.addToSourcesTest(url);
+            String result = AddToTrustworthyLeadsList.addToLeadsTest(url);
             return toCString(result);
 
         } catch (Exception e) {
@@ -462,17 +477,17 @@ public class WalletAPI {
         }
     }
 
-    @CEntryPoint(name = "onboard_rulebook_advocate_uid")
-    public static CCharPointer onboardRulebookAdvocateUID(IsolateThread thread,
-                                               CCharPointer username_,
-                                               CCharPointer passwordAsSha256Hex_,
-                                               CCharPointer advocateUid_,
-                                               CCharPointer path_){
+    @CEntryPoint(name = "onboard_rulebook_moderator_uid")
+    public static CCharPointer onboardRulebookModeratorUID(IsolateThread thread,
+                                                           CCharPointer username_,
+                                                           CCharPointer passwordAsSha256Hex_,
+                                                           CCharPointer moderatorUid_,
+                                                           CCharPointer path_){
         try {
             PassStore passStore = openPassStore(username_, passwordAsSha256Hex_);
             String path = CTypeConversion.toJavaString(path_);
-            String advocateUid = CTypeConversion.toJavaString(advocateUid_);
-            String result = RulebookOnboarding.onboardRulebook(passStore, Path.of(path), URI.create(advocateUid));
+            String moderatorUid = CTypeConversion.toJavaString(moderatorUid_);
+            String result = RulebookOnboarding.onboardRulebook(passStore, Path.of(path), URI.create(moderatorUid));
             return toCString(result);
 
         } catch (Exception e) {
@@ -488,7 +503,7 @@ public class WalletAPI {
         try {
             PassStore store = openPassStore(username_, passwordAsSha256Hex_);
             Path path = Path.of(CTypeConversion.toJavaString(path_));
-            XContainerJSON x = new XContainerJSON(ExonymToolset.pathToContainers(path),
+            IdContainerJSON x = new IdContainerJSON(ExonymToolset.pathToContainers(path),
                     store.getUsername());
 
             ExonymOwner o = new ExonymOwner(x);
@@ -512,7 +527,7 @@ public class WalletAPI {
             RecoveryPhrase phrase = new RecoveryPhrase(a);
             String[] wordVector = phrase.getWordVector();
             Path path = Path.of(CTypeConversion.toJavaString(path_));
-            XContainerJSON x = new XContainerJSON(ExonymToolset.pathToContainers(path), username, true);
+            IdContainerJSON x = new IdContainerJSON(ExonymToolset.pathToContainers(path), username, true);
             ExonymOwner owner = new ExonymOwner(x);
             owner.openContainer(passStore);
             owner.setupContainerSecret(passStore.getEncrypt(), passStore.getDecipher());
@@ -536,7 +551,7 @@ public class WalletAPI {
             PassStore store = new PassStore(plainTextPassword, false);
             store.setUsername(username);
             Path path = Path.of(CTypeConversion.toJavaString(path_));
-            XContainerJSON x = new XContainerJSON(ExonymToolset.pathToContainers(path), store.getUsername());
+            IdContainerJSON x = new IdContainerJSON(ExonymToolset.pathToContainers(path), store.getUsername());
             ExonymOwner o = new ExonymOwner(x);
             o.authenticate(store);
             x.delete();

@@ -29,7 +29,7 @@ public final class ExonymOwner extends AbstractExonymOwner {
      *
      * @param container
      */
-    public ExonymOwner(AbstractXContainer container) {
+    public ExonymOwner(AbstractIdContainer container) {
         super(container);
     }
 
@@ -90,7 +90,7 @@ public final class ExonymOwner extends AbstractExonymOwner {
     }
 
     @Override
-    protected AbstractXContainer getContainer() {
+    protected AbstractIdContainer getContainer() {
         return super.getContainer();
     }
 
@@ -200,7 +200,7 @@ public final class ExonymOwner extends AbstractExonymOwner {
             NetworkMapMemory networkMap = NetworkMapMemory.getInstance();
             CacheInMemory cache = CacheInMemory.getInstance();
             pki.setNetworkMapAndCache(networkMap, cache);
-            ExonymOwner owner = new ExonymOwner(new XContainerJsonMemory());
+            ExonymOwner owner = new ExonymOwner(new IdContainerJsonMemory());
             PassStore store = new PassStore("password", false);
             owner.openContainer(store);
             owner.setupContainerSecret(store.getEncrypt(), store.getDecipher());

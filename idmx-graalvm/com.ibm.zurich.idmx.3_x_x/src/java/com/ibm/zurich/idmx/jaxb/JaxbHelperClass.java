@@ -92,8 +92,14 @@ public class JaxbHelperClass {
 //      canon.canonicalize(byteArrayOutputStream.toByteArray(), result, false);
 //      final byte  canonXmlBytes[] = result.toByteArray();
 
-      final byte canonXmlBytes[] = canon.canonicalize(byteArrayOutputStream.toByteArray());
 
+      // Prepare an output stream to capture the canonicalized result
+      final ByteArrayOutputStream canonicalizedOutputStream = new ByteArrayOutputStream();
+
+
+      // Perform the canonicalization with the new method signature
+      // Using `secureValidation = false` here; adjust if secure validation is required
+      canon.canonicalize(byteArrayOutputStream.toByteArray(), canonicalizedOutputStream, false);
 
 //      if (Configuration.verboseCanonicalXml()) {
 //        System.out.println("\nCanonical XML for " + object.getValue().getClass().toString());
@@ -103,7 +109,7 @@ public class JaxbHelperClass {
 //            + object.getValue().getClass().toString());
 //      }
 
-      return canonXmlBytes;
+      return canonicalizedOutputStream.toByteArray();
 
     } catch (Exception e) {
       throw new SerializationException(e);

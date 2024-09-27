@@ -9,8 +9,10 @@ public class Namespace {
 
 
 	private final static Logger logger = Logger.getLogger(Namespace.class.getName());
-	public final static String URN_PREFIX = "urn:rulebook";
-	public final static String URN_PREFIX_COLON = URN_PREFIX + ":";
+	public final static String URN_RULEBOOK_PREFIX = "urn:rulebook";
+	public final static String URN_RULE_PREFIX = "urn:rule:";
+
+	public final static String URN_PREFIX_COLON = URN_RULEBOOK_PREFIX + ":";
 
 	public final static String URN_PREFIX_DOTTED = "urn.rulebook";
 	public final static String URN_PREFIX_DOTTED_DOTTED = URN_PREFIX_DOTTED + ".";

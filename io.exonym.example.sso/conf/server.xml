@@ -137,6 +137,13 @@
             unpackWARs="true" autoDeploy="false" deployOnStartup="false">
             <Context docBase="example-sso" path=""></Context>
 
+            <!-- EXONYM: Don't write service authentication tokens to a publicly accessible URL! -->
+            <!-- This is a bad practice and can lead to security vulnerabilities. -->
+            <!-- Instead, store authentication tokens in a local database, along with authentication evidence. -->
+            <!-- This is for testing purposes only  -->
+            <Context docBase="/var/www/html/tokens" path="/tokens"/>
+
+
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->
         <!--

@@ -1,5 +1,6 @@
 package io.exonym.lib.api;
 
+import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.pojo.RulebookAuth;
 import io.exonym.lib.pojo.SsoConfiguration;
@@ -20,8 +21,8 @@ public class SsoConfigWrapper {
         this.config = config;
     }
 
-    public void addSourceToBlacklist(URI sourceUID) {
-        String rulebookId = UIDHelper.computeRulebookIdFromSourceUid(sourceUID);
+    public void addLeadToBlacklist(URI leadUid) throws UxException {
+        String rulebookId = UIDHelper.computeRulebookHashUid(leadUid);
         RulebookAuth rulebook = this.config.getHonestUnder().get(rulebookId);
         if (rulebook==null){
             rulebook = new RulebookAuth();
@@ -29,20 +30,20 @@ public class SsoConfigWrapper {
             this.config.getHonestUnder().put(rulebookId, rulebook);
 
         }
-        rulebook.getSourceBlacklist().add(sourceUID);
+        rulebook.getLeadBlacklist().add(leadUid);
 
     }
 
-    public void addAdvocateToBlacklist(URI advocateUID) {
-        String  rulebookId = UIDHelper.computeRulebookIdFromAdvocateUid(advocateUID);
+    public void addModeratorToBlacklist(URI advocateUID) throws UxException {
+        URI rulebookId = UIDHelper.computeRulebookUidFromNodeUid(advocateUID);
         RulebookAuth rulebook = this.config.getHonestUnder().get(rulebookId);
         if (rulebook==null){
             rulebook = new RulebookAuth();
-            rulebook.setRulebookUID(URI.create(rulebookId));
-            this.config.getHonestUnder().put(rulebookId, rulebook);
+            rulebook.setRulebookUID(rulebookId);
+            this.config.getHonestUnder().put(rulebookId.toString(), rulebook);
 
         }
-        rulebook.getAdvocateBlacklist().add(advocateUID);
+        rulebook.getModBlacklist().add(advocateUID);
     }
 
     public void requireSybil(boolean required){

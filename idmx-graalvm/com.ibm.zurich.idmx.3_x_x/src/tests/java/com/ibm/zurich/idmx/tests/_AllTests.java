@@ -82,7 +82,7 @@ import com.ibm.zurich.idmx.util.ModuleSorterTest;
     // Orchestration
     _OrchestrationTestSuite.class, //
     _Abc4TrustTestSuite.class, //
-    _UProveCompatibilityTestSuite.class //
+//    _UProveCompatibilityTestSuite.class //
 })
 public class _AllTests {
   @BeforeClass

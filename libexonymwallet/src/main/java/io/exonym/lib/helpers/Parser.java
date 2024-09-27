@@ -6,6 +6,7 @@ import com.ibm.zurich.idmx.jaxb.JaxbHelperClass;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.pojo.IssuanceSigma;
 import io.exonym.lib.abc.util.JaxbHelper;
 import org.apache.commons.codec.binary.Base64;
@@ -44,7 +45,7 @@ public class Parser {
     }
 
     public static String parseIssuanceMessage(IssuanceMessage im) throws Exception {
-        String xmlResponse = JaxbHelper.serializeToXml(im, IssuanceMessage.class);
+        String xmlResponse = IdContainer.convertObjectToXml(im);
         return Base64.encodeBase64String(xmlResponse.getBytes(StandardCharsets.UTF_8));
 
     }

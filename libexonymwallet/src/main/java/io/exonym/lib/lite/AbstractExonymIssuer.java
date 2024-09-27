@@ -26,11 +26,11 @@ import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.helpers.BuildIssuancePolicy;
 import io.exonym.lib.helpers.DateHelper;
 import io.exonym.lib.pojo.Namespace;
-import io.exonym.lib.pojo.XContainer;
+import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.standard.ExtractObject;
 import io.exonym.lib.abc.util.FileType;
 import io.exonym.lib.abc.util.UidType;
-import io.exonym.lib.api.AbstractXContainer;
+import io.exonym.lib.api.AbstractIdContainer;
 
 import javax.crypto.Cipher;
 import java.math.BigInteger;
@@ -58,7 +58,7 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 	
 	private boolean open = false;	
 	
-	protected AbstractExonymIssuer(AbstractXContainer container) throws Exception {
+	protected AbstractExonymIssuer(AbstractIdContainer container) throws Exception {
 		super(container);
 
 		cryptoEngineIssuer = INJECTOR.providesCryptoEngineIssuerAbc();
@@ -120,19 +120,25 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 		try {
 			if (!claim.isComplete()){
 				throw new ClaimNotCompleteException();
-				
+
 			} if (policy.getCredentialTemplate()==null){
 				throw new HubException("No credential template in policy");
-				
+
 			}
 			this.addCredentialSpecification(claim.getCredSpec());
-			IssuerParameters params = keyManager.getIssuerParameters(policy.getCredentialTemplate().getIssuerParametersUID());
-			URI raUid = setUpRevocableCredentialParams(params.getRevocationParametersUID());
+			IssuerParameters params = keyManager.getIssuerParameters(policy.getCredentialTemplate()
+					.getIssuerParametersUID());
+
+			URI raUid = setUpRevocableCredentialParams(params
+					.getRevocationParametersUID());
+
 			IssuanceMessageAndBoolean result = cryptoEngineIssuer.initIssuanceProtocol(
 					policy, claim.commitToDefinedAttributes(), context);
 			
 			if (result.isLastMessage() && internalDataStoreUid!=null){
-				AttributeList al = ExtractObject.extract(result.getIssuanceMessage().getContent(), AttributeList.class);
+				AttributeList al = ExtractObject.extract(result
+						.getIssuanceMessage().getContent(), AttributeList.class);
+
 				createSimpleIssuanceToken(policy, internalDataStoreUid, al, enc);
 				
 			} else {
@@ -169,7 +175,7 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 		itd.setPresentationTokenDescription(ptd);
 		
 		params.getContent().add(of.createAttributeList(al));
-		this.container.saveIssuanceToken(it, XContainer.uidToXmlFileName(internalDataStoreUid), enc);
+		this.container.saveIssuanceToken(it, IdContainer.uidToXmlFileName(internalDataStoreUid), enc);
 		
 	}
 
@@ -182,12 +188,17 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 			RevocationInformation ri = cryptoEngineRaIdmx.updateRevocationInformation(revocationParametersUID, null, null);
 			URI rhUid = Namespace.extendUid(revocationParametersUID, "history");
 			this.keyManager.storeRevocationInformation(revocationParametersUID, ri);
-			String rhFileName = XContainer.stripUidSuffix(revocationParametersUID, 2) + ":rh";
+			String rhFileName = IdContainer.stripUidSuffix(revocationParametersUID, 2) + ":rh";
 			
 			try {
 				if (this.credentialManagerRa.getRevocationHistory(rhUid)==null){
-					RevocationHistory rh = (RevocationHistory) container.openResource(XContainer.uidToXmlFileName(URI.create(rhFileName)));
-					this.credentialManagerRa.storeRevocationHistory(rh.getRevocationHistoryUID(), rh);
+					RevocationHistory rh = (RevocationHistory)
+							container.openResource(IdContainer
+									.uidToXmlFileName(URI.create(rhFileName)));
+
+					this.credentialManagerRa
+							.storeRevocationHistory(rh
+									.getRevocationHistoryUID(), rh);
 					
 				} 
 			} catch (Exception e) {
@@ -309,7 +320,7 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 				
 			}
 			if (storeUid!=null){
-				this.container.saveIssuanceToken(token, XContainer.uidToFileName(storeUid), enc);
+				this.container.saveIssuanceToken(token, IdContainer.uidToFileName(storeUid), enc);
 				
 			}
 		} else {
@@ -378,7 +389,7 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 			
 			BuildIssuancePolicy bip = new BuildIssuancePolicy(credential, issuerParamsUid);
 			if (revocationAuthorityUid!=null){
-				bip.addPseudonym(XContainer.stripUidSuffix(revocationAuthorityUid, 2), 
+				bip.addPseudonym(IdContainer.stripUidSuffix(revocationAuthorityUid, 2),
 										false, "ra", null);
 				
 				if (spec.isKeyBinding()){
@@ -426,7 +437,7 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 			if (!issuerParamsUid.toString().startsWith(px)){
 				throw h;
 				
-			} else if (!FileType.isIssuerParameters(XContainer.uidToXmlFileName(issuerParamsUid))){
+			} else if (!FileType.isIssuerParameters(IdContainer.uidToXmlFileName(issuerParamsUid))){
 				throw h; 
 				
 			}
@@ -448,7 +459,7 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 	 */
 	protected URI setupAsRevocationAuthority(URI issuerParametersUid, Cipher enc) throws Exception{
 	    try {
-	    	if (!FileType.isIssuerParameters(XContainer.uidToXmlFileName(issuerParametersUid))){
+	    	if (!FileType.isIssuerParameters(IdContainer.uidToXmlFileName(issuerParametersUid))){
 	    		throw new UxException("Expected an Issuer Parameter UID " + issuerParametersUid);
 	    		
 	    	}
@@ -583,7 +594,7 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 	}
 	
 	protected void addRevocationAuthorityKey(URI raUid, PrivateKey sk) throws Exception {
-		if (!FileType.isRevocationAuthority(XContainer.uidToXmlFileName(raUid))){
+		if (!FileType.isRevocationAuthority(IdContainer.uidToXmlFileName(raUid))){
 			throw new RuntimeException("Requires the Revocation Authority Uid");
 			
 		}

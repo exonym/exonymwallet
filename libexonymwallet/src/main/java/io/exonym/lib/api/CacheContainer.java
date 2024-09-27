@@ -10,7 +10,7 @@ public interface CacheContainer {
     public void store(Object material) throws Exception;
     public void clear() throws Exception;
 
-    public AbstractXContainer getContainer() throws Exception;
+    public AbstractIdContainer getContainer() throws Exception;
 
 
 }

@@ -34,33 +34,30 @@ public class WhiteList {
 			return false;
 
 		}
-		return uid.toString().matches(Namespace.URN_PREFIX_COLON + "[0-9a-f]{64}");
-
-	}
-
-	public static boolean isAdvocateUid(URI uid){
-		return isAdvocateUid(uid.toString());
-	}
-	public static boolean isAdvocateUid(String uid){
-		return uid!=null && uid.toString().matches(Namespace.URN_PREFIX_COLON + "[\\w-]*[:][\\w-]*[:][0-9a-f]{64}");
-
-	}
-
-	public static boolean isSourceUid(URI uid){
-		return isSourceUid(uid.toString());
-	}
-
-	public static boolean isSourceUid(String uid){
-		if (uid==null){
-			return false;
-
-		}
 		return uid.toString().matches(Namespace.URN_PREFIX_COLON + "[\\w-]*[:][0-9a-f]{64}");
 
 	}
 
-	public static boolean isSourceUrl(String url){
-		return (url!=null && url.matches(".*/x-source\\/?"));
+	public static boolean isModeratorUid(URI uid){
+		return isModeratorUid(uid.toString());
+	}
+
+	public static boolean isModeratorUid(String uid){
+		return uid!=null && uid.matches(Namespace.URN_PREFIX_COLON + "[\\w-]*[:][\\w-]*[:][\\w-]*[:][0-9a-f]{64}");
+
+	}
+
+	public static boolean isLeadUid(URI uid){
+		return isLeadUid(uid.toString());
+	}
+
+	public static boolean isLeadUid(String uid){
+		return uid!=null && uid.matches(Namespace.URN_PREFIX_COLON + "[\\w-]*[:][\\w-]*[:][0-9a-f]{64}");
+
+	}
+
+	public static boolean isLeadUrl(String url){
+		return (url!=null && url.matches(".*/lead\\/?"));
 
 	}
 

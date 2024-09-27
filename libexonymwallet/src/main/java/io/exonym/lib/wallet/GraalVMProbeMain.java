@@ -9,9 +9,9 @@ import io.exonym.lib.helpers.BuildCredentialSpecification;
 import io.exonym.lib.helpers.BuildPresentationPolicy;
 import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.actor.VerifiedClaim;
-import io.exonym.lib.actor.XContainerExternal;
+import io.exonym.lib.actor.IdContainerExternal;
 import io.exonym.lib.api.SsoConfigWrapper;
-import io.exonym.lib.api.XContainerJSON;
+import io.exonym.lib.api.IdContainerJSON;
 import io.exonym.lib.helpers.WordSets;
 import io.exonym.lib.helpers.UrlHelper;
 import io.exonym.lib.exceptions.UxException;
@@ -31,7 +31,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,9 +62,9 @@ public class GraalVMProbeMain {
     public static void openSystemParams() throws Exception {
         try {
             logger.info("Opening System Params - lambda.xml");
-            SystemParameters params = XContainerExternal.openSystemParameters();
+            SystemParameters params = IdContainerExternal.openSystemParameters();
             logger.info("Opened System Params");
-            String xml =  XContainer.convertObjectToXml(params);
+            String xml =  IdContainer.convertObjectToXml(params);
             String sha256Sp = CryptoUtils.computeSha256HashAsHex(xml);
 
             logger.info("System Params = " + xml + " " + sha256Sp);
@@ -78,19 +77,19 @@ public class GraalVMProbeMain {
 
     public static void containerManagement() throws Exception {
         logger.info("Container Management");
-        XContainerJSON x = null;
+        IdContainerJSON x = null;
         Path path = ExonymToolset.pathToContainers(path());
 
         String name = "mike";
         try {
-            x = new XContainerJSON(path, name, true);
+            x = new IdContainerJSON(path, name, true);
             logger.info("Container Created");
-            x = new XContainerJSON(path, name, false);
+            x = new IdContainerJSON(path, name, false);
             logger.info("Container Reopened");
 
         } catch (UxException e) {
             logger.info("Container Existed");
-            x = new XContainerJSON(path, name, false);
+            x = new IdContainerJSON(path, name, false);
 
         }
         logger.info("Deleting Container");
@@ -106,12 +105,14 @@ public class GraalVMProbeMain {
             logger.log(Level.INFO, "New container with secret");
             String username = generateUniqueUsername();
             logger.log(Level.INFO, "username=" + username);
-            XContainerJSON x = new XContainerJSON(path, username, true);
+            IdContainerJSON x = new IdContainerJSON(path, username, true);
             logger.log(Level.INFO, "Container created " + x);
             PassStore store = new PassStore("password", false);
             logger.log(Level.INFO, "PassStore defined " + store);
             ExonymOwner owner = new ExonymOwner(x);
             logger.log(Level.INFO, "Owner Initialised " + owner);
+            byte[] a = ExonymOwner.toUnsignedByteArray(PassStore.initNew("password"));
+            logger.log(Level.INFO, "Generated Unsigned Byte Array " + a);
             owner.openContainer(store);
             logger.log(Level.INFO, "Opened container " + owner);
             owner.setupContainerSecret(store.getEncrypt(), store.getDecipher());
@@ -136,7 +137,7 @@ public class GraalVMProbeMain {
         boolean create = !Files.exists(path);
 
         PassStore p = new PassStore("password", false);
-        XContainerJSON xi = new XContainerJSON(pathContainers, issuername, create);
+        IdContainerJSON xi = new IdContainerJSON(pathContainers, issuername, create);
         ExonymIssuer issuer = new ExonymIssuer(xi);
 
         String csUidString = "urn:io:exonym:test:c";
@@ -161,7 +162,7 @@ public class GraalVMProbeMain {
         IssuanceMessageAndBoolean imab = issuer.issueInit(claim, ip, p.getEncrypt(), context);
 
         String username = generateUniqueUsername().substring(0,8) + "_user";
-        XContainerJSON xu = new XContainerJSON(pathContainers, username, true);
+        IdContainerJSON xu = new IdContainerJSON(pathContainers, username, true);
         ExonymOwner ou = new ExonymOwner(xu);
         ou.openContainer(p);
         ou.setupContainerSecret(p.getEncrypt(),p.getDecipher());
@@ -186,7 +187,7 @@ public class GraalVMProbeMain {
         path = pathContainers.resolve(blankName);
         create = !Files.exists(path);
 
-        XContainerJSON x = new XContainerJSON(pathContainers, blankName, create);
+        IdContainerJSON x = new IdContainerJSON(pathContainers, blankName, create);
         TokenVerifier t = new TokenVerifier(x);
         t.loadCredentialSpecification(cs);
         t.loadRevocationAuthorityParameters((RevocationAuthorityParameters) xi.openResource(raUid));
@@ -207,7 +208,7 @@ public class GraalVMProbeMain {
         try {
             BuildCredentialSpecification builder = new BuildCredentialSpecification(URI.create(uid), true);
             CredentialSpecification spec = builder.getCredentialSpecification();
-            return XContainer.convertObjectToXml(spec);
+            return IdContainer.convertObjectToXml(spec);
 
         } catch (Exception e) {
             logger.log(Level.FINE, "Error", e);
@@ -231,6 +232,7 @@ public class GraalVMProbeMain {
 
 
 
+
     private static void networkMapInspector() throws Exception {
         NetworkMap map = new NetworkMap(Path.of("resource", "test-network-map"));
         if (map.networkMapExists()){
@@ -240,17 +242,17 @@ public class GraalVMProbeMain {
 
         NetworkMapInspector inspector = new NetworkMapInspector(map);
         String s = inspector.listActors(null);
-        String ruid = Rulebook.SYBIL_RULEBOOK_ID.toString();
+        URI ruid = Rulebook.SYBIL_RULEBOOK_UID_TEST;
         System.out.println(s);
-        System.out.println(inspector.viewActor(ruid));
-        String sybilSource = inspector.viewActor("urn:rulebook:sybil:" + Rulebook.SYBIL_RULEBOOK_HASH);
+        System.out.println(inspector.viewActor(ruid.toString()));
+        String sybilSource = inspector.viewActor(Rulebook.SYBIL_LEAD_UID_TEST.toString());
         System.out.println(sybilSource);
-        String sybilTest = inspector.viewActor("urn:rulebook:sybil:test-net:" + Rulebook.SYBIL_RULEBOOK_HASH);
+        String sybilTest = inspector.viewActor(Rulebook.SYBIL_MOD_UID_TEST.toString());
         System.out.println(sybilTest);
 
-        String v = inspector.listActors("urn:rulebook:sybil:test-net:" + Rulebook.SYBIL_RULEBOOK_HASH);
+        String v = inspector.listActors(Rulebook.SYBIL_LEAD_UID_TEST.toString());
         System.out.println(v);
-        String t = inspector.listActors("urn:rulebook:sybil:" + Rulebook.SYBIL_RULEBOOK_HASH);
+        String t = inspector.listActors(Rulebook.SYBIL_MOD_UID_TEST.toString());
         System.out.println(t);
 
         assert map.networkMapExists();
@@ -262,22 +264,21 @@ public class GraalVMProbeMain {
     private static void networkMapSpawning() throws Exception {
         NetworkMap networkMap = new NetworkMap(Path.of("resource", "network-map"));
         networkMap.spawn();
-        String rulebookId = Namespace.URN_PREFIX_COLON + "29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c";
-        String sybilId = Rulebook.SYBIL_RULEBOOK_ID.toString();
+        String sybilId = Rulebook.SYBIL_RULEBOOK_UID_TEST.toString();
 
-        List<String> sources = networkMap.getSourceFilenamesForRulebook(rulebookId);
-        for (String source : sources){
-            URI sourceUid = networkMap.fromNmiFilename(source);
-            NetworkMapItemSource smi = (NetworkMapItemSource) networkMap.nmiForNode(sourceUid);
-            List<URI> advocates = smi.getAdvocatesForSource();
-            System.out.println(smi.getNodeUID() + " " + WhiteList.isSourceUid(smi.getNodeUID()) + " ");
-            for (URI advocate : advocates){
+        List<String> leads = networkMap.getLeadFileNamesForRulebook(sybilId);
+        for (String lead : leads){
+            URI sourceUid = networkMap.fromNmiFilename(lead);
+            NetworkMapItemLead smi = (NetworkMapItemLead) networkMap.nmiForNode(sourceUid);
+            List<URI> mods = smi.getModeratorsForLead();
+            System.out.println(smi.getNodeUID() + " " + WhiteList.isLeadUid(smi.getNodeUID()) + " ");
+            for (URI advocate : mods){
                 long t = Timing.currentTime();
-                NetworkMapItemAdvocate nmia = (NetworkMapItemAdvocate) networkMap.nmiForNode(advocate);
+                NetworkMapItemModerator nmia = (NetworkMapItemModerator) networkMap.nmiForNode(advocate);
                 long e = Timing.hasBeenMs(t);
                 System.out.println(nmia.getNodeUID()
                         + " " + e + " " +
-                        WhiteList.isAdvocateUid(nmia.getNodeUID()));
+                        WhiteList.isModeratorUid(nmia.getNodeUID()));
 
             }
         }
@@ -291,7 +292,7 @@ public class GraalVMProbeMain {
         exo.getOwner().setupContainerSecret(store.getEncrypt(), store.getDecipher());
         exo.getNetworkMap().spawn();
 
-        URI advocateId = URI.create("urn:rulebook:exonym:trusted-sources:29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c");
+        URI advocateId = URI.create("urn:rulebook:trustworthy-leaders:exonym:interpretation:9f87ae0387e1ac0c1c6633a90ad674f9564035624f490fe92aba28c911487691");
 
         SybilOnboarding.testNet(store, path(), Rulebook.SYBIL_CLASS_PERSON);
         RulebookOnboarding.onboardRulebook(store, path, advocateId);
@@ -301,7 +302,7 @@ public class GraalVMProbeMain {
 
         URI target = URI.create("http://localhost:8080");
         SsoConfigWrapper config = new SsoConfigWrapper(target);
-        config.requireRulebook(URI.create("urn:rulebook:29a655983776d9cd7b4be696ed4cd773e63e6d640241e05c3a40b5d81f5d1f1c"));
+        config.requireRulebook(URI.create("urn:rulebook:trustworthy-leaders:9f87ae0387e1ac0c1c6633a90ad674f9564035624f490fe92aba28c911487691"));
 
         SsoChallenge c = SsoChallenge.newChallenge(config.getConfig());
         AuthenticationWrapper w = AuthenticationWrapper.wrapToWrapper(c, 100, SsoChallenge.class);
@@ -336,12 +337,12 @@ public class GraalVMProbeMain {
     private static void resetContainer(String username) throws Exception {
         Path path = ExonymToolset.pathToContainers(path());
         try{
-            new XContainerJSON(path, USERNAME, true);
+            new IdContainerJSON(path, USERNAME, true);
 
         } catch (Exception e){
-            XContainerJSON x = new XContainerJSON(path, USERNAME, false);
+            IdContainerJSON x = new IdContainerJSON(path, USERNAME, false);
             x.delete();
-            new XContainerJSON(path, USERNAME, true);
+            new IdContainerJSON(path, USERNAME, true);
 
         }
     }
@@ -394,8 +395,8 @@ public class GraalVMProbeMain {
 
             sftpSetup();
 
-            networkMapInspector();
             networkMapSpawning();
+            networkMapInspector();
 
             openWords();
             openSystemParams();

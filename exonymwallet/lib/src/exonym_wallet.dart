@@ -36,18 +36,16 @@ class ExonymWallet extends AbstractResource {
     } catch (e) {
       libraryPath = path.join(
           Directory.current.path, global.LIB_FOLDER, global.LIB_FOLDER_MACOS_M1, global.LIB_NAME);
-      print(libPath);
       libPath = DynamicLibrary.open(libraryPath);
-
     }
     _lib = ExonymWalletLibrary(libPath);
     _lib!.graal_create_isolate(_params, _isolate, _thread);
     final int twelve = _lib!.hello_exonym(_getThread());
     if (twelve==12){
-      print("© 2023 - Exonym - Network Authentication Solutions");
+      print("Exonym - Coordination Tools for a New Commons");
 
     } else {
-      print("An error occured - libexonymwallet did not connect - check the .dylib is present: $libraryPath");
+      print("An error occurred - libexonymwallet did not connect - check the .dylib is present: $libraryPath");
 
     }
   }
@@ -87,6 +85,26 @@ class ExonymWallet extends AbstractResource {
     return global.fromCString(
         _lib!.new_rulebook(_getThread(),
             global.toCString(name),
+            global.toCString(path)
+        )
+    );
+  }
+
+  /**
+   * Adds a new rule to a rulebook document based on a rulebook.json file at path.
+   *
+   * The generated "rulebook.json" file serves as an immutable rulebook document once a user
+   * subscribes to it for the first time.
+   *
+   * @param name The name of the rulebook.
+   * @param path The root path directory where the rulebook files are located.
+   * @return A Future that resolves to a String representing the result of the operation.
+   */
+  Future<String> addRuleToRulebook(String rule, String path) async {
+    return global.fromCString(
+      // TODO!!
+        _lib!.add_new_rule(_getThread(),
+            global.toCString(rule),
             global.toCString(path)
         )
     );
@@ -230,9 +248,9 @@ class ExonymWallet extends AbstractResource {
    * @return A Future that resolves to a String representing the result of the operation.
    *         The result indicates whether the addition of the Source to the trustworthy source list was successful or not.
    */
-  Future<String> sourceListTest(String url) async {
+  Future<String> leadListTest(String url) async {
     return global.fromCString(
-        _lib!.source_list_test(_getThread(),
+        _lib!.lead_list_test(_getThread(),
             global.toCString(url)
         )
     );
@@ -530,6 +548,11 @@ class ExonymWallet extends AbstractResource {
       String passwordAsSha256Hex,
       String path) async {
 
+    print('Username: $username');
+    print('Sybil Class: $sybilClass');
+    print('Password (as Sha256 hex): $passwordAsSha256Hex');
+    print('Path: $path');
+
     return global.fromCString(
         _lib!.onboard_sybil_testnet(_getThread(),
             global.toCString(username),
@@ -582,13 +605,13 @@ class ExonymWallet extends AbstractResource {
    * @return A Future that resolves to a String representing the result of the onboarding process to the advocate.
    *         The result indicates whether the onboarding was successful or not.
    */
-  Future<String> onboardRulebookAdvocateUID(String username,
+  Future<String> onboardRulebookModeratorUID(String username,
       String passwordAsSha256Hex,
       String advocateUid,
       String path) async {
 
     return global.fromCString(
-        _lib!.onboard_rulebook_advocate_uid(_getThread(),
+        _lib!.onboard_rulebook_moderator_uid(_getThread(),
             global.toCString(username),
             global.toCString(passwordAsSha256Hex),
             global.toCString(advocateUid),
@@ -698,7 +721,7 @@ class ExonymWallet extends AbstractResource {
   @override
   void dispose() {
     _lib!.graal_tear_down_isolate(_getThread());
-    print("© 2023 Exonym - Ciao for now.");
+    print("Exonym - © 2024");
 
   }
 }

@@ -22,7 +22,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -38,8 +37,8 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     private ConcurrentHashMap<String, String> challengeToSessionId = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Long> challengeToT0 = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, String> sessionIdToChallenge = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, URI> sessionIdToEndonym = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, ConcurrentHashMap<URI, URI>> authSessionIdToEndonym = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, EndonymToken> sessionIdToEndonym = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, ConcurrentHashMap<URI, EndonymToken>> authSessionIdToEndonym = new ConcurrentHashMap<>();
 
     protected void challenge(SsoChallenge challenge, String sessionId){
         String c = challenge.getChallenge();
@@ -98,7 +97,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
 
     private void addAuthorizedSession(String sessionId, String challenge) {
         logger.info("(z) challengeToDomainContext=" + challengeToDomainContext);
-        ConcurrentHashMap<URI, URI> contexts = authSessionIdToEndonym.get(sessionId);
+        ConcurrentHashMap<URI, EndonymToken> contexts = authSessionIdToEndonym.get(sessionId);
         URI context = challengeToDomainContext.get(challenge);
 
         if (contexts==null){
@@ -108,7 +107,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
 
 
         }
-        URI nym = sessionIdToEndonym.remove(sessionId);
+        EndonymToken nym = sessionIdToEndonym.remove(sessionId);
         contexts.put(context, nym);
 
         logger.info("context= " + context + " nym=" + nym + " onto=" + contexts);
@@ -124,11 +123,11 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
      * @throws UxException If the session is not authorized.
      *
      */
-    protected URI isAuthenticated(String sessionId, URI context) throws UxException {
-        ConcurrentHashMap<URI, URI> contextToEndonym = authSessionIdToEndonym.get(sessionId);
+    protected EndonymToken isAuthenticated(String sessionId, URI context) throws UxException {
+        ConcurrentHashMap<URI, EndonymToken> contextToEndonym = authSessionIdToEndonym.get(sessionId);
         if (contextToEndonym!=null) {
             logger.info("contextToEndonym " + contextToEndonym + " context=" + context);
-            URI endonym = contextToEndonym.get(context);
+            EndonymToken endonym = contextToEndonym.get(context);
             if (endonym != null) {
                 return endonym;
             }
@@ -176,7 +175,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
         logger.info("challenge/sessionId at authenticate (no value should be null)="
                 + challenge + " " + sessionId + " " + c);
 
-        PresentationPolicyAlternatives ppa = verifyOfferingAndBuildPolicy(c, sessionId, ptd);
+        PresentationPolicyAlternatives ppa = verifyOfferingAndBuildPolicy(c, sessionId, pt);
         ExonymOwner owner = ExonymOwner.verifierOnly();
         owner.verifyClaim(ppa, pt);
         return challenge;
@@ -184,12 +183,12 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     }
 
     private PresentationPolicyAlternatives verifyOfferingAndBuildPolicy(ExonymChallenge c,
-                                     String sessionId, PresentationTokenDescription ptd) throws Exception {
+                                     String sessionId, PresentationToken pt) throws Exception {
         if (c instanceof SsoChallenge){
-            return juxtaposeTokenAndSsoChallenge((SsoChallenge)c, sessionId, ptd);
+            return juxtaposeTokenAndSsoChallenge((SsoChallenge)c, sessionId, pt);
 
         } else if (c instanceof DelegateRequest) {
-            return juxtaposeTokenAndDelegateChallenge((DelegateRequest) c, sessionId, ptd);
+            return juxtaposeTokenAndDelegateChallenge((DelegateRequest) c, sessionId, pt);
 
         } else if (c==null){
             throw new UxException(ErrorMessages.UNEXPECTED_TOKEN_FOR_THIS_NODE);
@@ -201,14 +200,15 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     }
 
     private PresentationPolicyAlternatives juxtaposeTokenAndSsoChallenge(SsoChallenge c,
-                          String sessionId, PresentationTokenDescription ptd) throws Exception {
-        PresentationPolicy policy = checkPseudonym(sessionId, c, ptd);
+                          String sessionId, PresentationToken pt) throws Exception {
+        PresentationPolicy policy = checkPseudonym(sessionId, c, pt);
+        PresentationTokenDescription ptd = pt.getPresentationTokenDescription();
 
         if (c.isSybil() || !c.getHonestUnder().isEmpty()){
             HashMap<String, CredentialInToken> rulebookIdToCredentialMap = checkSybil(policy, ptd);
 
             if (!c.getHonestUnder().isEmpty()){
-                checkRulebooks(c, ptd, rulebookIdToCredentialMap);
+                checkRulebooks(sessionId, c, rulebookIdToCredentialMap);
 
             }
         }
@@ -217,32 +217,42 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
         return ppa;
     }
 
-    private void checkRulebooks(SsoChallenge c, PresentationTokenDescription ptd,
+    private void checkRulebooks(String sessionId, SsoChallenge c,
                                 HashMap<String, CredentialInToken> rcMap) throws Exception {
 
         HashMap<String, RulebookAuth> requests = c.getHonestUnder();
+
         for (String rulebook : requests.keySet()){
             RulebookAuth auth = requests.get(rulebook);
             CredentialInToken cit = rcMap.get(rulebook);
+            URI modUid = UIDHelper.computeModUidFromMaterialUID(cit.getIssuerParametersUID());
 
-            if (auth.getAdvocateBlacklist()
-                    .contains(cit.getIssuerParametersUID())){
-                throw new UxException(ErrorMessages.BLACKLISTED_ADVOCATE);
+            if (auth.getModBlacklist()
+                    .contains(modUid)){
+                throw new UxException(ErrorMessages.BLACKLISTED_MODERATOR);
             }
-            URI sourceUID = UIDHelper.computeSourceUidFromNodeUid(
+            URI leadUID = UIDHelper.computeLeadUidFromModUid(
                     cit.getIssuerParametersUID());
-            if (auth.getSourceBlacklist().contains(sourceUID)){
-                throw new UxException(ErrorMessages.BLACKLISTED_SOURCE);
+
+            if (auth.getLeadBlacklist()
+                    .contains(leadUID)){
+                throw new UxException(ErrorMessages.BLACKLISTED_LEAD);
 
             }
-            auth.getSourceBlacklist();
-
+            EndonymToken et = sessionIdToEndonym.get(sessionId);
+            if (et!=null){
+                et.setModeratorUid(modUid);
+            } else {
+                logger.warning("THERE WAS NO TOKEN ASSOCIATED WITH THIS SESSION");
+            }
         }
     }
 
     private PresentationPolicy checkPseudonym(String sessionId, ExonymChallenge c,
-                     PresentationTokenDescription ptd) throws HubException, UxException {
+                     PresentationToken pt) throws HubException, UxException {
         String domain = c.getDomain().toString();
+        PresentationTokenDescription ptd = pt.getPresentationTokenDescription();
+
         List<PseudonymInToken> nyms = ptd.getPseudonym();
         PresentationPolicy pp = new PresentationPolicy();
         pp.setMessage(ptd.getMessage());
@@ -258,8 +268,8 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
                     URI endonym = WalletUtils.endonymForm(nym.getScope(), nym.getPseudonymValue());
 
                     logger.info("sessionIdToEndonym=" + sessionIdToEndonym);
-
-                    this.sessionIdToEndonym.put(sessionId, endonym);
+                    EndonymToken et = EndonymToken.build(endonym, pt);
+                    this.sessionIdToEndonym.put(sessionId, et);
                     hasExclusive = true;
 
                 }
@@ -285,16 +295,23 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
 
     private HashMap<String, CredentialInToken> checkSybil(PresentationPolicy buildingPolicy,
                                                           PresentationTokenDescription ptd) throws Exception {
-        String sybilUID = Rulebook.SYBIL_TEST_NET_UID.toString();
+        String sybilUID = Rulebook.SYBIL_RULEBOOK_HASH_TEST;
+        logger.info("SybilUID:" + sybilUID);
+
         boolean foundSybil = false;
         HashMap<String, CredentialInToken> map = new HashMap<>();
         List<CredentialInPolicy> credentials = new ArrayList<>();
         for (CredentialInToken cit : ptd.getCredential()){
-            String rid = UIDHelper.computeRulebookIdFromAdvocateUid(
+
+            logger.info("Issuer UID:" + cit.getIssuerParametersUID());
+
+            URI rid = UIDHelper.computeRulebookUidFromNodeUid(
                     cit.getIssuerParametersUID());
-            map.put(rid, cit);
+
+            logger.info("Rulebook ID:" + cit.getIssuerParametersUID());
+            map.put(rid.toString(), cit);
             credentials.add(Parser.credentialInTokenToPolicy(cit));
-            if (cit.getIssuerParametersUID().toString().startsWith(sybilUID)){
+            if (cit.getIssuerParametersUID().toString().contains(sybilUID)){
                 foundSybil = true;
 
             }
@@ -313,7 +330,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     }
 
     private PresentationPolicyAlternatives juxtaposeTokenAndDelegateChallenge(
-            DelegateRequest c, String cb64, PresentationTokenDescription ptd) {
+            DelegateRequest c, String cb64, PresentationToken pt) {
         return null;
     }
 

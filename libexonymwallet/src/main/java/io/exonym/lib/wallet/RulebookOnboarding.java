@@ -3,13 +3,14 @@ package io.exonym.lib.wallet;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.abc.util.JaxbHelper;
-import io.exonym.lib.api.XContainerJSON;
-import io.exonym.lib.pojo.NetworkMapItemAdvocate;
+import io.exonym.lib.api.IdContainerJSON;
+import io.exonym.lib.pojo.NetworkMapItemModerator;
 import io.exonym.lib.lite.Http;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.pojo.Rulebook;
 import io.exonym.lib.pojo.SerialErrorHandling;
+import io.exonym.lib.standard.Const;
 import io.exonym.lib.standard.PassStore;
 import io.exonym.lib.pojo.IssuanceSigma;
 import io.exonym.lib.standard.ExtractObject;
@@ -24,14 +25,14 @@ public  class RulebookOnboarding {
     private final static Logger logger = Logger.getLogger(RulebookOnboarding.class.getName());
 
     public static String onboardRulebook(PassStore store, Path path, URI advocateUID) throws Exception {
-        NetworkMapItemAdvocate advocateNmia = WalletUtils.determinedSearchForAdvocate(path, advocateUID);
+        NetworkMapItemModerator advocateNmia = WalletUtils.determinedSearchForAdvocate(path, advocateUID);
         Http client = new Http();
-        String json = client.basicGet(advocateNmia.getRulebookNodeURL() + "/subscribe");
+        String json = client.basicGet(advocateNmia.getRulebookNodeURL() + Const.ENDPOINT_JOIN);
         Rulebook rulebook = JaxbHelper.jsonToClass(json, Rulebook.class);
         if (rulebook.getLink()!=null){
             return onboardRulebook(store, path, rulebook.getLink());
         } else {
-            throw new UxException(ErrorMessages.ADVOCATE_DOES_NOT_ACCEPT_OPEN_ADOPTION);
+            throw new UxException(ErrorMessages.MODERATOR_DOES_NOT_ACCEPT_OPEN_JOIN_REQUESTS);
         }
     }
 
@@ -41,14 +42,14 @@ public  class RulebookOnboarding {
 
         ExonymToolset exo = new ExonymToolset(store, path);
         IssuanceMessageAndBoolean imab = WalletUtils.deserialize(decoded);
-        NetworkMapItemAdvocate advocateNmi = discoverAdvocate(imab, exo.getNetworkMap());
+        NetworkMapItemModerator advocateNmi = discoverAdvocate(imab, exo.getNetworkMap());
 
         ExonymOwner owner = exo.getOwner();
         IssuanceMessage im = owner.issuanceStep(imab, store.getEncrypt());
 
         Http client = new Http();
-        String response = client.basicPost(advocateNmi.getRulebookNodeURL() + "/subscribe",
-                XContainerJSON.convertObjectToXml(im));
+        String response = client.basicPost(advocateNmi.getRulebookNodeURL() + Const.ENDPOINT_JOIN,
+                IdContainerJSON.convertObjectToXml(im));
         if (response.startsWith("{")){
             return response;
         }
@@ -59,12 +60,12 @@ public  class RulebookOnboarding {
 
     }
 
-    protected static NetworkMapItemAdvocate discoverAdvocate(IssuanceMessageAndBoolean imab, NetworkMap map) throws Exception {
+    protected static NetworkMapItemModerator discoverAdvocate(IssuanceMessageAndBoolean imab, NetworkMap map) throws Exception {
         IssuancePolicy policy = ExtractObject.extract(imab.getIssuanceMessage().getContent(), IssuancePolicy.class);
         assert policy != null;
         CredentialTemplate template = policy.getCredentialTemplate();
         UIDHelper helper = new UIDHelper(template.getIssuerParametersUID());
-        return WalletUtils.determinedSearchForAdvocate(map, helper.getNodeUid());
+        return WalletUtils.determinedSearchForAdvocate(map, helper.getModeratorUid());
 
     }
 
