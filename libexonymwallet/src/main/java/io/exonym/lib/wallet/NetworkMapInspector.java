@@ -91,19 +91,19 @@ public class NetworkMapInspector {
 
     private ArrayList<String> computeLeadsForRulebook(String rulebookId) throws UxException {
         List<String> sources = map.getLeadFileNamesForRulebook(rulebookId);
-        ArrayList<String> sourceUIDs = new ArrayList<>();
+        ArrayList<String> leadsUids = new ArrayList<>();
         for (String f : sources){
-            sourceUIDs.add(map.fromNmiFilename(f).toString());
+            leadsUids.add(map.fromNmiFilename(f).toString());
 
         }
-        return sourceUIDs;
+        return leadsUids;
 
     }
 
     private String view(URI uid) throws Exception {
         NetworkMapItem item = map.nmiForNode(uid);
         URI rulebookUid = UIDHelper.computeRulebookUidFromNodeUid(uid);
-        ArrayList<String> sources = computeLeadsForRulebook(rulebookUid.toString());
+        ArrayList<String> leads = computeLeadsForRulebook(rulebookUid.toString());
 
         Rulebook rulebook = map.getCache().open(rulebookUid);
 
@@ -112,7 +112,7 @@ public class NetworkMapInspector {
 
         ActorOverview result = new ActorOverview();
         result.setRulebook(rulebook);
-        result.setLeadsForRulebook(sources);
+        result.setLeadsForRulebook(leads);
         result.setActor(item);
         return serializeResult(result);
 

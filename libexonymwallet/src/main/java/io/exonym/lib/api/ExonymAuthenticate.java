@@ -1,13 +1,9 @@
 package io.exonym.lib.api;
 
 import com.google.gson.JsonObject;
-import com.ibm.zurich.idmx.exception.SerializationException;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.abc.util.JaxbHelper;
-import io.exonym.lib.exceptions.AlreadyAuthException;
-import io.exonym.lib.exceptions.ErrorMessages;
-import io.exonym.lib.exceptions.HubException;
-import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.exceptions.*;
 import io.exonym.lib.helpers.Parser;
 import io.exonym.lib.helpers.Timing;
 import io.exonym.lib.helpers.UIDHelper;
@@ -38,6 +34,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     private ConcurrentHashMap<String, Long> challengeToT0 = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, String> sessionIdToChallenge = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, EndonymToken> sessionIdToEndonym = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, EndonymToken> sessionIdToErrors = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, ConcurrentHashMap<URI, EndonymToken>> authSessionIdToEndonym = new ConcurrentHashMap<>();
 
     protected void challenge(SsoChallenge challenge, String sessionId){
@@ -48,6 +45,10 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
         challengeToDomainContext.put(challenge.getChallenge(), challenge.getDomain());
         logger.info("Putting challenge and domain=" + challengeToDomainContext);
 
+    }
+
+    protected void removeSession(String session){
+        this.authSessionIdToEndonym.remove(session);
 
     }
 
@@ -67,33 +68,144 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
 
     protected void authenticate(String token) throws UxException, HubException {
         long t0 = Timing.currentTime();
+        String sessionId = null;
         try {
             if (token != null) {
-                String challenge = authenticateToken(token);
-                String sessionId = challengeToSessionId.remove(challenge);
+                PresentationToken pt = Parser.parsePresentationTokenFromXml(token);
+                String message = extractMessage(pt);
+                String challenge = extractValueFromJson(message, "c");
+                sessionId = challengeToSessionId.get(challenge); // this was remove -- >> bug hunting.
+
+                logger.info("Retrieved Challenge for session=" + sessionId + " challenge=" + challenge);
+                authenticateToken(pt, challenge);
+                logger.info("Authenticated token successfully");
+
                 synchronized (sessionId) {
+                    logger.info("Adding authorised session " + sessionId);
                     addAuthorizedSession(sessionId, challenge);
                     sessionId.notifyAll();
                     logger.info("Authentication Duration = " + Timing.hasBeenMs(t0));
+
                 }
             } else {
                 throw new NullPointerException("No Token Provided");
 
             }
-        } catch (HubException e){
-            throw e;
+        } catch (PolicyNotSatisfiedException e) {
+            if (sessionId!=null){
+                completeRequest(sessionId, e);
 
-        } catch (UxException e){
-            throw e;
-
-        } catch (SerializationException e) {
-            throw new HubException(ErrorMessages.TOKEN_INVALID + ":Serialization", e);
+            }
+            throw new UxException(ErrorMessages.FAILED_TO_AUTHORIZE, e);
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            if (sessionId==null){
+                throw new HubException(ErrorMessages.SERVER_SIDE_PROGRAMMING_ERROR, e);
+
+            } else {
+                completeRequest(sessionId, e);
+
+            }
+        }
+    }
+
+    private String extractMessage(PresentationToken pt) {
+        return new String(
+                pt.getPresentationTokenDescription().getMessage().getNonce(),
+                StandardCharsets.UTF_8);
+    }
+
+    private String extractValueFromJson(String kv, String keyOfKv){
+        JsonObject o = JaxbHelper.gson.fromJson(kv, JsonObject.class);
+        return o.get(keyOfKv).getAsString();
+
+    }
+
+
+    private void completeRequest(String sessionId, Exception e) {
+        synchronized (sessionId){
+            EndonymToken nym = sessionIdToEndonym.remove(sessionId);
+            nym.setError(e.getMessage());
+            sessionIdToErrors.put(sessionId, nym);
+            sessionId.notifyAll();
 
         }
     }
+
+    protected EndonymToken isAuthenticatedWait(String sessionId, URI context, long timeout) throws UxException {
+        synchronized (sessionId){
+            try {
+                boolean alreadyAuth = isAuthenticatedQuiet(sessionId, context);
+                if (alreadyAuth){
+                    return isAuthenticated(sessionId, context);
+
+                } else {
+                    long t0 = Timing.currentTime();
+                    logger.info("Waiting for authentication " + sessionId + " timeout=" + timeout);
+                    sessionId.wait(timeout);
+
+                    if (Timing.hasBeen(t0, timeout)){
+                        EndonymToken result = new EndonymToken();
+                        result.setTimeout(true);
+                        return result;
+
+                    } else {
+                        logger.info("Trying auth after notification " + sessionId);
+                        return this.isAuthenticated(sessionId, context);
+
+                    }
+                }
+            } catch (InterruptedException e) {
+                return this.isAuthenticated(sessionId, context);
+
+            }
+        }
+    }
+
+    /**
+     * Check for authorized sessions.
+     *
+     * @param sessionId
+     * @return The endonyms associated with the session.
+     * @throws UxException If the session is not authorized.
+     *
+     */
+    protected EndonymToken isAuthenticated(String sessionId, URI context) throws UxException {
+        ConcurrentHashMap<URI, EndonymToken> contextToEndonym = authSessionIdToEndonym.get(sessionId);
+        if (contextToEndonym!=null) {
+            logger.info("contextToEndonym " + contextToEndonym + " context=" + context);
+            EndonymToken endonym = contextToEndonym.get(context);
+            if (endonym != null) {
+                return endonym;
+
+            } else {
+                EndonymToken token = sessionIdToErrors.remove(sessionId);
+                if (token!=null){
+                    return token;
+
+                } else {
+                    throw new UxException(ErrorMessages.FAILED_TO_AUTHORIZE);
+
+                }
+            }
+        } else {
+            logger.info("No contextToEndonym Map " + contextToEndonym);
+            throw new UxException(ErrorMessages.FAILED_TO_AUTHORIZE);
+
+        }
+    }
+
+    protected boolean isAuthenticatedQuiet(String sessionId, URI context)  {
+        try{
+            isAuthenticated(sessionId, context);
+            return true;
+
+        } catch (Exception e){
+            logger.throwing("ExonymAuthenticate.class", "isAuthenticatedQuiet()", e);
+            return false;
+        }
+    }
+
 
     private void addAuthorizedSession(String sessionId, String challenge) {
         logger.info("(z) challengeToDomainContext=" + challengeToDomainContext);
@@ -115,39 +227,6 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
 
     }
 
-    /**
-     * Check for authorized sessions.
-     *
-     * @param sessionId
-     * @return The endonyms associated with the session.
-     * @throws UxException If the session is not authorized.
-     *
-     */
-    protected EndonymToken isAuthenticated(String sessionId, URI context) throws UxException {
-        ConcurrentHashMap<URI, EndonymToken> contextToEndonym = authSessionIdToEndonym.get(sessionId);
-        if (contextToEndonym!=null) {
-            logger.info("contextToEndonym " + contextToEndonym + " context=" + context);
-            EndonymToken endonym = contextToEndonym.get(context);
-            if (endonym != null) {
-                return endonym;
-            }
-        } else {
-            logger.info("No contextToEndonym Map " + contextToEndonym);
-
-        }
-        throw new UxException(ErrorMessages.FAILED_TO_AUTHORIZE);
-    }
-
-    protected boolean isAuthenticatedQuiet(String sessionId, URI context)  {
-        try{
-            isAuthenticated(sessionId, context);
-            return true;
-
-        } catch (Exception e){
-            logger.throwing("ExonymAuthenticate.class", "isAuthenticatedQuiet()", e);
-            return false;
-        }
-    }
 
     protected SsoChallenge authIfNeeded(SsoConfiguration config, String sessionId) throws AlreadyAuthException {
         if (!isAuthenticatedQuiet(sessionId, config.getDomain())){
@@ -160,14 +239,8 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     }
 
 
-    private String authenticateToken(String token) throws Exception {
-        PresentationToken pt = Parser.parsePresentationTokenFromXml(token);
-        PresentationTokenDescription ptd = pt.getPresentationTokenDescription();
-        JsonObject o = JaxbHelper.gson.fromJson(
-                new String(ptd.getMessage().getNonce(),
-                        StandardCharsets.UTF_8), JsonObject.class);
 
-        String challenge = o.get("c").getAsString();
+    private String authenticateToken(PresentationToken pt, String challenge) throws Exception {
 
         String sessionId = challengeToSessionId.get(challenge);
         ExonymChallenge c = challengeToAuthenticationRequest.remove(challenge);
@@ -176,8 +249,11 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
                 + challenge + " " + sessionId + " " + c);
 
         PresentationPolicyAlternatives ppa = verifyOfferingAndBuildPolicy(c, sessionId, pt);
+        logger.info("Pps computed");
         ExonymOwner owner = ExonymOwner.verifierOnly();
+        logger.info("Verifier Only");
         owner.verifyClaim(ppa, pt);
+        logger.info("Verified Claim");
         return challenge;
 
     }
@@ -191,7 +267,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
             return juxtaposeTokenAndDelegateChallenge((DelegateRequest) c, sessionId, pt);
 
         } else if (c==null){
-            throw new UxException(ErrorMessages.UNEXPECTED_TOKEN_FOR_THIS_NODE);
+            throw new UxException(ErrorMessages.UNEXPECTED_TOKEN_FOR_THIS_NODE_OR_AUTH_TIMEOUT);
 
         } else {
             throw new HubException("Unsupported Challenge Type " + c);
@@ -226,13 +302,14 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
             RulebookAuth auth = requests.get(rulebook);
             CredentialInToken cit = rcMap.get(rulebook);
             URI modUid = UIDHelper.computeModUidFromMaterialUID(cit.getIssuerParametersUID());
+            logger.info("Got ModID at check rulebooks= " + modUid);
 
             if (auth.getModBlacklist()
                     .contains(modUid)){
                 throw new UxException(ErrorMessages.BLACKLISTED_MODERATOR);
             }
-            URI leadUID = UIDHelper.computeLeadUidFromModUid(
-                    cit.getIssuerParametersUID());
+            URI leadUID = UIDHelper.computeLeadUidFromModUid(modUid);
+            logger.info("Got LeadID at check rulebooks= " + leadUID);
 
             if (auth.getLeadBlacklist()
                     .contains(leadUID)){
@@ -308,7 +385,8 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
             URI rid = UIDHelper.computeRulebookUidFromNodeUid(
                     cit.getIssuerParametersUID());
 
-            logger.info("Rulebook ID:" + cit.getIssuerParametersUID());
+            logger.info("Rulebook ID:" + rid);
+
             map.put(rid.toString(), cit);
             credentials.add(Parser.credentialInTokenToPolicy(cit));
             if (cit.getIssuerParametersUID().toString().contains(sybilUID)){

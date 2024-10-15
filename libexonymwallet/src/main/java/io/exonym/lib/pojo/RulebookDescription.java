@@ -1,11 +1,5 @@
 package io.exonym.lib.pojo;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
 public class RulebookDescription {
 
@@ -14,6 +8,8 @@ public class RulebookDescription {
     private String simpleDescriptionEN;
 
     boolean production = false;
+
+    private Penalty defaultPenalty;
 
     public boolean isProduction() {
         return production;
@@ -39,4 +35,11 @@ public class RulebookDescription {
         this.simpleDescriptionEN = simpleDescriptionEN;
     }
 
+    public Penalty getDefaultPenalty() {
+        return defaultPenalty;
+    }
+
+    public void setDefaultPenalty(Penalty defaultPenalty) {
+        this.defaultPenalty = defaultPenalty;
+    }
 }

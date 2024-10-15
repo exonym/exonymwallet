@@ -34,16 +34,16 @@ public class SsoConfigWrapper {
 
     }
 
-    public void addModeratorToBlacklist(URI advocateUID) throws UxException {
-        URI rulebookId = UIDHelper.computeRulebookUidFromNodeUid(advocateUID);
+    public void addModeratorToBlacklist(URI modUid) throws UxException {
+        String rulebookId = UIDHelper.computeRulebookIdFromAdvocateUid(modUid);
         RulebookAuth rulebook = this.config.getHonestUnder().get(rulebookId);
         if (rulebook==null){
             rulebook = new RulebookAuth();
-            rulebook.setRulebookUID(rulebookId);
+            rulebook.setRulebookUID(URI.create(rulebookId));
             this.config.getHonestUnder().put(rulebookId.toString(), rulebook);
 
         }
-        rulebook.getModBlacklist().add(advocateUID);
+        rulebook.getModBlacklist().add(modUid);
     }
 
     public void requireSybil(boolean required){

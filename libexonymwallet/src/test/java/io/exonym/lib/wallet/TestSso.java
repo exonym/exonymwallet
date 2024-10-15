@@ -55,7 +55,6 @@ public class TestSso {
     public void delegate() {
         try {
             // Service gets a request to delegate
-            logger.finer("Hello");
             DelegateRequest delegateRequest = DelegateRequest.newDelegateRequest(URI.create("http://localhost:20001"));
             AuthenticationWrapper dr = AuthenticationWrapper.wrapToWrapper(delegateRequest, 100, DelegateRequest.class);
 
@@ -98,7 +97,6 @@ public class TestSso {
     @Test
     public void ssoAuthenticate() {
         try {
-
             SsoConfigWrapper config = new SsoConfigWrapper(TARGET_SSO_URL);
             config.requireRulebook(RULEBOOK_TARGET);
             config.addModeratorToBlacklist(MOD_TO_BLACKLIST);
@@ -119,10 +117,19 @@ public class TestSso {
         }
     }
 
+//🟢 {
+//        "endonymUnderDomain": "http://localhost:20001/accountability-required",
+//                "issuersToUse": ["urn:rulebook:trustworthy-leaders:exonym:exonym-leads:9f87ae0387e1ac0c1c6633a90ad674f9564035624f490fe92aba28c911487691:d9c5d55f:i"],
+//        "missing": [],
+//        "userChoices": {
+//            "rulebooksToIssuers": {},
+//            "sftpAccess": []
+//        }
+//    }
     @Test
     public void ssoWithLinkAuth() {
         try {
-            String link = "https://trust.exonym.io/auth/?eJwljEELgjAYQO/+irFzspmG4DFjSUE0SLp00W04YX6LOUMR/3ta1/d4bw4QwkJXxihoFM4Q9owckoSzG7P3RAhXFCJ99un54yBqrvWDn0qXH6uLjPhroDSWeLc9pO2qFraB9v6dEaJGC1MXjiGNsz2lNCJgQ2EsqP5f9FPdmjXwblA/oDfnS5DKrXheguULtjYvwg==";
+            String link = "https://trust.exonym.io/auth/?eJy1j8tqwzAQRff5CuN1guWXbHnZNrSlhUIbQ6DtYiyPH1i2EkkmOCH/Xjk0WXTfxWzOnbmHOS0cx+UNCIFDjW7muK+yesfH7VQWdRgXa3h6qfMd3h+9fd5/bPIje6N5d9h4G7X+GgkJS3c5d5Syh3aYCxpjdpnnCclBNFKbLCCE+B5wLsfBQNGK1kwrhfuxVfh7rSeL7bFRI15AIwfUJh9KVBafLLJwVEOmRoGFlF1mV7U5SGWaaSUQ7KLOWJUmgCRME/SBE+5zSsMQGIGSJlHFYhqRMKZBVEWMVMgCKCBIOfP9KE0o828qK7uK8ueH+av/dy+v5rnxTgDvRKuNdX9+36Je/kkuwXkxz/kHY9mKOg==";
             PassStore store = pass();
             Prove prove = new Prove(store, path());
             FulfillmentReport report = prove.authenticationSummaryForULink(link);

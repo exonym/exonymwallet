@@ -23,9 +23,10 @@ public class RulebookCreator {
     private String rulebookFile = null;
 
     public RulebookCreator(String name, String path) throws Exception {
-        valid.add("final");
-        valid.add("protected");
-        valid.add("public");
+        valid.add(Rulebook.MODIFIER_FINAL);
+        valid.add(Rulebook.MODIFIER_PROTECTED);
+        valid.add(Rulebook.MODIFIER_PUBLIC);
+
         Path folder = Path.of(path);
         Path rulesPath = folder.resolve(name + ".rulebook");
         Path descriptionPath = folder.resolve(name + ".description");
@@ -188,7 +189,7 @@ public class RulebookCreator {
             return item;
 
         } else {
-            throw new UxException("RULE_OR_INDEX_INVALID");
+            throw new UxException("RULE_OR_INDEX_INVALID: " + rule);
 
         }
     }
@@ -212,7 +213,7 @@ public class RulebookCreator {
         for (int i = 0; i<interpretations; i++){
             Interpretation j = new Interpretation();
             j.setDefinition("");
-            j.setModifier("public");
+            j.setModifier(Rulebook.MODIFIER_PUBLIC);
             item.getInterpretations().add(j);
         }
         String[] parts = rule.split("]");

@@ -16,17 +16,17 @@ class TargetCommands {
       if (selected.choice == TargetMenu.testnet){
         _targetNetwork(selected.options);
 
-      } else if (selected.choice == TargetMenu.source){
+      } else if (selected.choice == TargetMenu.lead){
 
         var parts = ChoiceAndOptions<TargetMenuAction>(
             selected.options.removeAt(0), TargetMenuAction.values);
         print("Choice = ${selected.options}");
 
         if (parts.choice == TargetMenuAction.add){
-          _addSource(selected.options);
+          _addLead(selected.options);
 
         } else if (parts.choice == TargetMenuAction.remove){
-          _removeSource(selected.options);
+          _removeLead(selected.options);
 
         }
       } else {
@@ -54,20 +54,20 @@ class TargetCommands {
     }
   }
 
-  Future<void> _addSource(List<String> options) async {
+  Future<void> _addLead(List<String> options) async {
     if (!options.isEmpty){
-      String sourceURL = options.first;
-      line.success("add source $sourceURL");
+      String leadURL = options.first;
+      line.success("add lead $leadURL");
 
     } else {
-      throw "A source should be specified by URL ending .../x-source";
+      throw "A lead should be specified by URL ending .../lead";
 
     }
   }
 
-  Future<void> _removeSource(List<String> options) async {
-    String sourceUID = options.first;
-    line.success("remove source " + options.first);
+  Future<void> _removeLead(List<String> options) async {
+    String leadUID = options.first;
+    line.success("remove lead " + leadUID);
   }
 
 }
@@ -76,6 +76,6 @@ void _printTargetUsage(Object e) {
   line.warn('''
 No command 'target $e': valid sub-commands are:
   testnet [true|false]    :   set the cli context to test net or main net 
-  source [add | remove]   :   add or remove a source by URL
+  lead [add | remove]   :   add or remove a lead by URL
   ''');
 }

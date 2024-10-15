@@ -1,13 +1,9 @@
 package io.exonym.example.sso;
 
 import com.google.gson.JsonObject;
-import com.ibm.zurich.idmx.exception.ProofException;
 import io.exonym.lib.exceptions.*;
-import io.exonym.lib.helpers.Timing;
-import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.pojo.AuthenticationWrapper;
 import io.exonym.lib.pojo.EndonymToken;
-import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.pojo.SsoChallenge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +17,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -73,10 +68,6 @@ public class ExonymServlet extends HttpServlet {
         }
     }
 
-    private void requestAuth(HttpServletRequest req, HttpServletResponse resp,
-                             ExonymAuthenticate auth, String sessionId) throws Exception {
-    }
-
     private SsoChallenge levelOfAccess(String path, String sessionId) throws IOException, AlreadyAuthException {
         SsoProperties props = SsoProperties.getInstance();
         ExonymAuthenticate auth = ExonymAuthenticate.getInstance();
@@ -94,6 +85,10 @@ public class ExonymServlet extends HttpServlet {
                 } else if  (requests[1].equals("rulebooks")){
                     return auth.authIfNeeded(props.getRulebooks(), sessionId);
 
+                } else if (requests[1].equals("reset")){
+                    auth.removeSession(sessionId);
+                    return null;
+
                 }
             }
         }
@@ -106,22 +101,27 @@ public class ExonymServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             String probeOrXmlToken = buildParamsAsString(req);
-            logger.debug(probeOrXmlToken);
+
             if (probeOrXmlToken.startsWith("{\"probe")){
+                logger.info("----------------- Probe IN");
                 probeIn(req, resp);
 
             } else {
+                logger.info("----------------- Token IN");
                 ExonymAuthenticate auth = ExonymAuthenticate.getInstance();
                 auth.authenticate(probeOrXmlToken);
 
-
             }
         } catch (UxException e) {
+            logger.error("Error", e);
+            logger.info("--------------- Received UxException");
             JsonObject o = new JsonObject();
-            o.addProperty("error", e.getMessage());
+            o.addProperty("error", "" + e.getMessage());
             resp.getWriter().write(o.toString());
 
         } catch (Exception e) {
+            logger.error("Error", e);
+            logger.info("--------------- Received Other Exception");
             JsonObject o = new JsonObject();
             logger.info("Error ", e);
             o.addProperty("error", ErrorMessages.FAILED_TO_AUTHORIZE);
@@ -134,32 +134,27 @@ public class ExonymServlet extends HttpServlet {
         ExonymAuthenticate auth = ExonymAuthenticate.getInstance();
         String sessionId = req.getSession().getId();
         URI context = auth.probeForContext(sessionId);
-        synchronized (sessionId){
-            try {
-                long timeout = auth.challengeTimeout();
-                long t0 = Timing.currentTime();
-                sessionId.wait(timeout);
-                JsonObject o = new JsonObject();
-                if (Timing.hasBeen(t0, timeout)){
-                    o.addProperty("timeout", true);
-                    resp.getWriter().write(o.toString());
+        logger.info("Waiting on authentication for " + sessionId);
+        EndonymToken endonym = auth.isAuthenticatedWait(sessionId, context, 30000l);
+        logger.info("Got authentication for " + sessionId);
+        if (endonym.isTimeout()){
+            throw new UxException(ErrorMessages.TIME_OUT);
 
-                } else {
-                    // you have an authenticated identifier for this user associated with a session.
-                    EndonymToken endonym = auth.isAuthenticated(sessionId, context);
-                    logger.debug("GOT ID=" + endonym.getEndonym());
-                    o.addProperty("auth", true);
-                    o.addProperty("endonym", endonym.getEndonym().toString());
-                    resp.getWriter().write(o.toString());
-                    Files.write(PATH_TO_STATIC.resolve(endonym.computeIndex()),
-                            endonym.getXmlPresentationToken().getBytes(StandardCharsets.UTF_8),
-                            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
+        } else if (endonym.hasError()){
+            throw new UxException(endonym.getError());
 
-                }
-            } catch (InterruptedException e) {
-                throw new RuntimeException();
+        } else {
+            // you have an authenticated identifier for this user associated with a session.
+            logger.debug("GOT ID=" + endonym.getEndonym());
+            JsonObject o = new JsonObject();
+            o.addProperty("auth", true);
+            o.addProperty("endonym", endonym.getEndonym().toString());
+            resp.getWriter().write(o.toString());
+            Files.write(PATH_TO_STATIC.resolve(endonym.computeIndex()),
+                    endonym.getCompressedPresentationToken(),
+                    StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
 
-            }
+
         }
     }
 

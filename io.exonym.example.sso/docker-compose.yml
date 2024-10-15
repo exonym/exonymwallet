@@ -1,6 +1,8 @@
 services:
   exonym-example-sso:
     container_name: exonym-example-sso
+    extra_hosts:
+      - "exonym-x-03:${HOST_IP}"
     build:
       context: .
       dockerfile: Dockerfile

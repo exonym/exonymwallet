@@ -16,6 +16,7 @@ import eu.abc4trust.abce.internal.user.credentialManager.CredentialManagerExcept
 import eu.abc4trust.cryptoEngine.issuer.CryptoEngineIssuer;
 import eu.abc4trust.returnTypes.IssuerParametersAndSecretKey;
 import eu.abc4trust.xml.*;
+import io.exonym.idmx.managers.KeyManagerExonym;
 import io.exonym.lib.actor.AbstractBaseActor;
 import io.exonym.lib.actor.RequestFulfilled;
 import io.exonym.lib.actor.VerifiedClaim;
@@ -25,12 +26,14 @@ import io.exonym.lib.exceptions.HubException;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.helpers.BuildIssuancePolicy;
 import io.exonym.lib.helpers.DateHelper;
+import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.pojo.Namespace;
 import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.standard.ExtractObject;
 import io.exonym.lib.abc.util.FileType;
 import io.exonym.lib.abc.util.UidType;
 import io.exonym.lib.api.AbstractIdContainer;
+import io.exonym.lib.wallet.ExonymIssuer;
 
 import javax.crypto.Cipher;
 import java.math.BigInteger;
@@ -69,7 +72,22 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 		initSystemParameters();
 		
 	}
-	
+
+	public void clearStale() throws Exception {
+		if (this.keyManager instanceof KeyManagerExonym){
+			KeyManagerExonym k = (KeyManagerExonym)this.keyManager;
+			k.clearStale();
+			this.open = false;
+
+			logger.info("Cleared Revocation Information");
+
+		} else {
+			throw new Exception("The key manager was not an acceptable class " + this.keyManager);
+
+		}
+	}
+
+
 	protected boolean openResourceIfNotLoaded(URI uid) throws Exception {
 		if (!super.openResourceIfNotLoaded(uid)) {
 			if (UidType.isRevocationHistory(uid)) {
@@ -513,10 +531,13 @@ public abstract class AbstractExonymIssuer extends AbstractBaseActor {
 		URI revocationInfo = this.cryptoEngineRaIdmx.revoke(raUid, handle0);
 		RevocationInformation ri = this.keyManager.getRevocationInformation(raUid, revocationInfo);
 		container.saveLocalResource(ri, true);
+
 		logger.info("" + revocationInfo);
 		return ri;
 		
 	}
+
+
 	
 	/**
 	 * This looks through the local resources available to the issuer

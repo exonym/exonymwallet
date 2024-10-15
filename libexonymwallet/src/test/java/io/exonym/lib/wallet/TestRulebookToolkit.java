@@ -121,7 +121,7 @@ public class TestRulebookToolkit {
     @Test
     public void networkMapCreateAndDelete() {
         try {
-            Path nmPath = Path.of("resource", "test-network-map");
+            Path nmPath = Path.of("non-resources", "test-network-map");
 
             NetworkMap map = new NetworkMap(nmPath);
 //            assert !map.networkMapExists();

@@ -1,5 +1,6 @@
 package io.exonym.lib.wallet;
 
+import com.beust.jcommander.internal.Nullable;
 import com.google.gson.JsonObject;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.actor.NodeVerifier;
@@ -294,6 +295,7 @@ public class Prove {
                 String target = protocol + "//" + domain + "/exonym";
                 logger.info(target);
                 Http client = new Http();
+
                 return client.basicPost(target, xml);
 
             } else {
@@ -328,7 +330,7 @@ public class Prove {
 
                 }
                 this.exo.getOwner().clearStale();
-                this.exo.reopen();
+                this.exo.reopen(ptd);
                 return owner.proveClaim(ptd, ppa);
             }
         }
@@ -399,7 +401,9 @@ public class Prove {
             URI sybilTestnetUID = exo.getNetworkMap().nmiForSybilTestNet().getLastIssuerUID();
             UIDHelper sybilHelper = new UIDHelper(sybilTestnetUID);
             bpp.addCredentialInPolicy(sybilHelper.getCredentialSpecAsList(),
-                    sybilHelper.computeIssuerParametersUIDAsList(), UUID.randomUUID().toString(), DEFAULT_ALIAS);
+                    sybilHelper.computeIssuerParametersUIDAsList(),
+                    UUID.randomUUID().toString(), DEFAULT_ALIAS);
+
             CredentialSpecification sybilCS = external.openResource(sybilHelper.getCredentialSpecFileName());
             AttributeDescription attDesc = sybilCS.getAttributeDescriptions()
                     .getAttributeDescription().get(0);
@@ -510,7 +514,7 @@ public class Prove {
             return b.toString();
 
         } catch (Exception e){
-            throw new UxException(ErrorMessages.UNEXPECTED_TOKEN_FOR_THIS_NODE, e);
+            throw new UxException(ErrorMessages.UNEXPECTED_TOKEN_FOR_THIS_NODE_OR_AUTH_TIMEOUT, e);
 
         }
     }

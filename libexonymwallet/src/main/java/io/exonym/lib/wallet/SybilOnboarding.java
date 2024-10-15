@@ -38,7 +38,7 @@ public class SybilOnboarding {
         URI sybilCSpecUID = URI.create(Rulebook.SYBIL_RULEBOOK_UID_TEST + ":c");
         CredentialSpecification cSpec = external.openResource(IdContainerJSON.uidToXmlFileName(sybilCSpecUID));
 
-        NetworkMapItemLead sybilLeadTarget = openSybilLead(sybilRulebookID.toString(), map);
+        NetworkMapItemLead sybilLeadTarget = openSybilLead(Rulebook.SYBIL_LEAD_UID_TEST.toString(), map);
         NetworkMapItemModerator testNetTarget = targetSybil(sybilLeadTarget, map, false);
         NodeVerifier verifiedAdvocate = NodeVerifier.openNode(testNetTarget.getStaticURL0(), false, false);
         UIDHelper helper = verifiedAdvocate.getUidHelperForMostRecentIssuerParameters();

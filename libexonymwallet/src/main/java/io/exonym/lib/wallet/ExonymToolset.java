@@ -1,16 +1,24 @@
 package io.exonym.lib.wallet;
 
+import eu.abc4trust.xml.CredentialInToken;
+import eu.abc4trust.xml.PresentationTokenDescription;
 import io.exonym.lib.api.Cache;
 import io.exonym.lib.api.PkiExternalResourceContainer;
 import io.exonym.lib.api.IdContainerJSON;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.standard.PassStore;
 
+import java.net.URI;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class ExonymToolset {
 
+    private final static Logger logger = Logger.getLogger(ExonymToolset.class.getName());
     private NetworkMap networkMap;
     private Cache cache;
     private ExonymOwner owner;
@@ -55,9 +63,27 @@ public class ExonymToolset {
         return owner;
     }
 
-    protected void reopen(){
+    protected void reopen(PresentationTokenDescription ptd){
+        List<CredentialInToken> creds = ptd.getCredential();
+        for (CredentialInToken cred : creds) {
+            URI iuid = cred.getIssuerParametersUID();
+            try {
+                UIDHelper helper = new UIDHelper(iuid);
+                owner.openResourceIfNotLoaded(helper.getRevocationAuthority());
+                owner.openResourceIfNotLoaded(helper.getRevocationInfoParams());
+                owner.openResourceIfNotLoaded(helper.getInspectorParams());
+                owner.openResourceIfNotLoaded(helper.getIssuerParameters());
+
+            } catch (Exception e) {
+                logger.warning("Unexpected Error " + e.getMessage());
+
+            }
+        }
         this.owner.openContainer(store);
+
     }
+
+
 
     protected IdContainerJSON getX() {
         return x;

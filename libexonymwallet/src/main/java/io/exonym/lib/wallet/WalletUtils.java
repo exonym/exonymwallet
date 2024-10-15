@@ -77,13 +77,13 @@ public class WalletUtils {
     }
 
 
-    protected static NetworkMapItemModerator determinedSearchForAdvocate(Path path, URI advocateUID) throws Exception {
+    protected static NetworkMapItemModerator determinedSearchForModerator(Path path, URI advocateUID) throws Exception {
         NetworkMap map = new NetworkMap(path.resolve("network-map"));
-        return determinedSearchForAdvocate(map, advocateUID);
+        return determinedSearchForModerator(map, advocateUID);
 
     }
 
-    protected static NetworkMapItemModerator determinedSearchForAdvocate(NetworkMap map, URI advocateUID) throws Exception {
+    protected static NetworkMapItemModerator determinedSearchForModerator(NetworkMap map, URI advocateUID) throws Exception {
         try {
             return (NetworkMapItemModerator) map.nmiForNode(advocateUID);
 
@@ -113,8 +113,6 @@ public class WalletUtils {
                 b64.getBytes(StandardCharsets.UTF_8)));
         return new String(decom, StandardCharsets.UTF_8);
     }
-
-
 
     public static String decodeUncompressedB64(String b64) throws IOException {
         return new String(Base64.decodeBase64(b64), StandardCharsets.UTF_8);

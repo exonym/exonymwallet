@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+@Deprecated // This is awful and it needs to be rewritten.
 public class FileSystem {
 static Logger log = Logger.getLogger(FileSystem.class.getName());
 

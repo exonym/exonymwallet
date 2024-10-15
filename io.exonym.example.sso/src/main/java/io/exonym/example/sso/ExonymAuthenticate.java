@@ -69,4 +69,14 @@ public class ExonymAuthenticate extends io.exonym.lib.api.ExonymAuthenticate {
     protected void close() throws Exception {
         super.close();
     }
+
+    @Override
+    protected EndonymToken isAuthenticatedWait(String sessionId, URI context, long timeout) throws UxException {
+        return super.isAuthenticatedWait(sessionId, context, timeout);
+    }
+
+    @Override
+    protected void removeSession(String session) {
+        super.removeSession(session);
+    }
 }

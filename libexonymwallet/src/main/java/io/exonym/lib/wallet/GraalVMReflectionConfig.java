@@ -114,6 +114,8 @@ public class GraalVMReflectionConfig {
     }
 
     private final static Class<?>[] CLASSES = new Class[]{
+            Penalty.class,
+            RulebookItem.class,
             TrustNetwork.class,
             NodeInformation.class,
             NetworkParticipant.class,

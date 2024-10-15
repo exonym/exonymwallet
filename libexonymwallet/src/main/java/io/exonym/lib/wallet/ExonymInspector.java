@@ -51,10 +51,6 @@ public class ExonymInspector extends AbstractExonymInspector {
         super.publishInspectorMaterials();
     }
 
-    @Override
-    public void clearStale() throws Exception {
-        super.clearStale();
-    }
 
     @Override
     protected boolean openResourceIfNotLoaded(URI uid) throws Exception {

@@ -294,6 +294,7 @@ public abstract class AbstractNetworkMap {
                         .filter(this::isTargetDirectory)
                         .map(this::createUrnFromPath)
                         .collect(Collectors.toList());
+
             } catch (IOException e) {
                 throw new UxException(ErrorMessages.FILE_NOT_FOUND,
                         "Error accessing files", rootPath.toString());

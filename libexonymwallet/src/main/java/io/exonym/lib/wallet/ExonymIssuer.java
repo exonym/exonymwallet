@@ -90,10 +90,6 @@ public class ExonymIssuer extends AbstractExonymIssuer {
         return super.getRevocationHandle();
     }
 
-    @Override
-    public void clearStale() throws Exception {
-        super.clearStale();
-    }
 
     @Override
     protected <T> T publicParameterOpener(URI uid) throws Exception {

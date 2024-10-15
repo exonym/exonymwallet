@@ -12,6 +12,7 @@ import io.exonym.lib.lite.SFTPLogonData;
 import io.exonym.lib.pojo.KeyContainer;
 import io.exonym.lib.pojo.Rulebook;
 import io.exonym.lib.pojo.XContainerSchema;
+import io.exonym.lib.standard.PassStore;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.BadPaddingException;
@@ -97,20 +98,20 @@ public class IdContainerJSON extends AbstractIdContainer {
 
 	}
 	
-	public void deleteCredential(String prefix, String suffix) throws Exception {
+
+	public void deleteCredential(String filename, PassStore store) throws Exception {
 		HashMap<String, String> map = this.schema.getOwnerSecretStore();
-		ArrayList<String> toDelete = new ArrayList<String>();
-		for (String k : map.keySet()) {
-			if (k.startsWith(prefix) && k.endsWith(suffix)) {
-				logger.log(Level.WARNING, "Deleting " + k);
-				toDelete.add(k);
-			}
+		String s = map.get(filename);
+		if (s!=null){
+			openResource(filename, store.getDecipher());
+			map.remove(filename);
+			commitSchema();
+			logger.info("Removed: " + filename);
+
+		} else {
+			logger.info("Failed to removed: " + filename);
+
 		}
-		for (String d : toDelete) {
-			map.remove(d);
-			
-		}
-		commitSchema();
 	}
 
 	public void deleteSftpCredential(String uid) throws Exception {

@@ -205,11 +205,20 @@ public final class ExonymOwner extends AbstractExonymOwner {
             owner.openContainer(store);
             owner.setupContainerSecret(store.getEncrypt(), store.getDecipher());
             // load sybil in preparation
-            owner.openResourceIfNotLoaded(networkMap.nmiForSybilTestNet().getLastIssuerUID());
+            // TODO - Test Only
+            owner.openResourceIfNotLoaded(
+                    networkMap.nmiForSybilTestNet().getLastIssuerUID());
             VERIFIER=owner;
 
         }
         return VERIFIER;
+
+    }
+
+    public static void updateRai(RevocationInformation rai) throws Exception {
+        CacheInMemory cache = CacheInMemory.getInstance();
+        cache.store(rai);
+        VERIFIER.clearStale();
 
     }
 

@@ -1,4 +1,5 @@
 FROM tomcat:9.0.73-jdk17-temurin-focal
+COPY conf/logging.properties /usr/local/tomcat/conf/
 COPY conf/tomcat-users.xml /usr/local/tomcat/conf/
 COPY conf/server.xml /usr/local/tomcat/conf/
 COPY conf/context.xml /usr/local/tomcat/conf/

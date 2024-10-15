@@ -170,7 +170,7 @@ class WalletCommands{
       } else {
         print("advocateUID");
         print(options[0]);
-        String result = await exonymWallet.onboardRulebookAdvocateUID(
+        String result = await exonymWallet.onboardRulebookModeratorUID(
             cliContext.containerName!,
             cliContext.containerPassword!,
             options[0],

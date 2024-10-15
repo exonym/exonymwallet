@@ -75,7 +75,7 @@ public class ErrorMessages {
     /**
      * Unable to discover the requested context.
      */
-    public static final String UNEXPECTED_TOKEN_FOR_THIS_NODE = "UNEXPECTED_TOKEN_FOR_THIS_NODE";
+    public static final String UNEXPECTED_TOKEN_FOR_THIS_NODE_OR_AUTH_TIMEOUT = "UNEXPECTED_TOKEN_FOR_THIS_NODE_OR_AUTH_TIMEOUT";
 
     /**
      *

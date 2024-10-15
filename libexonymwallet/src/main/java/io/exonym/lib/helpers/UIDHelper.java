@@ -21,6 +21,7 @@ public class UIDHelper {
 
     private final static Logger logger = Logger.getLogger(UIDHelper.class.getName());
 
+
     private String leadName;
     private String moderatorName;
     private  URI credentialSpec;
@@ -60,80 +61,127 @@ public class UIDHelper {
 
     }
 
-    private void assemble(String issuerParameters) throws Exception {
-        String[] parts = issuerParameters.split(":");
-        String mod = parts[0] + ":" +parts[1] + ":" +parts[2] + ":" +parts[3]+ ":" +parts[4] + ":" +parts[5];
-        String lead = parts[0] + ":" +parts[1] + ":" +parts[2] + ":" +parts[3] + ":" +parts[5];
-        boolean isIssuer = parts[parts.length-1]=="i";
+    private void assemble(String issuerParamsOrLead) throws Exception {
+
+        boolean isLead = WhiteList.isLeadUid(issuerParamsOrLead);
+        String[] parts = issuerParamsOrLead.split(":");
 
         this.leadName = parts[3];
-        this.moderatorName = parts[4];
+
+        this.rulebookUID = URI.create(Namespace.URN_PREFIX_COLON + parts[2]
+                + ":" + UIDHelper.computeRulebookHashUid(URI.create(issuerParamsOrLead)));
+
+        this.rulebookTopic = computeTopicFromRulebook(rulebookUID);
+
+        this.rulebookLeadTopic = this.rulebookTopic  + "/" + leadName;
+
+        String lead = null;
+
+        if (!isLead){
+            String mod = parts[0] + ":" +parts[1] + ":" +parts[2] + ":" +parts[3]+ ":" +parts[4] + ":" +parts[5];
+            lead = parts[0] + ":" +parts[1] + ":" +parts[2] + ":" +parts[3] + ":" +parts[5];
+            this.moderatorUid = URI.create(mod);
+            this.moderatorName = parts[4];
+
+            String issuerRnd = null;
+            boolean containsIssuer = WhiteList.isContainsIssuerUid(issuerParamsOrLead);
+
+            if (containsIssuer){
+                issuerRnd = parts[6];
+                String root = mod + ":" + issuerRnd;
+
+                this.issuerParameters = URI.create(root + ":i");
+                this.issuerParametersFileName = IdContainer.uidToXmlFileName(issuerParameters);
+
+                issuedCredential = URI.create(root + ":ic");
+                issuedCredentialFileName  = IdContainer.uidToXmlFileName(issuedCredential);
+
+                revocationAuthority = URI.create(root + ":ra");
+                revocationAuthorityFileName = IdContainer.uidToXmlFileName(revocationAuthority);
+
+                revocationAuthorityInfo = URI.create(root + ":rai");
+                revocationInfoFileName = IdContainer.uidToXmlFileName(revocationAuthorityInfo);
+
+                issuancePolicy = URI.create(root + ":ip");
+                issuancePolicyFileName = IdContainer.uidToXmlFileName(issuancePolicy);
+
+                this.inspectorParams = URI.create(mod + ":ins");
+                inspectorParamsFileName = IdContainer.uidToXmlFileName(inspectorParams);
+
+            }
+            this.rulebookModTopic = this.rulebookLeadTopic + "/" + moderatorName;
+
+        } else {
+            lead = issuerParamsOrLead;
+
+        }
+
         this.leadUid = URI.create(lead);
-        this.moderatorUid = URI.create(mod);
-        this.issuerParameters = (isIssuer ? URI.create(issuerParameters) :
-                URI.create(Namespace.URN_PREFIX_COLON + IdContainer.stripUidSuffix(issuerParameters,
-                                parts[parts.length-1].length()) + ":i"));
-
-        this.issuerParametersFileName = IdContainer.uidToXmlFileName(issuerParameters);
-        this.rulebookUID = URI.create(Namespace.URN_PREFIX_COLON + parts[2] + ":" + parts[5]);
-
-        String root = Namespace.URN_PREFIX_COLON  + IdContainer
-                .stripUidSuffix(this.issuerParameters, 1);
-
-        issuedCredential = URI.create(root + ":ic");
-        issuedCredentialFileName  = IdContainer.uidToXmlFileName(issuedCredential);
 
         this.presentationPolicy = URI.create(lead + ":pp");
         presentationPolicyFileName = IdContainer.uidToXmlFileName(presentationPolicy);
-
-        revocationAuthority = URI.create(root + ":ra");
-        revocationAuthorityFileName = IdContainer.uidToXmlFileName(revocationAuthority);
-
-        revocationAuthorityInfo = URI.create(root + ":rai");
-        revocationInfoFileName = IdContainer.uidToXmlFileName(revocationAuthorityInfo);
-
-        issuancePolicy = URI.create(root + ":ip");
-        issuancePolicyFileName = IdContainer.uidToXmlFileName(issuancePolicy);
-
-        this.inspectorParams = URI.create(mod + ":ins");
-        inspectorParamsFileName = IdContainer.uidToXmlFileName(inspectorParams);
 
         this.credentialSpec = credentialSpecFromLeadUID(this.leadUid);
         credentialSpecFileName = IdContainer.uidToXmlFileName(credentialSpec);
 
         this.rulebookFileName = IdContainer.uidToFileName(rulebookUID) + ".json";
 
-        this.rulebookTopic = computeTopicFromRulebook(rulebookUID);
+    }
 
-        this.rulebookLeadTopic = this.rulebookTopic  + "/" + leadName;
-
-        this.rulebookModTopic = this.rulebookLeadTopic + "/" + moderatorName;
-
-//        this.rulebookTopic = this.rulebookTopic + "/*";
-//
-//        this.rulebookLeadTopic = this.rulebookLeadTopic + "/*";
-
+    public static URI computeRulebookUidFromNodeUid(URI nodeUid) throws UxException {
+        if (nodeUid==null){
+            throw new NullPointerException();
+        }
+        return URI.create(Namespace.URN_PREFIX_COLON +
+                nodeUid.toString().split(":")[2] + ":" +
+                computeRulebookHashUid(nodeUid));
     }
 
 
-    public static String computeTopicFromRulebook(URI rulebookUID) {
+
+    private String computeTopicFromRulebook(URI rulebookUID) {
         return rulebookUID.toString()
                 .replaceAll("urn:", "")
                 .replaceAll(":", "/");
     }
 
-    public static String computeLeadNameFromModOrLeadUid(URI leadOrModUid){
-        if (leadOrModUid==null){
-            throw new NullPointerException();
+    public static URI transformMaterialUid(URI origin, String suffix) {
+        if (origin!=null && suffix!=null){
+            String o = origin.toString();
+            int i = o.lastIndexOf(":");
+            o = o.substring(0,i+1);
+            return URI.create(o + suffix);
+
+        } else {
+            throw new NullPointerException("origin/suffix" + origin + "/" + suffix);
+
         }
-        return leadOrModUid.toString().split(":")[3];
     }
 
-    public static String computeModNameFromModUid(URI modUid){
-        if (modUid==null){
+
+    public static String computeRulebookTopicFromUid(URI uid) throws UxException {
+        String hash = UIDHelper.computeRulebookHashUid(uid);
+        String name = uid.toString().split(":")[2];
+        String sum = Namespace.URN_PREFIX_COLON + name + ":" + hash;
+        return sum.toString()
+                .replaceAll("urn:", "")
+                .replaceAll(":", "/");
+    }
+
+
+
+    public static String computeLeadNameFromModOrLeadUid(URI sourceOrAdvocateUid){
+        if (sourceOrAdvocateUid==null){
             throw new NullPointerException();
         }
-        return modUid.toString().split(":")[4];
+        return sourceOrAdvocateUid.toString().split(":")[3];
+    }
+
+    public static String computeModNameFromModUid(URI advocateUid){
+        if (advocateUid==null){
+            throw new NullPointerException();
+        }
+        return advocateUid.toString().split(":")[4];
     }
 
     public static String computeShortRulebookHashUid(URI leadUid) throws UxException {
@@ -152,30 +200,38 @@ public class UIDHelper {
         }
     }
 
-    public static URI computeRulebookUidFromNodeUid(URI nodeUid) throws UxException {
-        if (nodeUid==null){
+
+
+    public static String computeRulebookHashFromRulebookId(String rulebookId){
+        return rulebookId.split(":")[3];
+    }
+
+    public static String computeRulebookIdFromAdvocateUid(URI modUid){
+        if (modUid==null){
             throw new NullPointerException();
         }
-        return URI.create(Namespace.URN_PREFIX_COLON +
-                nodeUid.toString().split(":")[2] + ":" +
-                computeRulebookHashUid(nodeUid));
+        return modUid.toString().split(":")[5];
     }
 
     public static URI computeRulebookIdFromLeadUid(URI leadUid){
-        if (WhiteList.isRulebookUid(leadUid)){
-            return leadUid;
-        } else {
-            String[] parts = leadUid.toString().split(":");
+        String[] parts = leadUid.toString().split(":");
+        if (WhiteList.isLeadUid(leadUid)){
             return URI.create(Namespace.URN_PREFIX_COLON + parts[2] + ":" + parts[4]);
+
+        } else if (WhiteList.isRulebookUid(leadUid)){
+            return leadUid;
+
+        } else {
+            logger.info(leadUid.toString());
+            throw new RuntimeException(ErrorMessages.INVALID_UID + " expected Lead " + leadUid);
 
         }
     }
 
-
-
-    public static URI credentialSpecFromLeadUID(URI leadUid){
-        String[] parts = leadUid.toString().split(":");
-        return URI.create(Namespace.URN_PREFIX_COLON + parts[2] + ":" + parts[4] + ":c");
+    public static URI credentialSpecFromLeadUID(URI sourceUid) throws UxException {
+        String[] parts = sourceUid.toString().split(":");
+        return URI.create(Namespace.URN_PREFIX_COLON + parts[2] + ":" +
+                UIDHelper.computeRulebookHashUid(sourceUid) + ":c");
 
     }
 
@@ -203,11 +259,7 @@ public class UIDHelper {
         return IdContainer.uidToFileName(uri);
     }
 
-    public ArrayList<CredentialInPolicy.IssuerAlternatives.IssuerParametersUID> computeIssuerParametersUIDAsList(){
-        ArrayList<CredentialInPolicy.IssuerAlternatives.IssuerParametersUID> list = new ArrayList<>();
-        list.add(computeIssuerParametersUID());
-        return list;
-    }
+
 
     public CredentialInPolicy.IssuerAlternatives.IssuerParametersUID computeIssuerParametersUID(){
         CredentialInPolicy.IssuerAlternatives.IssuerParametersUID params = new
@@ -246,6 +298,12 @@ public class UIDHelper {
 
     public URI getCredentialSpec() {
         return credentialSpec;
+    }
+
+    public ArrayList<CredentialInPolicy.IssuerAlternatives.IssuerParametersUID> computeIssuerParametersUIDAsList(){
+        ArrayList<CredentialInPolicy.IssuerAlternatives.IssuerParametersUID> list = new ArrayList<>();
+        list.add(computeIssuerParametersUID());
+        return list;
     }
 
     public ArrayList<URI> getCredentialSpecAsList() {
@@ -358,7 +416,7 @@ public class UIDHelper {
             return moderatorUid;
 
         } else {
-            throw new UxException(moderatorUid + " " + modMaterialUID);
+            throw new UxException(moderatorUid.toString());
 
         }
     }
@@ -372,7 +430,7 @@ public class UIDHelper {
         try {
             if (modUid!=null){
                 String[] discovery = modUid.toString().split(":");
-                if (discovery.length>=6) {
+                if (discovery.length==6) {
                     URI leadUid = URI.create(
                             discovery[0] + ":"
                                     + discovery[1] + ":"

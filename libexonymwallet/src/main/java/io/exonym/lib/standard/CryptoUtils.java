@@ -12,6 +12,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.util.Formatter;
 import java.util.logging.Logger;
 
 public class CryptoUtils {
@@ -44,6 +45,45 @@ public class CryptoUtils {
 
 		}
 	}
+
+	public static String computeMd5HashAsHex(byte[] bytes){
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] digest = md.digest(bytes);
+			return byteArrayToHex(digest);
+
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+
+		}
+	}
+
+
+	public static String byteArrayToHex(final byte[] hash) {
+		Formatter formatter = new Formatter();
+		for (byte b : hash) {
+			formatter.format("%02x", b);
+		}
+		String result = formatter.toString();
+		formatter.close();
+		return result;
+	}
+
+
+	public static byte[] computeSha256HashAsBytes(byte[] bytes) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(bytes);
+			byte[] digest = md.digest();
+			BigInteger bigI = new BigInteger(1, digest);
+			return bigI.toByteArray();
+
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+
+		}
+	}
+
 
 	public static String toHex(byte[] bytes){
 		BigInteger bigI = new BigInteger(1, bytes);

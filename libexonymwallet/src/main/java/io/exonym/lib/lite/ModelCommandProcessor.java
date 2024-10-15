@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 public abstract class ModelCommandProcessor implements Runnable {
 
-
 	private final static Logger logger = Logger.getLogger(ModelCommandProcessor.class.getName());
 	private volatile Thread thread;
 	private ArrayBlockingQueue<Msg> pipeIn; 

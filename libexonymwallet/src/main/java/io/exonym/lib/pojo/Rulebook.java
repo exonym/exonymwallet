@@ -1,15 +1,16 @@
 package io.exonym.lib.pojo;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class Rulebook extends SerialErrorHandling {
 
+    public static final String MODIFIER_FINAL = "final";
+    public static final String MODIFIER_PUBLIC = "public";
+    public static final String MODIFIER_PROTECTED = "protected";
     public static final String SYBIL_URL_MAIN = "https://trust.exonym.io/sybil-rulebook.json";
     public static final String SYBIL_URL_TEST = "https://trust.exonym.io/sybil-rulebook-test.json";
-
     public static final String SYBIL_RULEBOOK_NAME = "sybil";
     public static final String SYBIL_LEAD = "the-cyber";
     public static final String SYBIL_MOD_TEST = "thirty-test";
@@ -167,4 +168,15 @@ public class Rulebook extends SerialErrorHandling {
     public void setLink(String link) {
         this.link = link;
     }
+
+    public ArrayList<URI> computeRuleUris(){
+        ArrayList<URI> result = new ArrayList<>();
+        for (RulebookItem item : rules){
+            result.add(URI.create(item.getId()));
+
+        }
+        return result;
+
+    }
+
 }

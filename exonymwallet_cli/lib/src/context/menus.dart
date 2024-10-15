@@ -40,7 +40,7 @@ enum ProveDelegateMenu {
 
 enum TargetMenu {
   testnet,
-  source,
+  lead,
 
 }
 
@@ -53,9 +53,9 @@ enum TargetMenuAction {
 enum NetMenu {
   spawn,
   rulebooks,
-  sources,
-  advocates,
-  add_source
+  leads,
+  mods,
+  add_lead
 
 }
 
@@ -96,7 +96,7 @@ Usage: exonym [<commands>] [<args>]
 Top-level-commands:
 
   prove     :   Authentication commands for the open wallet.
-  net       :   Navigate rulebooks, sources, and advocates.
+  net       :   Navigate rulebooks, leads, and moderators.
   wallet    :   Wallet management.
   rulebook  :   Solidify and extend verifiable rulebooks based on rules and description files.
   target    :   Test net settings.

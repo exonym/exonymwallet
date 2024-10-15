@@ -20,9 +20,6 @@
       "pattern":"\\QMETA-INF/services/javax.xml.stream.XMLInputFactory\\E"
     }, 
     {
-      "pattern":"\\Qcom/sun/xml/bind/v2/ContextFactory.class\\E"
-    }, 
-    {
       "pattern":"\\Qcom/sun/xml/bind/v2/runtime/reflect/opt/FieldAccessor_Boolean.class\\E"
     }, 
     {

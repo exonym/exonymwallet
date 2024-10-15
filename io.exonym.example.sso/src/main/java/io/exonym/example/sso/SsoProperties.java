@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.ibm.zurich.idmx.jaxb.JaxbHelperClass;
 import eu.abc4trust.xml.SystemParameters;
 import io.exonym.lib.abc.util.JaxbHelper;
+import io.exonym.lib.api.NotificationSubscriber;
 import io.exonym.lib.api.SsoConfigWrapper;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.pojo.RulebookAuth;
@@ -16,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class SsoProperties  {
@@ -26,6 +26,8 @@ public class SsoProperties  {
     
     private static SsoProperties instance;
 
+
+    private NotificationSubscriber subscriber;
 
     private SsoConfiguration basic;
     private SsoConfiguration sybil;
@@ -38,6 +40,7 @@ public class SsoProperties  {
     public SsoProperties() throws UxException {
         String url = mandatory("SERVICE_URL");
         myDomain = URI.create(url);
+
 
         // The authentication request will be sent to domain provided.
         // The user identity (the endonym) will be unique within the context of the URL string
@@ -56,6 +59,8 @@ public class SsoProperties  {
         String rulebook = mandatory("RULEBOOK_URN");
 
         rulebooks.requireRulebook(URI.create(rulebook));
+        subscriber = NotificationSubscriber.getInstance();
+        subscriber.subscribe(rulebooks.getConfig(), true, true);
 
         String excludeAdvocate = optional("BLACKLIST_ADVOCATE", null);
         String excludeSource = optional("BLACKLIST_SOURCE", null);

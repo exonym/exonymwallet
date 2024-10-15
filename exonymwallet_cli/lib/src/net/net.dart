@@ -19,14 +19,15 @@ class NetCommands{
       } else {
         String action = selected.options.length > 0 ? selected.options[0] : "";
         String subject = selected.options.length > 1 ? selected.options[1] : "";
+        print("" + action + " " + subject);
 
         if (selected.choice == NetMenu.rulebooks){
           await _rulebooks(subject, action);
-        } else if (selected.choice == NetMenu.sources){
-          await _sourcesOrAdvocates(subject, action);
-        } else if (selected.choice == NetMenu.advocates){
-          await _sourcesOrAdvocates(subject, action);
-        } else if (selected.choice == NetMenu.add_source){
+        } else if (selected.choice == NetMenu.leads){
+          await _leadsOrModerators(subject, action);
+        } else if (selected.choice == NetMenu.mods){
+          await _leadsOrModerators(subject, action);
+        } else if (selected.choice == NetMenu.add_lead){
           await _addSourceToSybilNode(action);
         } else {
           throw Exception("Unexpected");
@@ -66,7 +67,7 @@ class NetCommands{
   }
 
   //
-  Future<void> _sourcesOrAdvocates(String subject, String action) async{
+  Future<void> _leadsOrModerators(String subject, String action) async{
     if (action=="list"){
       var r = await exonymWallet.listActors(subject, cliContext.rootPath());
       line.success(r);
@@ -76,7 +77,7 @@ class NetCommands{
       line.success(r);
 
     } else {
-      throw "[sources || advocates] [view || list]";
+      throw "[leads || mods] [view || list]";
 
     }
   }
@@ -90,7 +91,7 @@ class NetCommands{
     try {
       cliContext.rejectUnauthenticated();
       if (cliContext.testNetwork){
-            var r = await exonymWallet.sourceListTest(url);
+            var r = await exonymWallet.leadListTest(url);
             line.success(r);
 
           } else {
@@ -107,10 +108,10 @@ class NetCommands{
 void _printTargetUsage(Object e) {
   line.warn('''
 No command 'net $e': valid sub-commands are:
-  spawn      :   force the network map to spawn from scratch 
-  rulebooks  :   navigate rulebooks - sub-commands [list, view]
-  sources    :   navigate sources - sub-commands [list, view]
-  advocates  :   navigate advocates - sub-commands [list, view]
-  add_source  :  broadcasts a new source to be accepted onto the network - proof required for production and so an open wallet is necessary.
+  spawn      : force the network map to spawn from scratch 
+  rulebooks  : navigate rulebooks - sub-commands [list, view]
+  leads      : navigate leads - sub-commands [list, view]
+  mods       : navigate moderators  - sub-commands [list, view]
+  add_lead   :  broadcasts a new source to be accepted onto the network - proof required for production and so an open wallet is necessary.
   ''');
 }

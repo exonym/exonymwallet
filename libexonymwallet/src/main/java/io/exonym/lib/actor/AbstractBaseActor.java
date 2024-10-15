@@ -79,18 +79,6 @@ public abstract class AbstractBaseActor {
 
 	}
 
-	public void clearStale() throws Exception {
-		if (this.keyManager instanceof KeyManagerExonym){
-			KeyManagerExonym k = (KeyManagerExonym)this.keyManager;
-			k.clearStale();
-			logger.info("Cleared Revocation Information");
-
-		} else {
-			throw new Exception("The key manager was not an acceptable class " + this.keyManager);
-
-		}
-	}
-	
 	protected boolean openResourceIfNotLoaded(URI uid) throws Exception {
 		logger.fine("Trying to open resource: " + uid);
 		if (uid!=null){

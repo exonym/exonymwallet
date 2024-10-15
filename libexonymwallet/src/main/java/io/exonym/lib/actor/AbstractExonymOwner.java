@@ -24,6 +24,7 @@ import eu.abc4trust.cryptoEngine.user.CryptoEngineUser;
 import eu.abc4trust.keyManager.KeyManagerException;
 import eu.abc4trust.returnTypes.IssuMsgOrCredDesc;
 import eu.abc4trust.xml.*;
+import io.exonym.idmx.managers.KeyManagerExonym;
 import io.exonym.lib.exceptions.*;
 import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.abc.util.UidType;
@@ -115,9 +116,22 @@ public abstract class AbstractExonymOwner extends AbstractBaseActor {
 			throw new RuntimeException(e);
 
 		}
-
-
 	}
+
+	public void clearStale() throws Exception {
+		if (this.keyManager instanceof KeyManagerExonym){
+			KeyManagerExonym k = (KeyManagerExonym)this.keyManager;
+			k.clearStale();
+			this.open = false;
+
+			logger.info("Cleared Revocation Information");
+
+		} else {
+			throw new Exception("The key manager was not an acceptable class " + this.keyManager);
+
+		}
+	}
+
 
 //	protected boolean openResourceIfNotLoaded(URI uid, int tmp) throws Exception {
 //		return openResourceIfNotLoaded(uid, false);
@@ -329,6 +343,8 @@ public abstract class AbstractExonymOwner extends AbstractBaseActor {
 					result = simpleIssuance(im);
 					
 				}
+
+				// TODO destroy old, if it's a reissue
 				if (imab.isLastMessage()){
 					storeCredential(result.cd, enc);
 					return null;
@@ -505,7 +521,7 @@ public abstract class AbstractExonymOwner extends AbstractBaseActor {
 
 		// URI credUri = URI.create(cred.getCredentialDescription().getIssuerParametersUID().toString()+"c"); 
 		new CredentialWrapper(cred, CredentialWrapper.DECODE_ATTRIBUTES);
-		container.saveLocalResource(cred, enc);
+		container.saveLocalResource(cred,  false, enc);
 		new CredentialWrapper(cred, CredentialWrapper.ENCODE_ATTRIBUTES);
 		
 	}

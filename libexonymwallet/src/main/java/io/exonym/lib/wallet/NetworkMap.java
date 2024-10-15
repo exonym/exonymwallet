@@ -24,12 +24,12 @@ public class NetworkMap extends AbstractNetworkMap {
     private final static Logger logger = Logger.getLogger(NetworkMap.class.getName());
     private final Path root;
 
-    public NetworkMap(Path root) throws Exception {
-        super(root);
-        if (root.getParent()==null){
+    public NetworkMap(Path rootToNetworkMapParent) throws Exception {
+        super(rootToNetworkMapParent);
+        if (rootToNetworkMapParent.getParent()==null){
             throw new UxException("network map must exist at least one level below the root");
         }
-        this.root=root;
+        this.root=rootToNetworkMapParent;
     }
 
     /**
