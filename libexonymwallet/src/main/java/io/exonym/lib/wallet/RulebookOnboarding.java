@@ -11,19 +11,26 @@ import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.standard.Const;
 import io.exonym.lib.standard.PassStore;
 import io.exonym.lib.standard.ExtractObject;
+import org.apache.commons.codec.binary.Base64;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public  class RulebookOnboarding {
     
     private final static Logger logger = Logger.getLogger(RulebookOnboarding.class.getName());
 
-    public static String onboardRulebook(PassStore store, Path path, URI advocateUID) throws Exception {
-        NetworkMapItemModerator modNmi = WalletUtils.determinedSearchForModerator(path, advocateUID);
+    public static String onboardRulebook(PassStore store, Path path, URI modUid) throws Exception {
+        NetworkMapItemModerator modNmi = WalletUtils.determinedSearchForModerator(path, modUid);
         Http client = new Http();
         String json = client.basicGet(modNmi.getRulebookNodeURL() + Const.ENDPOINT_JOIN);
         Rulebook rulebook = JaxbHelper.jsonToClass(json, Rulebook.class);
@@ -39,6 +46,17 @@ public  class RulebookOnboarding {
     public static String onboardRulebook(PassStore store, Path path, String issuancePolicy) throws Exception {
         issuancePolicy = WalletUtils.isolateUniversalLinkContent(issuancePolicy);
         String decoded = WalletUtils.decodeCompressedB64(issuancePolicy);
+        Pattern pattern = Pattern.compile("<abc:Nonce>([^<]+)</abc:Nonce>");
+        Matcher matcher = pattern.matcher(decoded);
+        boolean appeal = false;
+
+        if (matcher.find()) {
+            String nonceValue = matcher.group(1);
+            byte[] nonce = Base64.decodeBase64(nonceValue);
+            appeal = nonce.length==16;
+            logger.info("isAppeal=" + appeal);
+
+        }
 
         ExonymToolset exo = new ExonymToolset(store, path);
         IssuanceMessageAndBoolean imab = WalletUtils.deserialize(decoded);
@@ -48,9 +66,13 @@ public  class RulebookOnboarding {
         ExonymOwner owner = exo.getOwner();
         IssuanceMessage im = owner.issuanceStep(imab, store.getEncrypt());
 
+        String endPoint = modNmi.getRulebookNodeURL() +
+                (appeal ? Const.ENDPOINT_APPEAL : Const.ENDPOINT_JOIN);
+
+        logger.info("Targeting endpoint: " + endPoint);
+
         Http client = new Http();
-        String response = client.basicPost(modNmi.getRulebookNodeURL() + Const.ENDPOINT_JOIN,
-                IdContainerJSON.convertObjectToXml(im));
+        String response = client.basicPost(endPoint, IdContainerJSON.convertObjectToXml(im));
 
         if (response.startsWith("{")){
             RejoinCriteria criteria = JaxbHelper.gson.fromJson(response, RejoinCriteria.class);
@@ -102,7 +124,7 @@ public  class RulebookOnboarding {
                         imab, store.getEncrypt());
                 criteria.setImabFinalB64(null);
 
-                return "REJOIN_SUCCESSFUL: " + JaxbHelper.gson.toJson(criteria);
+                return JaxbHelper.gson.toJson(criteria);
 
             } else {
                 return JaxbHelper.gson.toJson(criteria);

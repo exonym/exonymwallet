@@ -134,6 +134,7 @@ public class ExonymServlet extends HttpServlet {
         ExonymAuthenticate auth = ExonymAuthenticate.getInstance();
         String sessionId = req.getSession().getId();
         URI context = auth.probeForContext(sessionId);
+
         logger.info("Waiting on authentication for " + sessionId);
         EndonymToken endonym = auth.isAuthenticatedWait(sessionId, context, 30000l);
         logger.info("Got authentication for " + sessionId);

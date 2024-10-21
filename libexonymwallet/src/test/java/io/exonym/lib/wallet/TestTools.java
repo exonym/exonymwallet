@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -204,7 +203,7 @@ public class TestTools {
         Prove prove = new Prove(store, TestTools.STORE_FOLDER);
         prove.proofForRulebookSSO(link);
 
-        return callback.getEndonym();
+        return callback.getResult();
 
     }
 

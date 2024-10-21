@@ -16,7 +16,7 @@ import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.adapters.PresentationPolicyAlternativesAdapter;
 import io.exonym.lib.api.AbstractIdContainer;
 import io.exonym.lib.pojo.KeyContainer;
-import io.exonym.lib.pojo.XContainerSchema;
+import io.exonym.lib.pojo.IdContainerSchema;
 import io.exonym.lib.wallet.ExonymOwner;
 import org.apache.commons.codec.binary.Base64;
 
@@ -35,18 +35,18 @@ import java.util.logging.Logger;
 public final class IdContainerExternal extends AbstractIdContainer {
 
     private final static Logger logger = Logger.getLogger(IdContainerExternal.class.getName());
-    private final XContainerSchema schema;
+    private final IdContainerSchema schema;
 
     private static SystemParameters lambda = null;
 
     public IdContainerExternal(String schema) throws Exception {
         super("external");
-        this.schema = JaxbHelper.jsonToClass(schema, XContainerSchema.class);
+        this.schema = JaxbHelper.jsonToClass(schema, IdContainerSchema.class);
     }
 
     public IdContainerExternal() throws Exception {
         super("external");
-        this.schema = new XContainerSchema();
+        this.schema = new IdContainerSchema();
 
     }
 
@@ -326,7 +326,7 @@ public final class IdContainerExternal extends AbstractIdContainer {
     }
 
     public String getSchema() throws Exception {
-        return JaxbHelper.serializeToJson(this.schema, XContainerSchema.class);
+        return JaxbHelper.serializeToJson(this.schema, IdContainerSchema.class);
 
     }
 }

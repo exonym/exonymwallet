@@ -17,7 +17,8 @@ public class ProbeCallBack extends ModelSingleSequence {
     private Http httpClient;
     private URL endPoint;
 
-    private String endonym = null;
+    private String result = null;
+    private JsonObject jsonObject;
 
 
     public ProbeCallBack(Http httpClient, URL endPoint) throws Exception {
@@ -34,11 +35,14 @@ public class ProbeCallBack extends ModelSingleSequence {
             String r = httpClient.basicPost(endPoint.toString(), "{\"probe");
             logger.info("Raw Response=" + r);
 
-            JsonObject jsonObject = JsonParser.parseString(r).getAsJsonObject();
-            if (jsonObject.has("error")){
-                this.endonym = jsonObject.get("error").getAsString();
+            jsonObject = JsonParser.parseString(r).getAsJsonObject();
+
+            if (jsonObject.has("endonym")){
+                this.result = jsonObject.get("endonym").getAsString();
+
             } else {
-                this.endonym = jsonObject.get("endonym").getAsString();
+                this.result = r;
+
             }
             synchronized (this){
                 this.notifyAll();
@@ -49,8 +53,8 @@ public class ProbeCallBack extends ModelSingleSequence {
         }
     }
 
-    public synchronized String getEndonym() {
-        if (endonym==null){
+    public synchronized String getResult() {
+        if (result ==null){
             synchronized (this){
                 try {
                     this.wait();
@@ -61,6 +65,10 @@ public class ProbeCallBack extends ModelSingleSequence {
                 }
             }
         }
-        return endonym;
+        return result;
+    }
+
+    public JsonObject getJsonObject() {
+        return jsonObject;
     }
 }

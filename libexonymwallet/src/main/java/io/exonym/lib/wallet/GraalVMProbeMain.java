@@ -118,9 +118,9 @@ public class GraalVMProbeMain {
             owner.setupContainerSecret(store.getEncrypt(), store.getDecipher());
             logger.log(Level.INFO, "Owner Authenticated " + owner);
             logger.log(Level.INFO, "Secret saved " + owner);
-            XContainerSchema schema = x.getSchema();
+            IdContainerSchema schema = x.getSchema();
             logger.log(Level.INFO, "Schema username is " + schema.getUsername() + " original= " + username);
-            String json = JaxbHelper.serializeToJson(schema, XContainerSchema.class);
+            String json = JaxbHelper.serializeToJson(schema, IdContainerSchema.class);
             logger.log(Level.INFO, json);
             owner.authenticate(store);
 

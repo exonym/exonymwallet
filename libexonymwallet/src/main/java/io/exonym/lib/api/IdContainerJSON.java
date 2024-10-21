@@ -11,7 +11,7 @@ import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.lite.SFTPLogonData;
 import io.exonym.lib.pojo.KeyContainer;
 import io.exonym.lib.pojo.Rulebook;
-import io.exonym.lib.pojo.XContainerSchema;
+import io.exonym.lib.pojo.IdContainerSchema;
 import io.exonym.lib.standard.PassStore;
 import org.apache.commons.codec.binary.Base64;
 
@@ -22,17 +22,14 @@ import javax.xml.bind.JAXBIntrospector;
 import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystemException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 
 public class IdContainerJSON extends AbstractIdContainer {
 	
-	private final XContainerSchema schema;
+	private final IdContainerSchema schema;
 	private Path testFolder;
 	private Path file;
 
@@ -74,6 +71,27 @@ public class IdContainerJSON extends AbstractIdContainer {
 		testFolder = generatePathToFolder();
 		file = generatePathToFile();
 		schema = init(create);
+		updateLists();
+
+	}
+
+	/**
+	 * Overwriting Instance.  Only use this if you know you want the
+	 * incoming schema to overwrite the existing schema.
+	 *
+	 * @param path
+	 * @param schema
+	 * @throws Exception
+	 */
+	public IdContainerJSON(Path path, IdContainerSchema schema) throws Exception {
+		super(schema.getUsername());
+		this.defaultPath = computePath(path);
+		this.testFolder = generatePathToFolder();
+		this.file = generatePathToFile();
+		this.schema = schema;
+		Files.writeString(file,
+				JaxbHelper.serializeToJson(schema, IdContainerSchema.class),
+				StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
 		updateLists();
 
 	}
@@ -128,16 +146,16 @@ public class IdContainerJSON extends AbstractIdContainer {
 	}
 
 
-	protected XContainerSchema init(boolean create) throws Exception {
+	protected IdContainerSchema init(boolean create) throws Exception {
 		// Is creating a new container.
 		if (create){
 			if (!Files.exists(testFolder)){
 				Files.createDirectories(testFolder);
-				XContainerSchema t = new XContainerSchema();
+				IdContainerSchema t = new IdContainerSchema();
 				t.setUsername(getUsername());
 
 				try (BufferedWriter fos = Files.newBufferedWriter(file)){
-					String json = JaxbHelper.serializeToJson(t, XContainerSchema.class);
+					String json = JaxbHelper.serializeToJson(t, IdContainerSchema.class);
 					logger.fine(json);
 					fos.write(json);
 					return t;
@@ -151,7 +169,7 @@ public class IdContainerJSON extends AbstractIdContainer {
 			}
 		} else {
 			if (Files.exists(testFolder)){
-				return JaxbHelper.jsonFileToClass(file, XContainerSchema.class);
+				return JaxbHelper.jsonFileToClass(file, IdContainerSchema.class);
 				
 			} else {
 				throw new UxException(ErrorMessages.USER_DOES_NOT_EXIST, this.getUsername());
@@ -161,7 +179,7 @@ public class IdContainerJSON extends AbstractIdContainer {
 	}
 	
 	protected void commitSchema() throws Exception {
-		String json = JaxbHelper.serializeToJson(schema, XContainerSchema.class);
+		String json = JaxbHelper.serializeToJson(schema, IdContainerSchema.class);
 		BufferedWriter writer = Files.newBufferedWriter(this.file);
 		writer.write(json);
 		writer.flush();
@@ -438,7 +456,7 @@ public class IdContainerJSON extends AbstractIdContainer {
 
 	}
 
-	public XContainerSchema getSchema() {
+	public IdContainerSchema getSchema() {
 		return schema;
 		
 	}

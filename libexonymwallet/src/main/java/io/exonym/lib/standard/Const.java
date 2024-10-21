@@ -20,6 +20,7 @@ public class Const {
 	public static final URI TRUST_NETWORK_UID = URI.create("urn:rulebook:trust-network:ni");
 
 	public static final String ENDPOINT_JOIN = "/join";
+	public static final String ENDPOINT_APPEAL = "/meta-mod";
 	public static final String ENDPOINT_REGISTER = "/register";
 
 }

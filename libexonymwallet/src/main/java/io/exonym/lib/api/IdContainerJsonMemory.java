@@ -1,7 +1,7 @@
 package io.exonym.lib.api;
 
 import io.exonym.lib.pojo.NetworkMapItemModerator;
-import io.exonym.lib.pojo.XContainerSchema;
+import io.exonym.lib.pojo.IdContainerSchema;
 import io.exonym.lib.standard.PassStore;
 import io.exonym.lib.wallet.ExonymOwner;
 
@@ -21,8 +21,8 @@ public class IdContainerJsonMemory extends IdContainerJSON {
     }
 
     @Override
-    protected XContainerSchema init(boolean create) throws Exception {
-        return new XContainerSchema();
+    protected IdContainerSchema init(boolean create) throws Exception {
+        return new IdContainerSchema();
     }
 
     @Override

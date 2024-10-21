@@ -4,15 +4,18 @@ package io.exonym.lib.wallet;
 import io.exonym.lib.abc.util.JaxbHelper;
 import io.exonym.lib.api.Cache;
 import io.exonym.lib.api.IdContainerJSON;
-import io.exonym.lib.exceptions.ErrorMessages;
+import io.exonym.lib.helpers.ProbeCallBack;
 import io.exonym.lib.helpers.Timing;
+import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.lite.Http;
 import io.exonym.lib.pojo.*;
+import io.exonym.lib.standard.Const;
 import io.exonym.lib.standard.PassStore;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -52,64 +55,9 @@ public class TestRevocation {
     }
 
     @Test
-    public void violationOverride() {
-        String nibble6 = "357d89";
-        String x0Hash = "c041e73f65578034b33e068daab5c30b0344b19e8f83a19cf84323349f4b26f7";
-        String modUid = "urn:rulebook:trustworthy-leaders:exonym:interpretation:9f87ae0387e1ac0c1c6633a90ad674f9564035624f490fe92aba28c911487691";
-        String tov = "2024-10-14T13:04:44Z";
-
-        try {
-            OverrideRequest plain = new OverrideRequest();
-
-            plain.setNibble6(nibble6);
-            plain.setX0Hash(x0Hash);
-            plain.setTimeOfViolation(tov);
-            plain.setModOfVioUid(URI.create(modUid));
-
-            plain.setType(OverrideRequest.TYPE_PLAIN);
-            plain.setKid(TestTools.NODE_0_API[0]);
-            plain.setKey(TestTools.NODE_0_API[1]);
-
-            NetworkMap nm = new NetworkMap(TestTools.STORE_FOLDER.resolve("network-map"));
-            NetworkMapItemModerator nmim = (NetworkMapItemModerator) nm.nmiForNode(TestTools.MOD0_UID);
-            URI modEndpoint = nmim.getRulebookNodeURL().resolve("mod/revert");
-
-            Http http = new Http();
-            String r = http.basicPost(
-                    modEndpoint.toString(), JaxbHelper.gson.toJson(plain));
-            logger.info(r);
-
-
-        } catch (Exception e) {
-            TestTools.handleError(e);
-            assert false;
-
-        }
-    }
-
-    @Test
-    public void rejoin() {
-        try {
-            String node = PREFIX_NODE_1;
-            Http http = new Http();
-            http.newContext();
-
-            PassStore store = new PassStore(TestTools.PASSWORD, false);
-            store.setUsername(node + "0");
-
-            String response = TestTools.augmentOwnerWithRulebook(store, TestTools.MOD0_UID);
-            logger.info(response);
-
-        } catch (Exception e) {
-            TestTools.handleError(e);
-            assert false;
-        }
-    }
-
-    @Test
     public void revokeAllTokensInSsoFolder() {
         try {
-            String node = PREFIX_NODE_1;
+            String node = PREFIX_NODE_0;
 //            System.exit(1);
             Http http = new Http();
             http.newContext();
@@ -119,7 +67,9 @@ public class TestRevocation {
             URI challengeEndpoint = URI.create(BASE_SSO + rb);
             URI authEndpoint = URI.create(BASE_SSO + exonym);
 
-            String endonym = TestTools.authenticateWithSso(http, node, challengeEndpoint, authEndpoint, false);
+            String endonym = TestTools.authenticateWithSso(
+                    http, node, challengeEndpoint, authEndpoint, false);
+
             logger.info(endonym);
             assert endonym.startsWith(Namespace.ENDONYM_PREFIX);
 
@@ -155,7 +105,7 @@ public class TestRevocation {
 
             String error = TestTools.authenticateWithSso(http, node, challengeEndpoint, authEndpoint, true);
             logger.info(error);
-            assert error!=null && error.equals(ErrorMessages.FAILED_TO_AUTHORIZE);
+            assert error!=null && error.equals("{\"error\":\"FAILED_TO_AUTHORIZE\"}");
 
         } catch (Exception e) {
             TestTools.handleError(e);
@@ -163,6 +113,88 @@ public class TestRevocation {
 
         }
     }
+
+    @Test
+    public void rejoin() {
+        try {
+            String node = PREFIX_NODE_0;
+            Http http = new Http();
+            http.newContext();
+
+            PassStore store = new PassStore(TestTools.PASSWORD, false);
+            store.setUsername(node + "0");
+
+            String response = TestTools.augmentOwnerWithRulebook(store, TestTools.MOD1_UID);
+            logger.info(response);
+            RejoinCriteria rejoin = JaxbHelper.gson.fromJson(response, RejoinCriteria.class);
+
+            if (!rejoin.isCanRejoin()){
+                // appeal
+                URI revokedMod = rejoin.getRevokedModerators().get(0);
+                URI leadUid = UIDHelper.computeLeadUidFromModUid(revokedMod);
+                NetworkMap nm = new NetworkMap(TestTools.STORE_FOLDER.resolve("network-map"));
+
+                NetworkMapItemLead nmim = (NetworkMapItemLead) nm.nmiForNode(leadUid);
+                String url = nmim.getRulebookNodeURL().toString() + Const.ENDPOINT_APPEAL;
+
+                String challenge = http.basicGet(url);
+                Rulebook rulebook = JaxbHelper.jsonToClass(challenge, Rulebook.class);
+
+                ProbeCallBack probe = new ProbeCallBack(http, new URL(url));
+
+                String walletResponse = RulebookOnboarding.
+                        onboardRulebook(store, TestTools.STORE_FOLDER, rulebook.getLink());
+                logger.info(walletResponse);
+                String uiResponse = probe.getResult();
+                logger.info(uiResponse);
+
+            } else {
+                logger.info("Rejoined successfully, run prove.");
+                // prove
+            }
+        } catch (Exception e) {
+            TestTools.handleError(e);
+            assert false;
+        }
+    }
+
+
+    @Test
+    public void violationOverride() {
+        String nibble6 = "357d89";
+        String x0Hash = "c041e73f65578034b33e068daab5c30b0344b19e8f83a19cf84323349f4b26f7";
+        String modUid = "urn:rulebook:trustworthy-leaders:exonym:interpretation:9f87ae0387e1ac0c1c6633a90ad674f9564035624f490fe92aba28c911487691";
+        String tov = "2024-10-14T13:04:44Z";
+
+        try {
+            OverrideRequest plain = new OverrideRequest();
+
+            plain.setNibble6(nibble6);
+            plain.setX0Hash(x0Hash);
+            plain.setTimeOfViolation(tov);
+            plain.setModOfVioUid(URI.create(modUid));
+
+            plain.setType(OverrideRequest.TYPE_PLAIN);
+            plain.setKid(TestTools.NODE_0_API[0]);
+            plain.setKey(TestTools.NODE_0_API[1]);
+
+            NetworkMap nm = new NetworkMap(TestTools.STORE_FOLDER.resolve("network-map"));
+            NetworkMapItemModerator nmim = (NetworkMapItemModerator) nm.nmiForNode(TestTools.MOD0_UID);
+            URI modEndpoint = nmim.getRulebookNodeURL().resolve("mod/revert");
+
+            Http http = new Http();
+            String r = http.basicPost(
+                    modEndpoint.toString(), JaxbHelper.gson.toJson(plain));
+            logger.info(r);
+
+        } catch (Exception e) {
+            TestTools.handleError(e);
+            assert false;
+
+        }
+    }
+
+
 
     @Test
     public void deleteCredential() {

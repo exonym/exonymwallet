@@ -74,7 +74,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
                 PresentationToken pt = Parser.parsePresentationTokenFromXml(token);
                 String message = extractMessage(pt);
                 String challenge = extractValueFromJson(message, "c");
-                sessionId = challengeToSessionId.get(challenge); // this was remove -- >> bug hunting.
+                sessionId = challengeToSessionId.get(challenge);
 
                 logger.info("Retrieved Challenge for session=" + sessionId + " challenge=" + challenge);
                 authenticateToken(pt, challenge);
@@ -201,7 +201,8 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
             return true;
 
         } catch (Exception e){
-            logger.throwing("ExonymAuthenticate.class", "isAuthenticatedQuiet()", e);
+            logger.throwing("ExonymAuthenticate.class",
+                    "isAuthenticatedQuiet()", e);
             return false;
         }
     }
