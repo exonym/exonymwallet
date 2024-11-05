@@ -39,7 +39,7 @@ public class TestRevocation {
         logger.info(TestTools.TOKENS.toString());
 
         long t0 = Timing.currentTime();
-        int countNode0 = 0;
+        int countNode0 = 1;
         int countNode1 = 0;
         TestTools.setupBase(countNode0, PREFIX_NODE_0);
         TestTools.setupBase(countNode1, PREFIX_NODE_1);
@@ -75,7 +75,7 @@ public class TestRevocation {
 
 //            System.exit(1);
 
-            Cache cache = new Cache(TestTools.STORE_FOLDER);
+            Cache cache = new Cache(TestTools.STORE_PATH);
             Rulebook rulebook = cache.open(TestTools.RULEBOOK_UID);
             String rn = rulebook.getRules()
                     .get(rulebook.getRules().size()-1).getId();
@@ -93,7 +93,7 @@ public class TestRevocation {
             wrapper.setRequests(revokeTokens);
             String revocationPost = JaxbHelper.gson.toJson(wrapper);
 
-            NetworkMap nm = new NetworkMap(TestTools.STORE_FOLDER.resolve("network-map"));
+            NetworkMap nm = new NetworkMap(TestTools.STORE_PATH.resolve("network-map"));
             NetworkMapItemModerator nmim = (NetworkMapItemModerator) nm.nmiForNode(TestTools.MOD0_UID);
 
             URI revokeEndPoint = nmim.getRulebookNodeURL().resolve("revoke");
@@ -132,7 +132,7 @@ public class TestRevocation {
                 // appeal
                 URI revokedMod = rejoin.getRevokedModerators().get(0);
                 URI leadUid = UIDHelper.computeLeadUidFromModUid(revokedMod);
-                NetworkMap nm = new NetworkMap(TestTools.STORE_FOLDER.resolve("network-map"));
+                NetworkMap nm = new NetworkMap(TestTools.STORE_PATH.resolve("network-map"));
 
                 NetworkMapItemLead nmim = (NetworkMapItemLead) nm.nmiForNode(leadUid);
                 String url = nmim.getRulebookNodeURL().toString() + Const.ENDPOINT_APPEAL;
@@ -143,7 +143,7 @@ public class TestRevocation {
                 ProbeCallBack probe = new ProbeCallBack(http, new URL(url));
 
                 String walletResponse = RulebookOnboarding.
-                        onboardRulebook(store, TestTools.STORE_FOLDER, rulebook.getLink());
+                        onboardRulebook(store, TestTools.STORE_PATH, rulebook.getLink());
                 logger.info(walletResponse);
                 String uiResponse = probe.getResult();
                 logger.info(uiResponse);
@@ -178,7 +178,7 @@ public class TestRevocation {
             plain.setKid(TestTools.NODE_0_API[0]);
             plain.setKey(TestTools.NODE_0_API[1]);
 
-            NetworkMap nm = new NetworkMap(TestTools.STORE_FOLDER.resolve("network-map"));
+            NetworkMap nm = new NetworkMap(TestTools.STORE_PATH.resolve("network-map"));
             NetworkMapItemModerator nmim = (NetworkMapItemModerator) nm.nmiForNode(TestTools.MOD0_UID);
             URI modEndpoint = nmim.getRulebookNodeURL().resolve("mod/revert");
 
@@ -195,11 +195,10 @@ public class TestRevocation {
     }
 
 
-
     @Test
     public void deleteCredential() {
         try {
-            Path path = ExonymToolset.pathToContainers(TestTools.STORE_FOLDER);
+            Path path = ExonymToolset.pathToContainers(TestTools.STORE_PATH);
             PassStore store = new PassStore(TestTools.PASSWORD, false);
             IdContainerJSON id = new IdContainerJSON(path,PREFIX_NODE_1 + "0");
             ArrayList<String> owned = id.getOwnerSecretList();
@@ -223,7 +222,7 @@ public class TestRevocation {
         try {
             String endonymTail = "3636b8f21c9d2d396c459365b7a83da3cb715597f54efb83b90d516468560344";
 
-            Cache cache = new Cache(TestTools.STORE_FOLDER);
+            Cache cache = new Cache(TestTools.STORE_PATH);
             Rulebook rulebook = cache.open(TestTools.RULEBOOK_UID);
             String rn = rulebook.getRules().get(rulebook.getRules().size()-1).getId();
             URI rnUID = URI.create(rn);
@@ -243,7 +242,7 @@ public class TestRevocation {
             wrapper.setRequests(revokeTokens);
             String revocationPost = JaxbHelper.gson.toJson(wrapper);
 
-            NetworkMap nm = new NetworkMap(TestTools.STORE_FOLDER.resolve("network-map"));
+            NetworkMap nm = new NetworkMap(TestTools.STORE_PATH.resolve("network-map"));
             nm.spawnIfDoesNotExist();
             NetworkMapItemModerator nmim = (NetworkMapItemModerator) nm.nmiForNode(TestTools.MOD0_UID);
 

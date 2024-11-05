@@ -294,7 +294,8 @@ public class GraalVMProbeMain {
 
         URI advocateId = URI.create("urn:rulebook:trustworthy-leaders:exonym:interpretation:9f87ae0387e1ac0c1c6633a90ad674f9564035624f490fe92aba28c911487691");
 
-        SybilOnboarding.testNet(store, path(), Rulebook.SYBIL_CLASS_PERSON);
+        SybilOnboarding.testNet(store, path(), SybilOnboarding.SYBIL_URL_TEST_NET,
+                Rulebook.SYBIL_CLASS_PERSON);
         RulebookOnboarding.onboardRulebook(store, path, advocateId);
 
         Prove prove = new Prove(store, path);

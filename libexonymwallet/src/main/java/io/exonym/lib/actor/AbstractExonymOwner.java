@@ -33,6 +33,7 @@ import io.exonym.lib.helpers.CredentialWrapper;
 import io.exonym.lib.api.AbstractIdContainer;
 import io.exonym.lib.lite.SFTPLogonData;
 import io.exonym.lib.pojo.AnonCredentialParameters;
+import io.exonym.lib.pojo.IdContainerSchema;
 import io.exonym.lib.pojo.KeyContainer;
 import io.exonym.lib.pojo.MintedAnonCredential;
 import io.exonym.lib.standard.ExtractObject;
@@ -117,6 +118,7 @@ public abstract class AbstractExonymOwner extends AbstractBaseActor {
 
 		}
 	}
+
 
 	public void clearStale() throws Exception {
 		if (this.keyManager instanceof KeyManagerExonym){
@@ -251,7 +253,7 @@ public abstract class AbstractExonymOwner extends AbstractBaseActor {
 			
 		}
 	}
-	
+
 	protected synchronized void addContainerSecret(Secret secret) throws UxException, Exception{
 		if (container.getSecretUri()==null){
 			this.credentialManagerUser.storeSecret(container.getUsername(), secret);

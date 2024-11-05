@@ -59,6 +59,7 @@ public class SsoProperties  {
         String rulebook = mandatory("RULEBOOK_URN");
 
         rulebooks.requireRulebook(URI.create(rulebook));
+
         subscriber = NotificationSubscriber.getInstance();
         subscriber.subscribe(rulebooks.getConfig(), true, true);
 

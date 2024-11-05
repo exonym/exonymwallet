@@ -1,5 +1,8 @@
 package io.exonym.lib.wallet;
 
+import com.beust.jcommander.internal.Nullable;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.abc.util.JaxbHelper;
@@ -12,10 +15,16 @@ import io.exonym.lib.helpers.Parser;
 import io.exonym.lib.lite.Http;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.standard.AsymStoreKey;
 import io.exonym.lib.standard.PassStore;
+import org.apache.commons.codec.binary.Hex;
 
 import java.net.URI;
+import java.net.http.HttpClient;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -24,42 +33,140 @@ public class SybilOnboarding {
     
     private final static Logger logger = Logger.getLogger(SybilOnboarding.class.getName());
 
-    private final static String sybilUrl = "http://exonym-x-03:8079/";
-//    private final static String sybilUrl = "https://t0.sybil.exonym.io/";
+    public static final String SYBIL_URL_TEST_NET = "http://localhost:8079/register/";
+    public static final String SYBIL_URL_TEST_NET_C30 = "http://localhost:8079/c30-register/";
 
-    public static String testNet(PassStore store, Path rootPath, String sybilClass) throws Exception {
-
-        Cache cache = new Cache(rootPath);
-        NetworkMap map = openNetworkMap(rootPath.resolve("network-map"));
-        PkiExternalResourceContainer external = PkiExternalResourceContainer.getInstance();
-        external.setNetworkMapAndCache(map, cache);
-
-        URI sybilRulebookID = Rulebook.SYBIL_RULEBOOK_UID_TEST;
+    public static String testNet(PassStore store, Path rootPath, String sybilUrl, String sybilClass) throws Exception {
+        ExonymToolset toolset = new ExonymToolset(store, rootPath);
         URI sybilCSpecUID = URI.create(Rulebook.SYBIL_RULEBOOK_UID_TEST + ":c");
-        CredentialSpecification cSpec = external.openResource(IdContainerJSON.uidToXmlFileName(sybilCSpecUID));
 
-        NetworkMapItemLead sybilLeadTarget = openSybilLead(Rulebook.SYBIL_LEAD_UID_TEST.toString(), map);
-        NetworkMapItemModerator testNetTarget = targetSybil(sybilLeadTarget, map, false);
-        NodeVerifier verifiedAdvocate = NodeVerifier.openNode(testNetTarget.getStaticURL0(), false, false);
-        UIDHelper helper = verifiedAdvocate.getUidHelperForMostRecentIssuerParameters();
+        CredentialSpecification cSpec = toolset.getExternal().openResource(
+                IdContainerJSON.uidToXmlFileName(sybilCSpecUID));
 
-        IdContainerJSON x = new IdContainerJSON(ExonymToolset.pathToContainers(rootPath),
-                store.getUsername());
+        NetworkMap networkMap = toolset.getNetworkMap();
 
-        ExonymOwner owner = new ExonymOwner(x);
-        owner.openContainer(store);
+        NetworkMapItemLead sybilLeadTarget = openSybilLead(
+                Rulebook.SYBIL_LEAD_UID_TEST.toString(), networkMap);
+
+        NetworkMapItemModerator modSybil = targetSybil(
+                sybilLeadTarget, networkMap, false);
+
+        return onboarding(toolset, store, cSpec, modSybil, sybilClass, sybilUrl, null);
+    }
+
+    public static String mainNet(PassStore store, Path rootPath, String sybilClass) throws Exception {
+        ExonymToolset toolset = new ExonymToolset(store, rootPath);
+        URI sybilCSpecUID = URI.create(Rulebook.SYBIL_RULEBOOK_UID_MAIN + ":c");
+
+        CredentialSpecification cSpec = toolset.getExternal().openResource(
+                IdContainerJSON.uidToXmlFileName(sybilCSpecUID));
+
+        NetworkMap networkMap = toolset.getNetworkMap();
+
+        NetworkMapItemLead sybilLeadTarget = openSybilLead(
+                Rulebook.SYBIL_LEAD_UID_MAIN.toString(), networkMap);
+
+        NetworkMapItemModerator modSybil = targetSybil(
+                sybilLeadTarget, networkMap, false);
+
+        String sybilUrl = "https://sybil.exonym.io/register/";
+
+        return onboarding(toolset, store, cSpec, modSybil, sybilClass, sybilUrl, null);
+    }
+
+    public static IdContainerSchema c30TestNet(IdContainerSchema schema, Path rootPath,
+                                    URI sybilUrl, Http client, AsymStoreKey key,
+                                    String alpha, String beta, String gamma) throws Exception {
+
+        String epsilon = schema.getUsername();
+        PassStore store = new PassStore(epsilon, false);
+        store.setUsername(epsilon);
+
+        ExonymToolset toolset = new ExonymToolset(store, rootPath, schema);
+        URI sybilCSpecUID = URI.create(Rulebook.SYBIL_RULEBOOK_UID_TEST + ":c");
+
+        CredentialSpecification cSpec = toolset.getExternal().openResource(
+                IdContainerJSON.uidToXmlFileName(sybilCSpecUID));
+
+        NetworkMap networkMap = toolset.getNetworkMap();
+
+        NetworkMapItemLead sybilLeadTarget = openSybilLead(
+                Rulebook.SYBIL_LEAD_UID_TEST.toString(), networkMap);
+
+        NetworkMapItemModerator modSybil = targetSybil(
+                sybilLeadTarget, networkMap, false);
+
+        String nonce = client.basicGet(SybilOnboarding.SYBIL_URL_TEST_NET_C30);
+        byte[] sig = key.encryptWithPrivateKey(nonce.getBytes(StandardCharsets.UTF_8));
+        String hexSig = Hex.encodeHexString(sig);
+        String pathToGamma = alpha + "/" + beta + "/" + gamma + "/" + hexSig;
+        String url = sybilUrl.toString() + "c30-register/" + pathToGamma;
+        logger.info(url);
+
+        String response = onboarding(toolset, store, cSpec, modSybil,
+                "c30", url, client);
+
+        JsonObject res = JsonParser.parseString(response).getAsJsonObject();
+
+        if (res.has("issuerUid")){
+            return C30Utils.c30SchemaFromDisk(rootPath, epsilon);
+
+        } else {
+            throw new UxException(response);
+
+        }
+    }
+
+    public static String c30MainNet(PassStore store, Path rootPath, Http client) throws Exception {
+        ExonymToolset toolset = new ExonymToolset(store, rootPath);
+        URI sybilCSpecUID = URI.create(Rulebook.SYBIL_RULEBOOK_UID_MAIN + ":c");
+
+        CredentialSpecification cSpec = toolset.getExternal().openResource(
+                IdContainerJSON.uidToXmlFileName(sybilCSpecUID));
+
+        NetworkMap networkMap = toolset.getNetworkMap();
+
+        NetworkMapItemLead sybilLeadTarget = openSybilLead(
+                Rulebook.SYBIL_LEAD_UID_MAIN.toString(), networkMap);
+
+        NetworkMapItemModerator modSybil = targetSybil(
+                sybilLeadTarget, networkMap, false);
+
+        String sybilUrl = "https://sybil.cyber30.io/c30-register/";
+
+        return onboarding(toolset, store, cSpec, modSybil,
+                "c30", sybilUrl, client);
+
+    }
+
+
+
+    private static String onboarding(ExonymToolset toolset, PassStore store,
+                                     CredentialSpecification cSpec,
+                                     NetworkMapItemModerator modSybil,
+                                     String sybilClassOfUser,
+                                     String sybilUrl, @Nullable Http client) throws Exception {
+
+        NodeVerifier verifiedMod = NodeVerifier.openNode(
+                modSybil.getStaticURL0(), false, false);
+        UIDHelper helper = verifiedMod.getUidHelperForMostRecentIssuerParameters();
+        ExonymOwner owner = toolset.getOwner();
+        Cache cache = toolset.getCache();
+
         owner.addCredentialSpecification(cSpec);
 
-        IssuerParameters ip = verifiedAdvocate.getIssuerParameters(helper.getIssuerParametersFileName());
+        IssuerParameters ip = verifiedMod.getIssuerParameters(
+                helper.getIssuerParametersFileName());
+
         cache.store(ip);
         owner.addIssuerParameters(ip);
 
-        RevocationAuthorityParameters rap = verifiedAdvocate.getRevocationAuthorityParameters(
+        RevocationAuthorityParameters rap = verifiedMod.getRevocationAuthorityParameters(
                 helper.getRevocationAuthorityFileName());
         cache.store(rap);
         owner.addRevocationAuthorityParameters(rap);
 
-        RevocationInformation ri = verifiedAdvocate.getRevocationInformation(
+        RevocationInformation ri = verifiedMod.getRevocationInformation(
                 helper.getRevocationInformationFileName());
         cache.store(ri);
         owner.addRevocationInformation(ri.getRevocationAuthorityParametersUID(), ri);
@@ -67,17 +174,13 @@ public class SybilOnboarding {
         IssuanceSigma hello = new IssuanceSigma();
         hello.setTestNet(true);
         hello.setHello(UUID.randomUUID().toString());
-        hello.setSybilClass(sybilClass);
+        hello.setSybilClass(sybilClassOfUser);
 
-        Http client = new Http();
-//        String target = (testNetTarget.getRulebookNodeURL().toString() + "register")
-//                .replaceAll("node.", "");
+        if (client == null){ client = new Http();}
 
-        String target = (sybilUrl + "register");
+        logger.info("URL@Hello=" + sybilUrl);
 
-        logger.info(">>>>>>>>> " + target);
-
-        String response = client.basicPost(target,
+        String response = client.basicPost(sybilUrl,
                 JaxbHelper.serializeToJson(hello, IssuanceSigma.class));
 
         IssuanceSigma in = JaxbHelper.jsonToClass(response, IssuanceSigma.class);
@@ -89,19 +192,20 @@ public class SybilOnboarding {
         IssuanceMessage message = owner.issuanceStep(imab, store.getEncrypt());
         System.out.println(IdContainer.convertObjectToXml(message));
 
-
         IssuanceSigma hello2 = new IssuanceSigma();
         hello2.setTestNet(true);
         hello2.setHello(hello.getHello());
         hello2.setIm(Parser.parseIssuanceMessage(message));
+        sybilUrl = sybilUrl.substring(0, sybilUrl.lastIndexOf("/"));
 
-        String responseB = client.basicPost(target, JaxbHelper.serializeToJson(hello2, IssuanceSigma.class));
+        String responseB = client.basicPost(sybilUrl,
+                JaxbHelper.serializeToJson(hello2, IssuanceSigma.class));
 
         IssuanceSigma in2 = JaxbHelper.jsonToClass(responseB, IssuanceSigma.class);
         WalletUtils.rejectOnError(in2);
 
         in2.setTestNet(true);
-        in2.setSybilClass(sybilClass);
+        in2.setSybilClass(sybilClassOfUser);
 
         IssuanceMessageAndBoolean imab2 = Parser.parseIssuanceMessageAndBoolean(in2.getImab());
         owner.issuanceStep(imab2, store.getEncrypt());
@@ -111,7 +215,8 @@ public class SybilOnboarding {
     }
 
 
-    private static NetworkMapItemModerator targetSybil(NetworkMapItemLead sybilLeadTarget, NetworkMap map, boolean mainNet) throws Exception {
+    private static NetworkMapItemModerator targetSybil(NetworkMapItemLead sybilLeadTarget,
+                                                       NetworkMap map, boolean mainNet) throws Exception {
         List<URI> mods = sybilLeadTarget.getModeratorsForLead();
         for (URI modUid : mods){
             if (mainNet && (modUid.toString().contains("main"))){

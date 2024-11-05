@@ -43,7 +43,8 @@ public class TestSso {
             ExonymOwner owner = new ExonymOwner(x);
             owner.openContainer(p);
             owner.setupContainerSecret(p.getEncrypt(), p.getDecipher());
-            SybilOnboarding.testNet(p, path, "person");
+            SybilOnboarding.testNet(p, path,
+                    SybilOnboarding.SYBIL_URL_TEST_NET,"person");
             RulebookOnboarding.onboardRulebook(p, path, MOD_TARGET);
 
         }

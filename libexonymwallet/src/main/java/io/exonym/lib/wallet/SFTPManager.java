@@ -36,8 +36,8 @@ public class SFTPManager {
         SFTPLogonData credential = readCredentialFile(root);
         verifyCredential(credential);
         verifyAccess(credential);
-        exo.getX().saveLocalResource(credential, store.getEncrypt());
-        exo.getX().openResource(credential.getSftpUID(), store.getDecipher());
+        exo.getId().saveLocalResource(credential, store.getEncrypt());
+        exo.getId().openResource(credential.getSftpUID(), store.getDecipher());
         return "SFTP_CREDENTIAL_TESTED_SAVED_AND_RECOVERED";
 
     }
@@ -50,7 +50,7 @@ public class SFTPManager {
 
             }
         }
-        exo.getX().deleteSftpCredential(uidToDelete);
+        exo.getId().deleteSftpCredential(uidToDelete);
         return "DELETED";
 
     }
@@ -90,7 +90,7 @@ public class SFTPManager {
     }
 
     public String put(String filename, String token, String sftpCredentialUID, String remotePath) throws Exception {
-        SFTPLogonData sftpCred = exo.getX().openResource(URI.create(sftpCredentialUID), store.getDecipher());
+        SFTPLogonData sftpCred = exo.getId().openResource(URI.create(sftpCredentialUID), store.getDecipher());
         SFTPClient client = new SFTPClient(sftpCred);
         client.connect();
         try {

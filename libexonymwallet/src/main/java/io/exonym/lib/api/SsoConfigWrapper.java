@@ -16,6 +16,10 @@ public class SsoConfigWrapper {
         this.config.setDomain(domain);
 
     }
+    public SsoConfigWrapper() {
+        this.config = new SsoConfiguration();
+
+    }
 
     public SsoConfigWrapper(SsoConfiguration config) {
         this.config = config;

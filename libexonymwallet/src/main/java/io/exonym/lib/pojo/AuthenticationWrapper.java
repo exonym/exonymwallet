@@ -48,11 +48,27 @@ public class AuthenticationWrapper<T> {
 
     }
 
+    public static <Q extends ExonymChallenge> String wrap(Q challenge, Class<?> clazz) throws Exception {
+        AuthenticationWrapper wrapper = new AuthenticationWrapper<Q>();
+        wrapper.setChallenge(challenge);
+        wrapper.setLink(computeUniversalLink(challenge, clazz));
+        return JaxbHelper.gson.toJson(wrapper, AuthenticationWrapper.class);
+
+    }
+
     public static <Q extends ExonymChallenge> AuthenticationWrapper<Q>  wrapToWrapper(Q challenge, int qrPixels, Class<?> clazz) throws Exception {
         AuthenticationWrapper wrapper = new AuthenticationWrapper<Q>();
         wrapper.setChallenge(challenge);
         wrapper.setLink(computeUniversalLink(challenge, clazz));
         wrapper.setQrPngB64(QrCode.computeQrCodeAsPngB64(wrapper.getLink(), qrPixels));
+        return wrapper;
+
+    }
+
+    public static <Q extends ExonymChallenge> AuthenticationWrapper<Q>  wrapToWrapper(Q challenge,  Class<?> clazz) throws Exception {
+        AuthenticationWrapper wrapper = new AuthenticationWrapper<Q>();
+        wrapper.setChallenge(challenge);
+        wrapper.setLink(computeUniversalLink(challenge, clazz));
         return wrapper;
 
     }

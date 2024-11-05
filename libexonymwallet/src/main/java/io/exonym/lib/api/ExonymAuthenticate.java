@@ -11,7 +11,6 @@ import io.exonym.lib.lite.ModelCommandProcessor;
 import io.exonym.lib.lite.Msg;
 import io.exonym.lib.pojo.*;
 import io.exonym.lib.wallet.ExonymOwner;
-import io.exonym.lib.wallet.WalletUtils;
 import org.apache.commons.codec.binary.Base64;
 
 import java.net.URI;
@@ -24,8 +23,6 @@ import java.util.logging.Logger;
 
 public class ExonymAuthenticate extends ModelCommandProcessor {
 
-
-    // todo parallel processing
     private final static Logger logger = Logger.getLogger(ExonymAuthenticate.class.getName());
     
     private ConcurrentHashMap<String, ExonymChallenge> challengeToAuthenticationRequest = new ConcurrentHashMap<>();
@@ -281,6 +278,11 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
         PresentationPolicy policy = checkPseudonym(sessionId, c, pt);
         PresentationTokenDescription ptd = pt.getPresentationTokenDescription();
 
+        String challengeIn = Base64.encodeBase64String(ptd.getMessage().getNonce());
+        if (!c.getChallenge().equals(challengeIn)){
+            throw new UxException(ErrorMessages.TOKEN_INVALID + ":replay");
+
+        }
         if (c.isSybil() || !c.getHonestUnder().isEmpty()){
             HashMap<String, CredentialInToken> rulebookIdToCredentialMap = checkSybil(policy, ptd);
 
@@ -327,7 +329,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     }
 
     private PresentationPolicy checkPseudonym(String sessionId, ExonymChallenge c,
-                     PresentationToken pt) throws HubException, UxException {
+                                              PresentationToken pt) throws HubException, UxException {
         String domain = c.getDomain().toString();
         PresentationTokenDescription ptd = pt.getPresentationTokenDescription();
 
@@ -343,7 +345,7 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
                 if (nym.isExclusive() && !hasExclusive){
                     pp.getPseudonym().add(Parser.nymInTokenToPolicy(nym));
 
-                    URI endonym = WalletUtils.endonymForm(nym.getScope(), nym.getPseudonymValue());
+                    URI endonym = EndonymToken.endonymForm(nym.getScope(), nym.getPseudonymValue());
 
                     logger.info("sessionIdToEndonym=" + sessionIdToEndonym);
                     EndonymToken et = EndonymToken.build(endonym, pt);
@@ -450,13 +452,5 @@ public class ExonymAuthenticate extends ModelCommandProcessor {
     @Override
     protected void receivedMessage(Msg msg) {
         // do nothing
-    }
-
-    public static void main(String[] args) {
-        String c = "eyJjIjoiTVBWRC9QTEhKcWJkMk54KzV3NVUybEZIRkpRemhEZjNjVEhpbkphb0dqND0ifQ==";
-        String s = new String(Base64.decodeBase64(c));
-        JsonObject o = JaxbHelper.gson.fromJson(s, JsonObject.class);
-        System.out.println(o.get("c").getAsString());
-
     }
 }

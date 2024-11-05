@@ -14,6 +14,8 @@ import io.exonym.lib.pojo.Rulebook;
 import io.exonym.lib.standard.PassStore;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,7 +30,7 @@ public class TestTools {
 
     private final static Logger logger = Logger.getLogger(TestTools.class.getName());
     public static final String PASSWORD = "password";
-    public static final Path STORE_FOLDER = Path.of("non-resources");
+    public static final Path STORE_PATH = Path.of("non-resources");
 
     public static final Path TOKENS = Path.of("resources")
             .toAbsolutePath()
@@ -63,7 +65,7 @@ public class TestTools {
 
     public static ConcurrentHashMap<Integer, ExonymOwner> setupBase(int userCount, String usernamePrefix){
         ConcurrentHashMap<Integer, ExonymOwner> users = new ConcurrentHashMap<>();
-        Path path = ExonymToolset.pathToContainers(STORE_FOLDER);
+        Path path = ExonymToolset.pathToContainers(STORE_PATH);
         for (int i = 0; i < userCount; i++) {
             try {
                 ExonymOwner owner = initOwner(path, usernamePrefix + i);
@@ -104,7 +106,9 @@ public class TestTools {
     }
 
     public static String augmentOwnerWithSybil(PassStore store, String RULEBOOK__SYBIL_CLASS) throws Exception {
-        return SybilOnboarding.testNet(store, STORE_FOLDER, RULEBOOK__SYBIL_CLASS);
+        return SybilOnboarding.testNet(store, STORE_PATH,
+                SybilOnboarding.SYBIL_URL_TEST_NET,
+                RULEBOOK__SYBIL_CLASS);
 
     }
 
@@ -124,7 +128,7 @@ public class TestTools {
     }
 
     public static String augmentOwnerWithRulebook(PassStore store, URI targetMod) throws Exception {
-        return RulebookOnboarding.onboardRulebook(store, STORE_FOLDER, targetMod);
+        return RulebookOnboarding.onboardRulebook(store, STORE_PATH, targetMod);
 
     }
 
@@ -155,7 +159,7 @@ public class TestTools {
     }
 
     public static URI getValidRulebookRuleUid(int index, URI rulebookUid) throws Exception {
-        Cache cache = new Cache(TestTools.STORE_FOLDER);
+        Cache cache = new Cache(TestTools.STORE_PATH);
         Rulebook rulebook = cache.open(rulebookUid);
         String rn = rulebook.getRules().get(index).getId();
         return URI.create(rn);
@@ -200,7 +204,7 @@ public class TestTools {
         PassStore store = new PassStore(TestTools.PASSWORD, false);
         store.setUsername(node1 + 0);
 
-        Prove prove = new Prove(store, TestTools.STORE_FOLDER);
+        Prove prove = new Prove(store, TestTools.STORE_PATH);
         prove.proofForRulebookSSO(link);
 
         return callback.getResult();
@@ -232,6 +236,25 @@ public class TestTools {
             }
         }
         return revokeTokens;
+
+    }
+
+    public static void expectGetRejection(Http client, String containerReg) {
+        try {
+            client.basicGet(containerReg);
+            logger.info(containerReg);
+            assert false;
+
+        } catch (IOException e) {
+            assert true;
+
+        }
+    }
+
+    public static Header[] generateHeaders(String[] node0Api) {
+        Header kid = new BasicHeader("kid", node0Api[0]);
+        Header key = new BasicHeader("key", node0Api[1]);
+        return new Header[] {kid, key};
 
     }
 }

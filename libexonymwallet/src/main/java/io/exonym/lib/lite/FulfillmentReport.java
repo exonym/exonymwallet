@@ -11,7 +11,6 @@ public class FulfillmentReport {
     private ArrayList<RulebookAuth> missing = new ArrayList<>();
     private WalletReport userChoices = new WalletReport();
 
-    private boolean provable = missing.isEmpty() && userChoices.getRulebooksToIssuers().isEmpty();
 
     public ArrayList<RulebookAuth> getMissing() {
         return missing;
@@ -34,6 +33,6 @@ public class FulfillmentReport {
     }
 
     public boolean isProvable(){
-        return provable;
+        return missing.isEmpty() && userChoices.getRulebooksToIssuers().isEmpty();
     }
 }

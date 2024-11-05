@@ -60,7 +60,8 @@ public class TestSybilOnboarding {
             long t = Timing.currentTime();
             PassStore store = new PassStore(password, false);
             store.setUsername(username);
-            String r = SybilOnboarding.testNet(store, Path.of("resource"), Rulebook.SYBIL_CLASS_PERSON);
+            String r = SybilOnboarding.testNet(store, Path.of("resource"),
+                    SybilOnboarding.SYBIL_URL_TEST_NET, Rulebook.SYBIL_CLASS_PERSON);
             System.out.println("Took " + Timing.hasBeenMs(t));
             System.out.println(r);
 

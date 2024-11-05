@@ -26,20 +26,40 @@ public class WalletAPI {
     private static Logger logger = Logger.getLogger(WalletAPI.class.getName());
     public static final String NOT_IMPLEMENTED = "NOT_IMPLEMENTED";
 
-    /*
-        restoreWalletFromBackup();
-        transferDevice()
-     */
+    @CEntryPoint(name = "c30_get_challenge")
+    public static CCharPointer c30GetChallenge(IsolateThread thread,
+                                               CCharPointer alpha_,
+                                               CCharPointer beta_,
+                                               CCharPointer gamma_,
+                                               CCharPointer path_){
+        try {
+            String alpha = CTypeConversion.toJavaString(alpha_);
+            String beta = CTypeConversion.toJavaString(beta_);
+            String gamma = CTypeConversion.toJavaString(gamma_);
+            String path = CTypeConversion.toJavaString(path_);
+            String result = C30Utils.getChallenge(alpha, beta, gamma, Path.of(path));
+            return toCString(result);
 
-    // build process
-    // 1. Build Using Intellij
-    //      pointing main method at GraalVMProbeMain.java
-    //      so that it produces a jar file in out.artifacts/libexonymwallet_jar
-    //      This probe needs to execute ALL possible paths in the code
-    //          if you don't Runtime Exceptions can occur.
-    // 2. run ./create_meta_data from that folder
-    // 3. strip out the incorrect Jaxb reflection configurations - {\n.*Jaxb.*\n.*\n},
-    //
+        } catch (Exception e) {
+            return handleError(e);
+
+        }
+    }
+
+    @CEntryPoint(name = "get_game_key")
+    public static CCharPointer getGameKey(CCharPointer alpha_, CCharPointer beta_, CCharPointer rootPath_){
+        try {
+            String alpha = CTypeConversion.toJavaString(alpha_);
+            String beta = CTypeConversion.toJavaString(beta_);
+            String path = CTypeConversion.toJavaString(rootPath_);
+            String publicKeyAsHex = C30Utils.getPlayerPublicKey(Path.of(path), alpha, beta);
+            return toCString(publicKeyAsHex);
+
+        } catch (Exception e) {
+            return handleError(e);
+
+        }
+    }
 
     @CEntryPoint(name = "open_system_params")
     public static CCharPointer openSystemParams(IsolateThread thread){
@@ -249,16 +269,35 @@ public class WalletAPI {
     //
     @CEntryPoint(name = "proof_for_rulebook_sso")
     public static CCharPointer proofForRulebookSso(IsolateThread thread,
-                                           CCharPointer username_,
-                                           CCharPointer passwordAsSha256Hex_,
-                                           CCharPointer ulinkChallenge_,
-                                           CCharPointer path_){
+                                                   CCharPointer username_,
+                                                   CCharPointer passwordAsSha256Hex_,
+                                                   CCharPointer ulinkChallenge_,
+                                                   CCharPointer path_){
         try {
             PassStore passStore = openPassStore(username_, passwordAsSha256Hex_);
             String path = CTypeConversion.toJavaString(path_);
             String ulinkChallenge = CTypeConversion.toJavaString(ulinkChallenge_);
             Prove prove = new Prove(passStore, Path.of(path));
             String result = prove.proofForRulebookSSO(ulinkChallenge);
+            return toCString(result);
+
+        } catch (Exception e) {
+            return handleError(e);
+
+        }
+    }
+    @CEntryPoint(name = "proof_for_rulebook_sso_anon")
+    public static CCharPointer proofForRulebookSsoAnon(IsolateThread thread,
+                                                   CCharPointer username_,
+                                                   CCharPointer passwordAsSha256Hex_,
+                                                   CCharPointer ulinkChallenge_,
+                                                   CCharPointer path_){
+        try {
+            PassStore passStore = openPassStore(username_, passwordAsSha256Hex_);
+            String path = CTypeConversion.toJavaString(path_);
+            String ulinkChallenge = CTypeConversion.toJavaString(ulinkChallenge_);
+            Prove prove = new Prove(passStore, Path.of(path));
+            String result = prove.proofForRulebookSSOAnon(ulinkChallenge);
             return toCString(result);
 
         } catch (Exception e) {
@@ -449,7 +488,10 @@ public class WalletAPI {
             PassStore passStore = openPassStore(username_, passwordAsSha256Hex_);
             String path = CTypeConversion.toJavaString(path_);
             String sybilClass = CTypeConversion.toJavaString(sybilClass_);
-            String result = SybilOnboarding.testNet(passStore, Path.of(path), sybilClass);
+            String result = SybilOnboarding.testNet(passStore,
+                    Path.of(path),
+                    SybilOnboarding.SYBIL_URL_TEST_NET,
+                    sybilClass);
             return toCString(result);
 
         } catch (Exception e) {
@@ -595,7 +637,6 @@ public class WalletAPI {
         return 0;
 
     }
-
 
 
     private static CCharPointer toCString(String string){

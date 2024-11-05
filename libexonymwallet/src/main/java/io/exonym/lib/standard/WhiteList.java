@@ -109,11 +109,11 @@ public class WhiteList {
 	}	
 	
 	public static boolean databaseUrl(String url){
-		return (url==null ? null : url.matches("jdbc:mysql://[a-z_]*:[\\d]{4}/[a-z_]*"));
+		return (url==null ? false : url.matches("jdbc:mysql://[a-z_]*:[\\d]{4}/[a-z_]*"));
 	}
 	
 	public static boolean url(String url){
-		return (url==null ? null : url.matches("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"));
+		return (url==null ? false : url.matches("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"));
 		
 	}
 

@@ -7,15 +7,11 @@ import eu.abc4trust.xml.PresentationPolicyAlternatives;
 import eu.abc4trust.xml.PresentationToken;
 import eu.abc4trust.xml.PseudonymInToken;
 import io.exonym.lib.helpers.UIDHelper;
-import io.exonym.lib.pojo.IssuanceSigma;
-import io.exonym.lib.pojo.Namespace;
-import io.exonym.lib.pojo.NetworkMapItemModerator;
+import io.exonym.lib.pojo.*;
 import io.exonym.lib.helpers.UrlHelper;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
-import io.exonym.lib.standard.CryptoUtils;
-import io.exonym.lib.standard.Form;
-import io.exonym.lib.standard.Morph;
+import io.exonym.lib.standard.*;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.ByteArrayOutputStream;
@@ -33,6 +29,8 @@ import java.util.zip.InflaterOutputStream;
 public class WalletUtils {
     
     private final static Logger logger = Logger.getLogger(WalletUtils.class.getName());
+
+
 
     protected static <T> T deserialize(String object) throws UxException {
         if (UrlHelper.isXml(object.getBytes(StandardCharsets.UTF_8))){
@@ -179,12 +177,6 @@ public class WalletUtils {
         String b64 = Base64.encodeBase64String(s1);
         return U_LINK_PREFIX_FROM_NAMESPACE  + b64;
 
-//        String xml0 = XContainer.convertObjectToXml(o);
-//        xml0 = xml0.replaceAll("\\n", "");
-//        xml0 = xml0.replaceAll(">\\s*<", "><");
-//        byte[] xml = xml0.getBytes(StandardCharsets.UTF_8);
-//        byte[] compressed = compress(xml);
-
     }
 
     public static ArrayList<URI> extractPseudonyms(PresentationToken verifiedToken) throws UxException {
@@ -192,30 +184,12 @@ public class WalletUtils {
         ArrayList<URI> result = new ArrayList<>();
         for (PseudonymInToken nym : nyms){
             if (nym.isExclusive()){
-                URI endonym = endonymForm(nym.getScope(), nym.getPseudonymValue());
+                URI endonym = EndonymToken.endonymForm(nym.getScope(), nym.getPseudonymValue());
                 result.add(endonym);
 
             }
         }
         return result;
-    }
-
-    public static URI endonymForm(String scope, byte[] fullValue) throws UxException {
-        if (scope==null || fullValue==null){
-            throw new UxException(ErrorMessages.UNEXPECTED_PSEUDONYM_REQUEST);
-
-        }
-        // urn:exonym:<scope-representation>:<nibble6>-<pseudonym-hash>
-        String n6 = Form.toHex(fullValue).substring(0,6);
-        String shortValue = CryptoUtils.computeSha256HashAsHex(fullValue);
-        String prefix = CryptoUtils.computeSha256HashAsHex(scope);
-        URI result = URI.create(Namespace.ENDONYM_PREFIX +
-                prefix.substring(32) + ":" +
-                n6 + "-" +
-                shortValue);
-        logger.info(result.toString());
-        return result;
-
     }
 
     public static <T> T idmxFromUniversalLink(String b64) throws IOException {

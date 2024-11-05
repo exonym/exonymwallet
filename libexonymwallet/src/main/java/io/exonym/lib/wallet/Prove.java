@@ -1,6 +1,5 @@
 package io.exonym.lib.wallet;
 
-import com.beust.jcommander.internal.Nullable;
 import com.google.gson.JsonObject;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.actor.NodeVerifier;
@@ -56,6 +55,10 @@ public class Prove {
 
     protected Prove(PassStore store, Path root) throws Exception {
         this.exo = new ExonymToolset(store, root);
+
+    }
+    protected Prove(PassStore store, Path root, IdContainerSchema schema) throws Exception {
+        this.exo = new ExonymToolset(store, root, schema);
 
     }
 
@@ -123,6 +126,25 @@ public class Prove {
         FulfillmentReport report = fulfillmentReport(c);
         if (report.isProvable()){
             return proofForRulebookSSO(report.getIssuersToUse(), c.getDomain().toString(), o);
+
+        } else {
+            return JaxbHelper.serializeToJson(report, FulfillmentReport.class);
+
+        }
+    }
+
+    protected String proofForRulebookSSOAnon(String challengeB64) throws Exception {
+        String isolate = WalletUtils.isolateUniversalLinkContent(challengeB64);
+        String ssoCJson = decodeRequest(isolate);
+        logger.info(ssoCJson);
+        SsoChallenge c = jsonToClass(ssoCJson, SsoChallenge.class);
+        logger.info(c.getChallenge());
+        JsonObject o = new JsonObject();
+        o.addProperty("c", c.getChallenge());
+
+        FulfillmentReport report = fulfillmentReport(c);
+        if (report.isProvable()){
+            return proofForRulebookSSO(report.getIssuersToUse(), null, o);
 
         } else {
             return JaxbHelper.serializeToJson(report, FulfillmentReport.class);
@@ -211,10 +233,13 @@ public class Prove {
             report = fulfillRulebookRequirements(honest, c);
 
         }
-        String endonymScope = c.getDomain().toString();
-        boolean valid = verifyPseudonym(endonymScope, true);
-        report.setEndonymUnderDomain(endonymScope);
+        boolean valid = true;
+        if (c.getDomain()!=null){
+            String endonymScope = c.getDomain().toString();
+            valid = verifyPseudonym(endonymScope, true);
+            report.setEndonymUnderDomain(endonymScope);
 
+        }
         if (valid){
             return report;
 
@@ -226,7 +251,7 @@ public class Prove {
     }
 
     private FulfillmentReport justAddSybil() throws Exception {
-        WalletReport openWallet = peekInWallet(exo.getX());
+        WalletReport openWallet = peekInWallet(exo.getId());
         FulfillmentReport report = new FulfillmentReport();
         addSybilToReport(openWallet, report);
         return report;
@@ -247,7 +272,7 @@ public class Prove {
     }
 
     private FulfillmentReport fulfillRulebookRequirements(HashMap<String, RulebookAuth> honest, SsoChallenge c) throws Exception {
-        WalletReport openWallet = peekInWallet(exo.getX());
+        WalletReport openWallet = peekInWallet(exo.getId());
         HashMap<String, HashSet<URI>> rulebooksToIssuers = openWallet.getRulebooksToIssuers();
         FulfillmentReport report = new FulfillmentReport();
 
@@ -273,6 +298,7 @@ public class Prove {
 
             }
         }
+        report.isProvable();
 //        addSybilToReport(openWallet, report);
         return report;
 
@@ -297,6 +323,11 @@ public class Prove {
                 Http client = new Http();
 
                 return client.basicPost(target, xml);
+
+            } else if (pseudonym==null){
+                PresentationPolicy pp = proofRequest(issuerUids, null, metadata, true);
+                PresentationToken token = proveFromPresentationPolicy(pp);
+                return IdContainer.convertObjectToXml(token);
 
             } else {
                 throw new UxException(ErrorMessages.UNEXPECTED_PSEUDONYM_REQUEST,
@@ -422,6 +453,7 @@ public class Prove {
             }
         }
         bpp.addPseudonym(BLACKLIST_PSEUDONYMS[0], false, BLACKLIST_PSEUDONYMS[0]);
+        pseudonyms = pseudonyms==null ? Collections.EMPTY_LIST : pseudonyms;
         for (String pseudonym : pseudonyms){
             if (verifyPseudonym(pseudonym, allowURLs)){
                 bpp.addPseudonym(pseudonym, true, null, DEFAULT_ALIAS);
@@ -552,7 +584,7 @@ public class Prove {
 
     protected String walletReport() throws Exception {
         return JaxbHelper.serializeToJson(
-                peekInWallet(exo.getX()), WalletReport.class);
+                peekInWallet(exo.getId()), WalletReport.class);
 
     }
 

@@ -13,6 +13,7 @@ import io.exonym.lib.actor.AbstractExonymOwner;
 import io.exonym.lib.actor.CandidateToken;
 import io.exonym.lib.api.*;
 import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.pojo.IdContainerSchema;
 import io.exonym.lib.standard.PassStore;
 import io.exonym.lib.pojo.ExternalResourceContainer;
 
@@ -194,6 +195,8 @@ public final class ExonymOwner extends AbstractExonymOwner {
         super.acceptableIssuers(issuerAlternatives);
     }
 
+
+
     public static ExonymOwner verifierOnly() throws Exception {
         if (VERIFIER==null){
             PkiExternalResourceContainer pki = PkiExternalResourceContainer.getInstance();
@@ -214,6 +217,7 @@ public final class ExonymOwner extends AbstractExonymOwner {
         return VERIFIER;
 
     }
+
 
     public static void updateRai(RevocationInformation rai) throws Exception {
         CacheInMemory cache = CacheInMemory.getInstance();

@@ -1,5 +1,6 @@
 package io.exonym.lib.lite;
 
+import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
@@ -39,9 +40,10 @@ public class Http implements AutoCloseable {
         this.context = new BasicHttpContext();
         this.context.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
 
+
     }
 
-    public String basicPost(String url, String json) throws IOException {
+    public String basicPost(String url, String json, Header... headers) throws IOException {
         if (context==null){
             this.newContext();
 
@@ -55,6 +57,10 @@ public class Http implements AutoCloseable {
         post.addHeader("Access-Control-Request-Headers", "content-type");
         post.addHeader("Access-Control-Request-Method", "POST");
         post.addHeader("Method", "POST");
+        for (Header header : headers){
+            post.addHeader(header);
+        }
+
 //        post.addHeader("Cache-Control", "no-cache");
 //        post.addHeader("Connection", "keep-alive");
 //        post.addHeader("Host", "https://node.spectra.plus");
@@ -70,7 +76,7 @@ public class Http implements AutoCloseable {
 
     }
 
-    public String basicGet(String url) throws IOException{
+    public String basicGet(String url, Header... headers) throws IOException{
         if (context==null){
             this.newContext();
 
@@ -83,6 +89,9 @@ public class Http implements AutoCloseable {
         get.addHeader("content-type", "application/json");
         get.addHeader("Accept", "text/plain");
         get.addHeader("Method", "GET");
+        for (Header header : headers){
+            get.addHeader(header);
+        }
 
 
         ResponseBasic r = new ResponseBasic();

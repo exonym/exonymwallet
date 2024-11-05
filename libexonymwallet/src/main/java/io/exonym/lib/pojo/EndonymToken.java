@@ -4,6 +4,8 @@ import eu.abc4trust.xml.PresentationToken;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.helpers.UIDHelper;
+import io.exonym.lib.standard.CryptoUtils;
+import io.exonym.lib.standard.Form;
 import io.exonym.lib.wallet.WalletUtils;
 
 import java.net.URI;
@@ -107,4 +109,23 @@ public class EndonymToken {
 
         }
     }
+
+
+    public static URI endonymForm(String scope, byte[] fullValue) throws UxException {
+        if (scope==null || fullValue==null){
+            throw new UxException(ErrorMessages.UNEXPECTED_PSEUDONYM_REQUEST);
+
+        }
+        // urn:exonym:<scope-representation>:<nibble6>-<pseudonym-hash>
+        String n6 = Form.toHex(fullValue).substring(0,6);
+        String shortValue = CryptoUtils.computeSha256HashAsHex(fullValue);
+        String prefix = CryptoUtils.computeSha256HashAsHex(scope);
+        URI result = URI.create(Namespace.ENDONYM_PREFIX +
+                prefix.substring(32) + ":" +
+                n6 + "-" +
+                shortValue);
+        return result;
+
+    }
+
 }

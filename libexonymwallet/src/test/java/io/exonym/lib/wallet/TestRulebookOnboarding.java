@@ -46,12 +46,15 @@ public class TestRulebookOnboarding {
         try {
             PassStore store = new PassStore(password, false);
             store.setUsername(username);
-            Path where = TestTools.STORE_FOLDER;
-            String sybilResult = SybilOnboarding.testNet(store, where, Rulebook.SYBIL_CLASS_PERSON);
+            Path where = TestTools.STORE_PATH;
+            String sybilResult = SybilOnboarding.testNet(store, where,
+                    SybilOnboarding.SYBIL_URL_TEST_NET, Rulebook.SYBIL_CLASS_PERSON);
             System.out.println(sybilResult);
 
             NetworkMap map = new NetworkMap(where.resolve("network-map"));
-            List<String> files = map.getLeadFileNamesForRulebook(Rulebook.SYBIL_RULEBOOK_UID_TEST.toString());
+
+            List<String> files = map.getLeadFileNamesForRulebook(
+                    Rulebook.SYBIL_RULEBOOK_UID_TEST.toString());
 
             NetworkMapItemModerator mod = (NetworkMapItemModerator)
                     map.nmiForNode(URI.create(
@@ -60,7 +63,6 @@ public class TestRulebookOnboarding {
             System.out.println(mod.getNodeUID());
 
             long t = Timing.currentTime();
-
             String result = RulebookOnboarding.onboardRulebook(store, where, mod.getNodeUID());
 
             System.out.println("Took " + Timing.hasBeenMs(t));

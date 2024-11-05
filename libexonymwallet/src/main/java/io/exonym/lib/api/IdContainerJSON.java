@@ -89,6 +89,7 @@ public class IdContainerJSON extends AbstractIdContainer {
 		this.testFolder = generatePathToFolder();
 		this.file = generatePathToFile();
 		this.schema = schema;
+		Files.createDirectories(file.getParent());
 		Files.writeString(file,
 				JaxbHelper.serializeToJson(schema, IdContainerSchema.class),
 				StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
