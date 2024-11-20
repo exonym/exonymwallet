@@ -34,7 +34,9 @@ public class SybilOnboarding {
     private final static Logger logger = Logger.getLogger(SybilOnboarding.class.getName());
 
     public static final String SYBIL_URL_TEST_NET = "http://localhost:8079/register/";
-    public static final String SYBIL_URL_TEST_NET_C30 = "http://localhost:8079/c30-register/";
+    public static final String SYBIL_URL_TEST_NET_C30 = "https://t1.sybil.cyber30.io/c30-register/";
+
+    public static final String SYBIL_URL_MAIN_NET_C30 = "https://t1.sybil.cyber30.io/c30-register/";
 
     public static String testNet(PassStore store, Path rootPath, String sybilUrl, String sybilClass) throws Exception {
         ExonymToolset toolset = new ExonymToolset(store, rootPath);
@@ -117,8 +119,15 @@ public class SybilOnboarding {
         }
     }
 
-    public static String c30MainNet(PassStore store, Path rootPath, Http client) throws Exception {
-        ExonymToolset toolset = new ExonymToolset(store, rootPath);
+    public static IdContainerSchema c30MainNet(IdContainerSchema schema, Path rootPath,
+                                    URI sybilUrl, Http client, AsymStoreKey key,
+                                    String alpha, String beta, String gamma) throws Exception {
+
+        String epsilon = schema.getUsername();
+        PassStore store = new PassStore(epsilon, false);
+        store.setUsername(epsilon);
+
+        ExonymToolset toolset = new ExonymToolset(store, rootPath, schema);
         URI sybilCSpecUID = URI.create(Rulebook.SYBIL_RULEBOOK_UID_MAIN + ":c");
 
         CredentialSpecification cSpec = toolset.getExternal().openResource(
@@ -126,18 +135,51 @@ public class SybilOnboarding {
 
         NetworkMap networkMap = toolset.getNetworkMap();
 
-        NetworkMapItemLead sybilLeadTarget = openSybilLead(
-                Rulebook.SYBIL_LEAD_UID_MAIN.toString(), networkMap);
+        NetworkMapItemModerator modSybil = networkMap.nmiForSybilMainNet();
 
-        NetworkMapItemModerator modSybil = targetSybil(
-                sybilLeadTarget, networkMap, false);
+        String nonce = client.basicGet(SybilOnboarding.SYBIL_URL_MAIN_NET_C30);
+        byte[] sig = key.encryptWithPrivateKey(nonce.getBytes(StandardCharsets.UTF_8));
+        String hexSig = Hex.encodeHexString(sig);
+        String pathToGamma = alpha + "/" + beta + "/" + gamma + "/" + hexSig;
+        String url = sybilUrl.toString() + "c30-register/" + pathToGamma;
+        logger.info(url);
 
-        String sybilUrl = "https://sybil.cyber30.io/c30-register/";
+        String response = onboarding(toolset, store, cSpec, modSybil,
+                "c30", url, client);
 
-        return onboarding(toolset, store, cSpec, modSybil,
-                "c30", sybilUrl, client);
+        JsonObject res = JsonParser.parseString(response).getAsJsonObject();
 
+        if (res.has("issuerUid")){
+            return C30Utils.c30SchemaFromDisk(rootPath, epsilon);
+
+        } else {
+            throw new UxException(response);
+
+        }
     }
+
+//    public static String c30MainNet(PassStore store, Path rootPath, Http client) throws Exception {
+//        ExonymToolset toolset = new ExonymToolset(store, rootPath);
+//        URI sybilCSpecUID = URI.create(Rulebook.SYBIL_RULEBOOK_UID_MAIN + ":c");
+//
+//        CredentialSpecification cSpec = toolset.getExternal().openResource(
+//                IdContainerJSON.uidToXmlFileName(sybilCSpecUID));
+//
+//        NetworkMap networkMap = toolset.getNetworkMap();
+//
+//        NetworkMapItemLead sybilLeadTarget = openSybilLead(
+//                Rulebook.SYBIL_LEAD_UID_MAIN.toString(), networkMap);
+//
+//        NetworkMapItemModerator modSybil = targetSybil(
+//                sybilLeadTarget, networkMap, false);
+//
+//
+//
+//        return onboarding(toolset, store, cSpec, modSybil,
+//                "c30", sybilUrl, client);
+//
+//    }
+
 
 
 

@@ -26,18 +26,19 @@ public class WalletAPI {
     private static Logger logger = Logger.getLogger(WalletAPI.class.getName());
     public static final String NOT_IMPLEMENTED = "NOT_IMPLEMENTED";
 
-    @CEntryPoint(name = "c30_get_challenge")
-    public static CCharPointer c30GetChallenge(IsolateThread thread,
+    @CEntryPoint(name = "c30_join_to_auth_protocol")
+    public static CCharPointer c30JoinToAuthProtocol(IsolateThread thread,
                                                CCharPointer alpha_,
                                                CCharPointer beta_,
                                                CCharPointer gamma_,
-                                               CCharPointer path_){
+                                               CCharPointer path_,
+                                               boolean test){
         try {
             String alpha = CTypeConversion.toJavaString(alpha_);
             String beta = CTypeConversion.toJavaString(beta_);
             String gamma = CTypeConversion.toJavaString(gamma_);
             String path = CTypeConversion.toJavaString(path_);
-            String result = C30Utils.getChallenge(alpha, beta, gamma, Path.of(path));
+            String result = C30Utils.joinToAuthProtocol(alpha, beta, gamma, Path.of(path), test);
             return toCString(result);
 
         } catch (Exception e) {
@@ -46,13 +47,28 @@ public class WalletAPI {
         }
     }
 
-    @CEntryPoint(name = "get_game_key")
-    public static CCharPointer getGameKey(CCharPointer alpha_, CCharPointer beta_, CCharPointer rootPath_){
+    @CEntryPoint(name = "has_player_key_for_game")
+    public static boolean hasPlayerKeyForGame(IsolateThread thread, CCharPointer alpha_, CCharPointer beta_, CCharPointer rootPath_){
         try {
             String alpha = CTypeConversion.toJavaString(alpha_);
             String beta = CTypeConversion.toJavaString(beta_);
             String path = CTypeConversion.toJavaString(rootPath_);
-            String publicKeyAsHex = C30Utils.getPlayerPublicKey(Path.of(path), alpha, beta);
+            return C30Utils.hasPlayerKeyForGame(alpha, beta, Path.of(path));
+
+        } catch (Exception e) {
+            handleError(e);
+            return false;
+
+        }
+    }
+
+    @CEntryPoint(name = "generate_player_key_for_game")
+    public static CCharPointer generatePlayerKeyForGame(IsolateThread thread, CCharPointer alpha_, CCharPointer beta_, CCharPointer rootPath_){
+        try {
+            String alpha = CTypeConversion.toJavaString(alpha_);
+            String beta = CTypeConversion.toJavaString(beta_);
+            String path = CTypeConversion.toJavaString(rootPath_);
+            String publicKeyAsHex = C30Utils.getPlayerPublicKeyAsString(Path.of(path), alpha, beta);
             return toCString(publicKeyAsHex);
 
         } catch (Exception e) {

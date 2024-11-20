@@ -11,8 +11,6 @@ public class RevocationRequestWrapper {
 
     private ArrayList<RevocationRequest> requests = new ArrayList<>();
 
-    private String key, kid;
-
     private byte[] signature;
 
     private URI moderator;
@@ -24,22 +22,6 @@ public class RevocationRequestWrapper {
 
     public void setRequests(ArrayList<RevocationRequest> requests) {
         this.requests = requests;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getKid() {
-        return kid;
-    }
-
-    public void setKid(String kid) {
-        this.kid = kid;
     }
 
     public byte[] getSignature() {

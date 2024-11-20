@@ -2,6 +2,7 @@ package io.exonym.lib.api;
 
 import io.exonym.lib.actor.NodeVerifier;
 import io.exonym.lib.exceptions.ErrorMessages;
+import io.exonym.lib.exceptions.HubException;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.pojo.NetworkMapItem;
@@ -25,8 +26,8 @@ public class NetworkMapMemory extends AbstractNetworkMap {
     private final static Logger logger = Logger.getLogger(NetworkMapMemory.class.getName());
     
     private final HashSet<String> rulebookIds = new HashSet<>();
-    private final ConcurrentHashMap<URI, NetworkMapItemLead> sourceMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<URI, NetworkMapItemModerator> advocateMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<URI, NetworkMapItemLead> leadMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<URI, NetworkMapItemModerator> modMap = new ConcurrentHashMap<>();
 
     private NetworkMapMemory() throws Exception {
         this.spawn();
@@ -37,9 +38,9 @@ public class NetworkMapMemory extends AbstractNetworkMap {
                                      ArrayList<NetworkMapItemModerator> modForLead) throws Exception {
         URI rulebookId = UIDHelper.computeRulebookIdFromLeadUid(leadUid);
         rulebookIds.add(rulebookId.toString());
-        sourceMap.put(nmis.getLeadUID(), nmis);
+        leadMap.put(nmis.getLeadUID(), nmis);
         for (NetworkMapItemModerator nmia : modForLead){
-            advocateMap.put(nmia.getNodeUID(), nmia);
+            modMap.put(nmia.getNodeUID(), nmia);
 
         }
     }
@@ -50,14 +51,36 @@ public class NetworkMapMemory extends AbstractNetworkMap {
     }
 
     @Override
+    public NetworkMapItemModerator nmiForSybilTestNet() throws Exception {
+        return super.nmiForSybilTestNet();
+    }
+
+    @Override
+    public NetworkMapItemModerator nmiForSybilMainNet() throws Exception {
+        return super.nmiForSybilMainNet();
+    }
+
+    @Override
     public NetworkMapItem nmiForNode(URI uid) throws Exception {
+        logger.info("Searching for: " + uid);
         if (WhiteList.isModeratorUid(uid)){
-            return advocateMap.get(uid);
+            NetworkMapItem item = modMap.get(uid);
+            if (item==null){
+                throw new HubException(ErrorMessages.MODERATOR_NOT_FOUND_ON_NETWORK_MAP + ":" + uid);
 
+            }else{
+                return item;
 
+            }
         } else if (WhiteList.isLeadUid(uid)){
-            return sourceMap.get(uid);
+            NetworkMapItem item = leadMap.get(uid);
+            if (item==null){
+                throw new HubException(ErrorMessages.MODERATOR_NOT_FOUND_ON_NETWORK_MAP + ":" + uid);
 
+            }else{
+                return item;
+
+            }
         } else {
             throw new UxException(ErrorMessages.INVALID_UID);
 

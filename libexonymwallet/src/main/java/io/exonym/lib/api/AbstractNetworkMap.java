@@ -29,6 +29,8 @@ public abstract class AbstractNetworkMap {
 
     private Path rootPath = null;
     private final CacheContainer cache;
+    public static final String LEAD_URL = "https://t1.trust.cyber30.io/leads.xml";
+    // "https://trust.exonym.io/leads-local.xml";
 
     public AbstractNetworkMap(Path rootPath) throws Exception {
         this.rootPath = rootPath;
@@ -197,7 +199,7 @@ public abstract class AbstractNetworkMap {
 
     private TrustNetwork openLeadSet() throws Exception {
         try {
-            String leads = "https://trust.exonym.io/leads.xml";
+            String leads = LEAD_URL;
             byte[] s = UrlHelper.readXml(new URL(leads));
             return JaxbHelper.xmlToClass(s, TrustNetwork.class);
 
@@ -335,6 +337,7 @@ public abstract class AbstractNetworkMap {
             throw new HubException("Null Node UID - Programming Error");
 
         }
+
         String fileName = toNmiFilename(uid);
 
         if (UIDHelper.isLeadUid(uid)){

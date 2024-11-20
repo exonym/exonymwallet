@@ -2,18 +2,6 @@
   "resources":{
   "includes":[
     {
-      "pattern":"\\QMETA-INF/services/javax.imageio.spi.ImageInputStreamSpi\\E"
-    }, 
-    {
-      "pattern":"\\QMETA-INF/services/javax.imageio.spi.ImageOutputStreamSpi\\E"
-    }, 
-    {
-      "pattern":"\\QMETA-INF/services/javax.imageio.spi.ImageReaderSpi\\E"
-    }, 
-    {
-      "pattern":"\\QMETA-INF/services/javax.imageio.spi.ImageWriterSpi\\E"
-    }, 
-    {
       "pattern":"\\QMETA-INF/services/javax.xml.bind.JAXBContext\\E"
     }, 
     {
@@ -82,10 +70,6 @@
     {
       "name":"org/apache/xml/security/resource/xmlsecurity",
       "locales":["en"]
-    }, 
-    {
-      "name":"sun.awt.resources.awt",
-      "classNames":["sun.awt.resources.awt"]
     }
   ]
 }

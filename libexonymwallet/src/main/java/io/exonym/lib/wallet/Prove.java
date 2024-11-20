@@ -429,8 +429,21 @@ public class Prove {
                 owner.openResourceIfNotLoaded(helper.getRevocationInfoParams());
 
             }
-            URI sybilTestnetUID = exo.getNetworkMap().nmiForSybilTestNet().getLastIssuerUID();
+            // User cannot be issued a sybil prod credential on sybil test net, so this is safe.
+            ArrayList<String> secrets = exo.getOwner().getContainer().getOwnerSecretList();
+            boolean prod = false;
+            for (String s : secrets){
+                if (s.contains(Rulebook.SYBIL_RULEBOOK_HASH_MAIN)){
+                    prod = true;
+                }
+            }
+            NetworkMap map = exo.getNetworkMap();
+            NetworkMapItemModerator sybilNmi = prod ?
+                    map.nmiForSybilMainNet(): map.nmiForSybilTestNet();
+
+            URI sybilTestnetUID = sybilNmi.getLastIssuerUID();
             UIDHelper sybilHelper = new UIDHelper(sybilTestnetUID);
+
             bpp.addCredentialInPolicy(sybilHelper.getCredentialSpecAsList(),
                     sybilHelper.computeIssuerParametersUIDAsList(),
                     UUID.randomUUID().toString(), DEFAULT_ALIAS);

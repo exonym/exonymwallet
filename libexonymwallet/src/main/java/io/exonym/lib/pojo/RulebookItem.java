@@ -5,6 +5,9 @@ import java.util.ArrayList;
 public class RulebookItem {
     private String id;
     private String description;
+
+    private String subheading = "";
+
     private ArrayList<Interpretation> interpretations = new ArrayList<>();
 
     private Penalty penalty;
@@ -39,5 +42,13 @@ public class RulebookItem {
 
     public void setPenalty(Penalty penalty) {
         this.penalty = penalty;
+    }
+
+    public String getSubheading() {
+        return subheading;
+    }
+
+    public void setSubheading(String subheading) {
+        this.subheading = subheading;
     }
 }

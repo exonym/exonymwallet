@@ -142,6 +142,9 @@ public class BuildPresentationTokenDescription {
 	 * @throws Exception 
 	 */
 	public HashMap<URI, HashSet<CandidateToken>>  setOwnedCredentials(ArrayList<OwnedCredential> ownedCredentials) throws Exception {
+		for (OwnedCredential cred : ownedCredentials){
+			logger.info("Adding Owned: " + cred.toString());
+		}
 		this.ownedCredentials = new HashSet<>();
 		this.ownedCredentials.addAll(ownedCredentials);
 
@@ -191,6 +194,7 @@ public class BuildPresentationTokenDescription {
 	}
 
 	private HashMap<URI, HashSet<CandidateToken>> collectCandidates() throws Exception {
+		logger.info("Hello");
 		for (PresentationPolicy policy: policies){
 			URI policyUid = policy.getPolicyUID();
 			this.policyUidToPolicyMap.put(policyUid, policy);
@@ -237,7 +241,18 @@ public class BuildPresentationTokenDescription {
 				policyToCandidateMap.put(policyUid, candidates);
 				
 			}
+			for (CandidateToken c : candidates){
+				logger.info("Candidate " + c.toString());
+			}
+			for (URI o : owned){
+				logger.info("Owned " + o);
+			}
+			for (URI o : credentialUidsInPolicy){
+				logger.info("UIDS in Policy " + o);
+			}
+
 		}
+
 		if (policyToCandidateMap.isEmpty()){
 			String[] ps = new String[policies.size()];
 			int i = 0;

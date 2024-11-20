@@ -12,11 +12,6 @@ import io.exonym.lib.standard.Const;
 import io.exonym.lib.standard.PassStore;
 import io.exonym.lib.standard.ExtractObject;
 import org.apache.commons.codec.binary.Base64;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -30,8 +25,14 @@ public  class RulebookOnboarding {
     private final static Logger logger = Logger.getLogger(RulebookOnboarding.class.getName());
 
     public static String onboardRulebook(PassStore store, Path path, URI modUid) throws Exception {
+        return onboardRulebook(store, path, modUid, null);
+    }
+
+    public static String onboardRulebook(PassStore store, Path path, URI modUid, Http client) throws Exception {
         NetworkMapItemModerator modNmi = WalletUtils.determinedSearchForModerator(path, modUid);
-        Http client = new Http();
+        if (client==null){
+            client = new Http();
+        }
         String json = client.basicGet(modNmi.getRulebookNodeURL() + Const.ENDPOINT_JOIN);
         Rulebook rulebook = JaxbHelper.jsonToClass(json, Rulebook.class);
         if (rulebook.getLink()!=null){

@@ -45,6 +45,7 @@ public class ExonymToolset {
 
         owner = new ExonymOwner(id);
         owner.openContainer(store);
+
         if (owner.getContainer().getOwnerSecretList().isEmpty()){
             owner.setupContainerSecret(store.getEncrypt(), store.getDecipher());
         }
@@ -130,5 +131,9 @@ public class ExonymToolset {
 
     public IdContainerSchema getSchema() {
         return schema;
+    }
+
+    public PassStore getStore() {
+        return store;
     }
 }

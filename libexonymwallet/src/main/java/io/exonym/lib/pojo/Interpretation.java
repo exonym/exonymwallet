@@ -2,8 +2,8 @@ package io.exonym.lib.pojo;
 
 public class Interpretation {
 
-    String modifier;
-    String definition;
+    String modifier = "";
+    String definition = "";
 
     public String getModifier() {
         return modifier;
@@ -20,4 +20,5 @@ public class Interpretation {
     public void setDefinition(String definition) {
         this.definition = definition;
     }
+
 }

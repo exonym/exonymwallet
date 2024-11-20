@@ -22,18 +22,16 @@ import java.util.logging.Logger;
 
 public class TestRulebookToolkit {
 
-
     private static Logger logger = Logger.getLogger(TestRulebookToolkit.class.getName());
-
 
     @Test
     public void buildSybilRulebook() {
         try {
             String root = "non-resources";
-            RulebookCreator creator = new RulebookCreator("leads", root);
-            RulebookCreator creator0 = new RulebookCreator("sybil", root);
-            RulebookVerifier verifier = new RulebookVerifier(
-                    Path.of(root, "sybil-rulebook-test.json").toString());
+            RulebookCreator creator = new RulebookCreator("c30", root);
+//            RulebookCreator creator0 = new RulebookCreator("sybil", root);
+//            RulebookVerifier verifier = new RulebookVerifier(
+//                    Path.of(root, "sybil-rulebook-test.json").toString());
 
         } catch (Exception e) {
             String a = ExceptionUtils.getStackTrace(e);

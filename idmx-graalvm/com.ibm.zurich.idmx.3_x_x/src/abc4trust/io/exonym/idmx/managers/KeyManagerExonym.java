@@ -124,6 +124,38 @@ public class KeyManagerExonym implements KeyManager {
 
     }
 
+    public void clearRevocationInfoForUid(URI raiUid){
+        if (raiUid==null){
+            throw new NullPointerException();
+        }
+        String[] parts = raiUid.toString().split(":");
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            builder.append(parts[i]);
+            builder.append(":");
+
+        }
+        String idCheck = builder.toString();
+        System.out.println("IDMX Clearance Target" + idCheck);
+
+        ArrayList<URI> toRemove = new ArrayList<>();
+        for (URI rai : revocationInfoMap.keySet()){
+            if (rai.toString().startsWith(idCheck)){
+                toRemove.add(rai);
+
+            }
+        }
+        for (URI remove : toRemove){
+            revocationInfoMap.remove(remove);
+            System.out.println("Removing: " + remove);
+        }
+    }
+
+    public ConcurrentHashMap<URI, RevocationInformation> getRevocationInfoMap(){
+        return revocationInfoMap;
+
+    }
+
     @Override
     public void storeCurrentRevocationInformation(RevocationInformation ri) throws KeyManagerException {
         this.storeRevocationInformation(ri.getRevocationAuthorityParametersUID(), ri);

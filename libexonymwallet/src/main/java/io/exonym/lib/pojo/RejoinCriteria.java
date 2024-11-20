@@ -13,6 +13,14 @@ public class RejoinCriteria {
     private String bannedLiftedUTC;
     private String credentialFrom;
 
+    private String tovutc;
+
+    private String nibble6;
+    private String x0Hash;
+    private URI hostMod;
+
+
+
     private String error;
 
     public boolean isCanRejoin() {
@@ -69,5 +77,37 @@ public class RejoinCriteria {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public String getTovutc() {
+        return tovutc;
+    }
+
+    public void setTovutc(String tovutc) {
+        this.tovutc = tovutc;
+    }
+
+    public String getNibble6() {
+        return nibble6;
+    }
+
+    public void setNibble6(String nibble6) {
+        this.nibble6 = nibble6;
+    }
+
+    public String getX0Hash() {
+        return x0Hash;
+    }
+
+    public void setX0Hash(String x0Hash) {
+        this.x0Hash = x0Hash;
+    }
+
+    public URI getHostMod() {
+        return hostMod;
+    }
+
+    public void setHostMod(URI hostMod) {
+        this.hostMod = hostMod;
     }
 }

@@ -11,6 +11,7 @@ import io.exonym.lib.lite.Http;
 import io.exonym.lib.pojo.*;
 import io.exonym.lib.standard.Const;
 import io.exonym.lib.standard.PassStore;
+import org.apache.http.Header;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -88,8 +89,6 @@ public class TestRevocation {
                     targets, rnUID, "They complemented my mother!");
 
             RevocationRequestWrapper wrapper = new RevocationRequestWrapper();
-            wrapper.setKid(TestTools.NODE_0_API[0]);
-            wrapper.setKey(TestTools.NODE_0_API[1]);
             wrapper.setRequests(revokeTokens);
             String revocationPost = JaxbHelper.gson.toJson(wrapper);
 
@@ -175,8 +174,7 @@ public class TestRevocation {
             plain.setModOfVioUid(URI.create(modUid));
 
             plain.setType(OverrideRequest.TYPE_PLAIN);
-            plain.setKid(TestTools.NODE_0_API[0]);
-            plain.setKey(TestTools.NODE_0_API[1]);
+            Header[] header = TestTools.generateHeaders(TestTools.NODE_0_API);
 
             NetworkMap nm = new NetworkMap(TestTools.STORE_PATH.resolve("network-map"));
             NetworkMapItemModerator nmim = (NetworkMapItemModerator) nm.nmiForNode(TestTools.MOD0_UID);
@@ -184,7 +182,7 @@ public class TestRevocation {
 
             Http http = new Http();
             String r = http.basicPost(
-                    modEndpoint.toString(), JaxbHelper.gson.toJson(plain));
+                    modEndpoint.toString(), JaxbHelper.gson.toJson(plain), header);
             logger.info(r);
 
         } catch (Exception e) {
@@ -237,8 +235,6 @@ public class TestRevocation {
                     targets, rnUID, "They complemented my mother!");
 
             RevocationRequestWrapper wrapper = new RevocationRequestWrapper();
-            wrapper.setKid(TestTools.NODE_0_API[0]);
-            wrapper.setKey(TestTools.NODE_0_API[1]);
             wrapper.setRequests(revokeTokens);
             String revocationPost = JaxbHelper.gson.toJson(wrapper);
 

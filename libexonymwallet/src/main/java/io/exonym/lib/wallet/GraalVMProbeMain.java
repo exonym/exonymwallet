@@ -4,6 +4,7 @@
 
 package io.exonym.lib.wallet;
 
+import com.google.gson.JsonObject;
 import eu.abc4trust.xml.*;
 import io.exonym.lib.helpers.BuildCredentialSpecification;
 import io.exonym.lib.helpers.BuildPresentationPolicy;
@@ -15,6 +16,7 @@ import io.exonym.lib.api.IdContainerJSON;
 import io.exonym.lib.helpers.WordSets;
 import io.exonym.lib.helpers.UrlHelper;
 import io.exonym.lib.exceptions.UxException;
+import io.exonym.lib.lite.Http;
 import io.exonym.lib.lite.SFTPClient;
 import io.exonym.lib.lite.SFTPLogonData;
 import io.exonym.lib.pojo.*;
@@ -24,14 +26,18 @@ import io.exonym.lib.helpers.Timing;
 import io.exonym.lib.standard.WhiteList;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -242,17 +248,17 @@ public class GraalVMProbeMain {
 
         NetworkMapInspector inspector = new NetworkMapInspector(map);
         String s = inspector.listActors(null);
-        URI ruid = Rulebook.SYBIL_RULEBOOK_UID_TEST;
+        URI ruid = Rulebook.SYBIL_RULEBOOK_UID_MAIN;
         System.out.println(s);
         System.out.println(inspector.viewActor(ruid.toString()));
-        String sybilSource = inspector.viewActor(Rulebook.SYBIL_LEAD_UID_TEST.toString());
+        String sybilSource = inspector.viewActor(Rulebook.SYBIL_LEAD_UID_MAIN.toString());
         System.out.println(sybilSource);
-        String sybilTest = inspector.viewActor(Rulebook.SYBIL_MOD_UID_TEST.toString());
+        String sybilTest = inspector.viewActor(Rulebook.SYBIL_MOD_UID_MAIN.toString());
         System.out.println(sybilTest);
 
-        String v = inspector.listActors(Rulebook.SYBIL_LEAD_UID_TEST.toString());
+        String v = inspector.listActors(Rulebook.SYBIL_LEAD_UID_MAIN.toString());
         System.out.println(v);
-        String t = inspector.listActors(Rulebook.SYBIL_MOD_UID_TEST.toString());
+        String t = inspector.listActors(Rulebook.SYBIL_MOD_UID_MAIN.toString());
         System.out.println(t);
 
         assert map.networkMapExists();
@@ -262,9 +268,10 @@ public class GraalVMProbeMain {
     }
 
     private static void networkMapSpawning() throws Exception {
-        NetworkMap networkMap = new NetworkMap(Path.of("resource", "network-map"));
+        Path nmPath =Path.of("resource", "network-map");
+        NetworkMap networkMap = new NetworkMap(nmPath);
         networkMap.spawn();
-        String sybilId = Rulebook.SYBIL_RULEBOOK_UID_TEST.toString();
+        String sybilId = Rulebook.SYBIL_RULEBOOK_UID_MAIN.toString();
 
         List<String> leads = networkMap.getLeadFileNamesForRulebook(sybilId);
         for (String lead : leads){
@@ -284,6 +291,71 @@ public class GraalVMProbeMain {
         }
     }
 
+    private static void c30SubscriptionLifecycle() throws Exception{
+        String gamma = "ff1297feb9c113ff1297fe4bc11312d7";
+        String api = "1a0365868d33ae0e4ccac2d25610813d337d18973f0dd5119929c8966546b527";
+
+        String alpha = UUID.randomUUID().toString();
+        String beta = UUID.randomUUID().toString();
+
+        String epsilon = CryptoUtils.computeMd5HashAsHex((alpha + beta).getBytes(StandardCharsets.UTF_8));
+
+        Path p = Path.of("identities");
+        XKey key = C30Utils.generateNewPlayerKeyForGamma(p, alpha,beta);
+        XKey.assembleAsym(epsilon, key);
+        C30Utils.hasPlayerKeyForGame(alpha, beta, p);
+
+        String kb64 = Base64.encodeBase64String(key.getPublicKey());
+
+        // Set-up player access
+        Http client = new Http();
+        JsonObject gameToPost = new JsonObject();
+        gameToPost.addProperty("key", kb64);
+
+        String playerPath = alpha + "/" + beta + "/" + gamma;
+        logger.info(playerPath);
+
+        BasicHeader game0Header = new BasicHeader("C30-App-Key", api);
+
+        String response = client.basicPost("https://t1.sybil.cyber30.io/c30/" + playerPath,
+                gameToPost.toString(), game0Header);
+
+        logger.info(response);
+
+        // Set-up player on game server
+        Header[] headersGame0 = {
+            new BasicHeader("kid", "b9c82418-ebe7-45c3-b19b-ca6f7f318867"),
+            new BasicHeader("key", "0fc8bc7cf26084f7341cb007c5233118ea2aecdf95a4ccc25212d5e8f538966b")
+        };
+//        Path nmPath = Path.of("resource", "network-map");
+        NetworkMap nm = new NetworkMap(p.resolve("network-map"));
+        nm.spawnIfDoesNotExist();
+        URI mod = URI.create("urn:rulebook:mmo:c30:home:4ccbdf03787d137fc360a193ba950eb77d6b150f99b69280a11dc084f29a2f72");
+        NetworkMapItemModerator nmim0 = (NetworkMapItemModerator) nm.nmiForNode(mod);
+
+        URI home0 = nmim0.getRulebookNodeURL();
+
+        StringBuilder url = new StringBuilder();
+        url.append("verify/");
+        url.append(epsilon);
+        url.append("/");
+        url.append(C30Utils.getPlayerPublicKeyAsString(p, alpha, beta));
+
+        logger.info(url.toString());
+
+        String url0 = home0 + url.toString();
+
+        String r0 = client.basicGet(url0.toString(), headersGame0);
+        logger.info(r0);
+
+        String message = C30Utils.joinToAuthProtocol(alpha, beta, gamma, p, false);
+        assert message.contains("success");
+
+    }
+
+
+
+
     private static void subscriptionLifecycle() throws Exception {
         resetContainer(USERNAME);
         PassStore store = pass();
@@ -292,7 +364,7 @@ public class GraalVMProbeMain {
         exo.getOwner().setupContainerSecret(store.getEncrypt(), store.getDecipher());
         exo.getNetworkMap().spawn();
 
-        URI advocateId = URI.create("urn:rulebook:trustworthy-leaders:exonym:interpretation:9f87ae0387e1ac0c1c6633a90ad674f9564035624f490fe92aba28c911487691");
+        URI advocateId = URI.create("urn:rulebook:mmo:c30:home:4ccbdf03787d137fc360a193ba950eb77d6b150f99b69280a11dc084f29a2f72");
 
         SybilOnboarding.testNet(store, path(), SybilOnboarding.SYBIL_URL_TEST_NET,
                 Rulebook.SYBIL_CLASS_PERSON);
@@ -303,7 +375,7 @@ public class GraalVMProbeMain {
 
         URI target = URI.create("http://localhost:8080");
         SsoConfigWrapper config = new SsoConfigWrapper(target);
-        config.requireRulebook(URI.create("urn:rulebook:trustworthy-leaders:9f87ae0387e1ac0c1c6633a90ad674f9564035624f490fe92aba28c911487691"));
+        config.requireRulebook(URI.create("urn:rulebook:mmo:4ccbdf03787d137fc360a193ba950eb77d6b150f99b69280a11dc084f29a2f72"));
 
         SsoChallenge c = SsoChallenge.newChallenge(config.getConfig());
         AuthenticationWrapper w = AuthenticationWrapper.wrapToWrapper(c, 100, SsoChallenge.class);
@@ -405,7 +477,7 @@ public class GraalVMProbeMain {
             newContainerWithSecret();
 
             setupIssuanceTestProve();
-            subscriptionLifecycle();
+            c30SubscriptionLifecycle();
 
         } catch (Exception e) {
             String a = ExceptionUtils.getStackTrace(e);

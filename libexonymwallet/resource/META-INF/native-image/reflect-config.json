@@ -8,8 +8,23 @@
       "name" : "<init>",
       "parameterTypes" : [ ]
     }, {
+      "name" : "equals",
+      "parameterTypes" : [ "java.lang.Object" ]
+    }, {
+      "name" : "toString",
+      "parameterTypes" : [ ]
+    }, {
+      "name" : "hashCode",
+      "parameterTypes" : [ ]
+    }, {
+      "name" : "compareTo",
+      "parameterTypes" : [ "io.exonym.lib.pojo.Penalty" ]
+    }, {
       "name" : "getType",
       "parameterTypes" : [ ]
+    }, {
+      "name" : "setType",
+      "parameterTypes" : [ "java.lang.String" ]
     }, {
       "name" : "getDenomination",
       "parameterTypes" : [ ]
@@ -27,6 +42,12 @@
       "parameterTypes" : [ ]
     }, {
       "name" : "setRepeatOffenceMultiplier",
+      "parameterTypes" : [ "double" ]
+    }, {
+      "name" : "getOffenceCount",
+      "parameterTypes" : [ ]
+    }, {
+      "name" : "setOffenceCount",
       "parameterTypes" : [ "int" ]
     }, {
       "name" : "getModifier",
@@ -35,8 +56,11 @@
       "name" : "setModifier",
       "parameterTypes" : [ "java.lang.String" ]
     }, {
-      "name" : "setType",
-      "parameterTypes" : [ "java.lang.String" ]
+      "name" : "getModUidForService",
+      "parameterTypes" : [ ]
+    }, {
+      "name" : "setModUidForService",
+      "parameterTypes" : [ "java.util.HashMap" ]
     } ]
   },{
   "name" : "io.exonym.lib.pojo.RulebookItem",
@@ -50,6 +74,15 @@
     "name" : "getId",
     "parameterTypes" : [ ]
   }, {
+    "name" : "setId",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getPenalty",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setPenalty",
+    "parameterTypes" : [ "io.exonym.lib.pojo.Penalty" ]
+  }, {
     "name" : "getDescription",
     "parameterTypes" : [ ]
   }, {
@@ -62,7 +95,10 @@
     "name" : "setInterpretations",
     "parameterTypes" : [ "java.util.ArrayList" ]
   }, {
-    "name" : "setId",
+    "name" : "getSubheading",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setSubheading",
     "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
@@ -116,6 +152,18 @@
     "name" : "setRegion",
     "parameterTypes" : [ "java.lang.String" ]
   }, {
+    "name" : "getNodeUid",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setNodeUid",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getLeadUid",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setLeadUid",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
     "name" : "getRulebookNodeUrl",
     "parameterTypes" : [ ]
   }, {
@@ -157,18 +205,6 @@
   }, {
     "name" : "setIssuerParameterUids",
     "parameterTypes" : [ "java.util.LinkedList" ]
-  }, {
-    "name" : "getNodeUid",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setNodeUid",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getLeadUid",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setLeadUid",
-    "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
   "name" : "io.exonym.lib.pojo.NetworkParticipant",
@@ -188,22 +224,16 @@
     "name" : "setRegion",
     "parameterTypes" : [ "java.lang.String" ]
   }, {
-    "name" : "setNetworkName",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "getLastUpdateTime",
+    "name" : "isAvailableOnMostRecentRequest",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setLastUpdateTime",
-    "parameterTypes" : [ "java.lang.String" ]
+    "name" : "setAvailableOnMostRecentRequest",
+    "parameterTypes" : [ "boolean" ]
   }, {
-    "name" : "setPublicKey",
-    "parameterTypes" : [ "io.exonym.lib.pojo.XKey" ]
-  }, {
-    "name" : "getLastIssuerUID",
+    "name" : "getNodeUid",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setLastIssuerUID",
+    "name" : "setNodeUid",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getRulebookNodeUrl",
@@ -227,17 +257,23 @@
     "name" : "getNetworkName",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getNodeUid",
+    "name" : "setNetworkName",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getLastUpdateTime",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setNodeUid",
+    "name" : "setLastUpdateTime",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "setPublicKey",
+    "parameterTypes" : [ "io.exonym.lib.pojo.XKey" ]
+  }, {
+    "name" : "getLastIssuerUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setLastIssuerUID",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "isAvailableOnMostRecentRequest",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setAvailableOnMostRecentRequest",
-    "parameterTypes" : [ "boolean" ]
   } ]
 },{
   "name" : "io.exonym.lib.pojo.Rulebook",
@@ -250,6 +286,15 @@
   }, {
     "name" : "getRules",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "setRules",
+    "parameterTypes" : [ "java.util.ArrayList" ]
+  }, {
+    "name" : "getLink",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setLink",
+    "parameterTypes" : [ "java.lang.String" ]
   }, {
     "name" : "getDescription",
     "parameterTypes" : [ ]
@@ -292,15 +337,6 @@
   }, {
     "name" : "computeRuleUris",
     "parameterTypes" : [ ]
-  }, {
-    "name" : "setRules",
-    "parameterTypes" : [ "java.util.ArrayList" ]
-  }, {
-    "name" : "getLink",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setLink",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "io.exonym.lib.pojo.RulebookDescription",
@@ -328,6 +364,12 @@
   }, {
     "name" : "setSimpleDescriptionEN",
     "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getDefaultPenalty",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setDefaultPenalty",
+    "parameterTypes" : [ "io.exonym.lib.pojo.Penalty" ]
   } ]
 },{
   "name" : "io.exonym.lib.lite.WalletReport",
@@ -347,6 +389,9 @@
     "name" : "isEmpty",
     "parameterTypes" : [ ]
   }, {
+    "name" : "hasSybil",
+    "parameterTypes" : [ ]
+  }, {
     "name" : "getRulebooksToIssuers",
     "parameterTypes" : [ ]
   }, {
@@ -355,9 +400,6 @@
   }, {
     "name" : "setSftpAccess",
     "parameterTypes" : [ "java.util.HashSet" ]
-  }, {
-    "name" : "hasSybil",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "io.exonym.lib.lite.SFTPLogonData",
@@ -376,6 +418,18 @@
   }, {
     "name" : "getPort",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "setPort",
+    "parameterTypes" : [ "int" ]
+  }, {
+    "name" : "setHost",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getSftpUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setSftpUID",
+    "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getUsername",
     "parameterTypes" : [ ]
@@ -412,18 +466,6 @@
   }, {
     "name" : "setKnownHost2",
     "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "setPort",
-    "parameterTypes" : [ "int" ]
-  }, {
-    "name" : "setHost",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "getSftpUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setSftpUID",
-    "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
   "name" : "io.exonym.lib.pojo.SsoChallenge",
@@ -434,11 +476,26 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getIndex",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setIndex",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getToken",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setToken",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "getChallenge",
     "parameterTypes" : [ ]
   }, {
     "name" : "universalLinkPrefix",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "setChallenge",
+    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "io.exonym.lib.pojo.AuthenticationWrapper",
@@ -448,6 +505,12 @@
   "methods" : [ {
     "name" : "<init>",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "getLink",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setLink",
+    "parameterTypes" : [ "java.lang.String" ]
   }, {
     "name" : "getChallenge",
     "parameterTypes" : [ ]
@@ -460,12 +523,6 @@
   }, {
     "name" : "getQrPngB64",
     "parameterTypes" : [ ]
-  }, {
-    "name" : "getLink",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setLink",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "io.exonym.lib.lite.FulfillmentReport",
@@ -474,6 +531,12 @@
   "queryAllDeclaredConstructors" : true,
   "methods" : [ {
     "name" : "<init>",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getMissing",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "isProvable",
     "parameterTypes" : [ ]
   }, {
     "name" : "getUserChoices",
@@ -487,12 +550,6 @@
   }, {
     "name" : "setEndonymUnderDomain",
     "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "getMissing",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "isProvable",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "io.exonym.lib.lite.NonInteractiveProofRequest",
@@ -611,6 +668,12 @@
     "name" : "has",
     "parameterTypes" : [ "java.lang.String" ]
   }, {
+    "name" : "deepCopy",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "asMap",
+    "parameterTypes" : [ ]
+  }, {
     "name" : "addProperty",
     "parameterTypes" : [ "java.lang.String", "java.lang.Number" ]
   }, {
@@ -618,10 +681,10 @@
     "parameterTypes" : [ "java.lang.String", "java.lang.String" ]
   }, {
     "name" : "addProperty",
-    "parameterTypes" : [ "java.lang.String", "java.lang.Boolean" ]
+    "parameterTypes" : [ "java.lang.String", "java.lang.Character" ]
   }, {
     "name" : "addProperty",
-    "parameterTypes" : [ "java.lang.String", "java.lang.Character" ]
+    "parameterTypes" : [ "java.lang.String", "java.lang.Boolean" ]
   }, {
     "name" : "getAsJsonPrimitive",
     "parameterTypes" : [ "java.lang.String" ]
@@ -631,12 +694,6 @@
   }, {
     "name" : "getAsJsonObject",
     "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "deepCopy",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "asMap",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "com.google.gson.JsonArray",
@@ -713,6 +770,18 @@
     "name" : "getAsLong",
     "parameterTypes" : [ ]
   }, {
+    "name" : "deepCopy",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getAsFloat",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getAsByte",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getAsShort",
+    "parameterTypes" : [ ]
+  }, {
     "name" : "getAsNumber",
     "parameterTypes" : [ ]
   }, {
@@ -726,18 +795,6 @@
     "parameterTypes" : [ ]
   }, {
     "name" : "getAsBigInteger",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "deepCopy",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "getAsFloat",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "getAsByte",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "getAsShort",
     "parameterTypes" : [ ]
   } ]
 },{
@@ -851,6 +908,15 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getFriendlyTokenDescription",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getToken",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setToken",
+    "parameterTypes" : [ "eu.abc4trust.xml.Token" ]
+  }, {
     "name" : "getCredentialUidList",
     "parameterTypes" : [ ]
   }, {
@@ -868,15 +934,6 @@
   }, {
     "name" : "setInspectorChoiceList",
     "parameterTypes" : [ "eu.abc4trust.xml.InspectorChoiceList" ]
-  }, {
-    "name" : "getToken",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setToken",
-    "parameterTypes" : [ "eu.abc4trust.xml.Token" ]
-  }, {
-    "name" : "getFriendlyTokenDescription",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CommittedAttribute",
@@ -944,6 +1001,9 @@
     "name" : "getType",
     "parameterTypes" : [ ]
   }, {
+    "name" : "setType",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "get_id",
     "parameterTypes" : [ ]
   }, {
@@ -954,9 +1014,6 @@
     "parameterTypes" : [ ]
   }, {
     "name" : "set_rev",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "setType",
     "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
@@ -1073,6 +1130,9 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "getSystemParametersId",
     "parameterTypes" : [ ]
   }, {
@@ -1090,9 +1150,6 @@
   }, {
     "name" : "setVerifierParametersId",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CredentialDescriptions",
@@ -1169,14 +1226,14 @@
     "name" : "setPresentationTokenDescriptionWithCommitments",
     "parameterTypes" : [ "eu.abc4trust.xml.PresentationTokenDescriptionWithCommitments" ]
   }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "getCryptoEvidence",
     "parameterTypes" : [ ]
   }, {
     "name" : "setCryptoEvidence",
     "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.AttributeDescription",
@@ -1196,6 +1253,9 @@
     "name" : "setEncoding",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
+    "name" : "setType",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
     "name" : "getFriendlyAttributeName",
     "parameterTypes" : [ ]
   }, {
@@ -1206,9 +1266,6 @@
     "parameterTypes" : [ ]
   }, {
     "name" : "setDataType",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "setType",
     "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
@@ -1295,6 +1352,9 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getFriendlyPseudonymDescription",
+    "parameterTypes" : [ ]
+  }, {
     "name" : "getMetadata",
     "parameterTypes" : [ ]
   }, {
@@ -1306,9 +1366,6 @@
   }, {
     "name" : "setHumanReadableData",
     "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "getFriendlyPseudonymDescription",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.RevocationMessage",
@@ -1322,6 +1379,15 @@
     "name" : "getContext",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getRevocationAuthorityParametersUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevocationAuthorityParametersUID",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "setContext",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
     "name" : "getCryptoParams",
     "parameterTypes" : [ ]
   }, {
@@ -1333,15 +1399,6 @@
   }, {
     "name" : "setRevocationMessageType",
     "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "setContext",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getRevocationAuthorityParametersUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setRevocationAuthorityParametersUID",
-    "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PresentationTokenDescription",
@@ -1354,6 +1411,12 @@
   }, {
     "name" : "getMessage",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "getVerifierDrivenRevocation",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setMessage",
+    "parameterTypes" : [ "eu.abc4trust.xml.Message" ]
   }, {
     "name" : "getPseudonym",
     "parameterTypes" : [ ]
@@ -1381,12 +1444,6 @@
   }, {
     "name" : "setUsesSimpleProof",
     "parameterTypes" : [ "java.lang.Boolean" ]
-  }, {
-    "name" : "setMessage",
-    "parameterTypes" : [ "eu.abc4trust.xml.Message" ]
-  }, {
-    "name" : "getVerifierDrivenRevocation",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.NonRevocationEvidenceUpdate",
@@ -1397,11 +1454,23 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCryptoParams",
+    "name" : "getNonRevocationEvidenceUpdateUID",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setCryptoParams",
-    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
+    "name" : "setNonRevocationEvidenceUpdateUID",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getNonRevocationEvidenceUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setNonRevocationEvidenceUID",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getRevocationAuthorityParametersUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevocationAuthorityParametersUID",
+    "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getCreated",
     "parameterTypes" : [ ]
@@ -1415,23 +1484,11 @@
     "name" : "setExpires",
     "parameterTypes" : [ "java.util.Calendar" ]
   }, {
-    "name" : "getRevocationAuthorityParametersUID",
+    "name" : "getCryptoParams",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setRevocationAuthorityParametersUID",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getNonRevocationEvidenceUpdateUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setNonRevocationEvidenceUpdateUID",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getNonRevocationEvidenceUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setNonRevocationEvidenceUID",
-    "parameterTypes" : [ "java.net.URI" ]
+    "name" : "setCryptoParams",
+    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PresentationTokenDescriptionWithCommitments",
@@ -1445,11 +1502,11 @@
     "name" : "getMessage",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCryptoEvidence",
+    "name" : "getVerifierDrivenRevocation",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setCryptoEvidence",
-    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
+    "name" : "setMessage",
+    "parameterTypes" : [ "eu.abc4trust.xml.Message" ]
   }, {
     "name" : "getPseudonym",
     "parameterTypes" : [ ]
@@ -1472,11 +1529,11 @@
     "name" : "setTokenUID",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
-    "name" : "setMessage",
-    "parameterTypes" : [ "eu.abc4trust.xml.Message" ]
-  }, {
-    "name" : "getVerifierDrivenRevocation",
+    "name" : "getCryptoEvidence",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "setCryptoEvidence",
+    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
   } ]
 },{
   "name" : "io.exonym.lib.pojo.NetworkParticipant",
@@ -1496,22 +1553,16 @@
     "name" : "setRegion",
     "parameterTypes" : [ "java.lang.String" ]
   }, {
-    "name" : "setNetworkName",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "getLastUpdateTime",
+    "name" : "isAvailableOnMostRecentRequest",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setLastUpdateTime",
-    "parameterTypes" : [ "java.lang.String" ]
+    "name" : "setAvailableOnMostRecentRequest",
+    "parameterTypes" : [ "boolean" ]
   }, {
-    "name" : "setPublicKey",
-    "parameterTypes" : [ "io.exonym.lib.pojo.XKey" ]
-  }, {
-    "name" : "getLastIssuerUID",
+    "name" : "getNodeUid",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setLastIssuerUID",
+    "name" : "setNodeUid",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getRulebookNodeUrl",
@@ -1535,17 +1586,23 @@
     "name" : "getNetworkName",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getNodeUid",
+    "name" : "setNetworkName",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getLastUpdateTime",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setNodeUid",
+    "name" : "setLastUpdateTime",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "setPublicKey",
+    "parameterTypes" : [ "io.exonym.lib.pojo.XKey" ]
+  }, {
+    "name" : "getLastIssuerUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setLastIssuerUID",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "isAvailableOnMostRecentRequest",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setAvailableOnMostRecentRequest",
-    "parameterTypes" : [ "boolean" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.AttributeInToken",
@@ -1555,18 +1612,6 @@
   "methods" : [ {
     "name" : "<init>",
     "parameterTypes" : [ ]
-  }, {
-    "name" : "getAttributeType",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setAttributeType",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getAttributeValue",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setAttributeValue",
-    "parameterTypes" : [ "java.lang.Object" ]
   }, {
     "name" : "getInspectorPublicKeyUID",
     "parameterTypes" : [ ]
@@ -1585,6 +1630,18 @@
   }, {
     "name" : "setDataHandlingPolicy",
     "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getAttributeType",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setAttributeType",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getAttributeValue",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setAttributeValue",
+    "parameterTypes" : [ "java.lang.Object" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.SmartcardSystemParameters",
@@ -1593,6 +1650,21 @@
   "queryAllDeclaredConstructors" : true,
   "methods" : [ {
     "name" : "<init>",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getZkStatisticalHidingSizeBytes",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setZkStatisticalHidingSizeBytes",
+    "parameterTypes" : [ "int" ]
+  }, {
+    "name" : "getSignatureNonceLengthBytes",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setSignatureNonceLengthBytes",
+    "parameterTypes" : [ "int" ]
+  }, {
+    "name" : "getAny",
     "parameterTypes" : [ ]
   }, {
     "name" : "getPrimeModulus",
@@ -1635,21 +1707,6 @@
     "parameterTypes" : [ ]
   }, {
     "name" : "setZkNonceOpeningSizeBytes",
-    "parameterTypes" : [ "int" ]
-  }, {
-    "name" : "getAny",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "getZkStatisticalHidingSizeBytes",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setZkStatisticalHidingSizeBytes",
-    "parameterTypes" : [ "int" ]
-  }, {
-    "name" : "getSignatureNonceLengthBytes",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setSignatureNonceLengthBytes",
     "parameterTypes" : [ "int" ]
   } ]
 },{
@@ -1736,6 +1793,15 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getFriendlyPolicyDescription",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getNonce",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setNonce",
+    "parameterTypes" : [ "[B" ]
+  }, {
     "name" : "getFriendlyPolicyName",
     "parameterTypes" : [ ]
   }, {
@@ -1750,15 +1816,6 @@
   }, {
     "name" : "setApplicationData",
     "parameterTypes" : [ "eu.abc4trust.xml.ApplicationData" ]
-  }, {
-    "name" : "getNonce",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setNonce",
-    "parameterTypes" : [ "[B" ]
-  }, {
-    "name" : "getFriendlyPolicyDescription",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "io.exonym.lib.pojo.XKey",
@@ -1780,24 +1837,6 @@
   }, {
     "name" : "getPublicKey",
     "parameterTypes" : [ ]
-  }, {
-    "name" : "setPublicKey",
-    "parameterTypes" : [ "[B" ]
-  }, {
-    "name" : "setPrivateKey",
-    "parameterTypes" : [ "[B" ]
-  }, {
-    "name" : "getPrivateKey",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "getExpiryDateUtc",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setExpiryDateUtc",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "setSignature",
-    "parameterTypes" : [ "[B" ]
   }, {
     "name" : "getKeyUid",
     "parameterTypes" : [ ]
@@ -1822,6 +1861,24 @@
   }, {
     "name" : "setHash",
     "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "setPrivateKey",
+    "parameterTypes" : [ "[B" ]
+  }, {
+    "name" : "getPrivateKey",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getExpiryDateUtc",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setExpiryDateUtc",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "setSignature",
+    "parameterTypes" : [ "[B" ]
+  }, {
+    "name" : "setPublicKey",
+    "parameterTypes" : [ "[B" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PseudonymChoiceList",
@@ -1847,20 +1904,20 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCryptoEvidence",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCryptoEvidence",
-    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
     "name" : "getPresentationTokenDescription",
     "parameterTypes" : [ ]
   }, {
     "name" : "setPresentationTokenDescription",
     "parameterTypes" : [ "eu.abc4trust.xml.PresentationTokenDescription" ]
+  }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getCryptoEvidence",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCryptoEvidence",
+    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.IssuanceAttributeList",
@@ -1883,18 +1940,6 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getAttributeType",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setAttributeType",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getInspectorAlternatives",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setInspectorAlternatives",
-    "parameterTypes" : [ "eu.abc4trust.xml.AttributeInPolicy$InspectorAlternatives" ]
-  }, {
     "name" : "getInspectionGrounds",
     "parameterTypes" : [ ]
   }, {
@@ -1905,6 +1950,18 @@
     "parameterTypes" : [ ]
   }, {
     "name" : "setDataHandlingPolicy",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getInspectorAlternatives",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setInspectorAlternatives",
+    "parameterTypes" : [ "eu.abc4trust.xml.AttributeInPolicy$InspectorAlternatives" ]
+  }, {
+    "name" : "getAttributeType",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setAttributeType",
     "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
@@ -1919,11 +1976,11 @@
     "name" : "getMessage",
     "parameterTypes" : [ ]
   }, {
-    "name" : "isAllowSimpleProof",
+    "name" : "getVerifierDrivenRevocation",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setAllowSimpleProof",
-    "parameterTypes" : [ "java.lang.Boolean" ]
+    "name" : "setMessage",
+    "parameterTypes" : [ "eu.abc4trust.xml.Message" ]
   }, {
     "name" : "getPseudonym",
     "parameterTypes" : [ ]
@@ -1940,11 +1997,11 @@
     "name" : "setPolicyUID",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
-    "name" : "setMessage",
-    "parameterTypes" : [ "eu.abc4trust.xml.Message" ]
-  }, {
-    "name" : "getVerifierDrivenRevocation",
+    "name" : "isAllowSimpleProof",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "setAllowSimpleProof",
+    "parameterTypes" : [ "java.lang.Boolean" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.RevocationEvent",
@@ -1970,6 +2027,9 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "getParameter",
     "parameterTypes" : [ ]
   }, {
@@ -1987,9 +2047,6 @@
   }, {
     "name" : "getSupportedBuildingBlock",
     "parameterTypes" : [ ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CredentialDescription",
@@ -2002,6 +2059,12 @@
   }, {
     "name" : "getAttribute",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "getCredentialSpecificationUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCredentialSpecificationUID",
+    "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getCredentialUID",
     "parameterTypes" : [ ]
@@ -2035,12 +2098,6 @@
   }, {
     "name" : "setRevokedByIssuer",
     "parameterTypes" : [ "java.lang.Boolean" ]
-  }, {
-    "name" : "getCredentialSpecificationUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCredentialSpecificationUID",
-    "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.SystemParametersTemplate",
@@ -2084,6 +2141,12 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "isRevoked",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevoked",
+    "parameterTypes" : [ "boolean" ]
+  }, {
     "name" : "getRevocationLogEntryUID",
     "parameterTypes" : [ ]
   }, {
@@ -2104,12 +2167,6 @@
   }, {
     "name" : "setCryptoParameters",
     "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
-  }, {
-    "name" : "isRevoked",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setRevoked",
-    "parameterTypes" : [ "boolean" ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.SptdReturn",
@@ -2138,6 +2195,15 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getFriendlyIssuerDescription",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getParametersUID",
+    "parameterTypes" : [ ]
+  }, {
     "name" : "setParametersUID",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
@@ -2164,15 +2230,6 @@
   }, {
     "name" : "setRevocationParametersUID",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getParametersUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "getFriendlyIssuerDescription",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CredentialInPolicy",
@@ -2182,6 +2239,18 @@
   "methods" : [ {
     "name" : "<init>",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "getCredentialSpecAlternatives",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCredentialSpecAlternatives",
+    "parameterTypes" : [ "eu.abc4trust.xml.CredentialInPolicy$CredentialSpecAlternatives" ]
+  }, {
+    "name" : "getAlias",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setAlias",
+    "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getIssuerAlternatives",
     "parameterTypes" : [ ]
@@ -2197,18 +2266,6 @@
   }, {
     "name" : "setSameKeyBindingAs",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getAlias",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setAlias",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getCredentialSpecAlternatives",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCredentialSpecAlternatives",
-    "parameterTypes" : [ "eu.abc4trust.xml.CredentialInPolicy$CredentialSpecAlternatives" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PresentationPolicyAlternatives",
@@ -2222,6 +2279,9 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "getPresentationPolicy",
     "parameterTypes" : [ ]
   }, {
@@ -2230,9 +2290,6 @@
   }, {
     "name" : "setVerifierParameters",
     "parameterTypes" : [ "eu.abc4trust.xml.VerifierParameters" ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CredentialUidList",
@@ -2300,17 +2357,17 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getLastUpdateTime",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setLastUpdateTime",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
     "name" : "getKeyPairs",
     "parameterTypes" : [ ]
   }, {
     "name" : "setKeyPairs",
     "parameterTypes" : [ "java.util.ArrayList" ]
+  }, {
+    "name" : "getLastUpdateTime",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setLastUpdateTime",
+    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.IssuanceLogEntry",
@@ -2369,6 +2426,18 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getRevocationInformationUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevocationInformationUID",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getAlias",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setAlias",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
     "name" : "getDisclosedAttribute",
     "parameterTypes" : [ ]
   }, {
@@ -2376,12 +2445,6 @@
     "parameterTypes" : [ ]
   }, {
     "name" : "setSameKeyBindingAs",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getCredentialSpecUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCredentialSpecUID",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getIssuerParametersUID",
@@ -2399,16 +2462,10 @@
     "name" : "getCommittedAttribute",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getAlias",
+    "name" : "getCredentialSpecUID",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setAlias",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getRevocationInformationUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setRevocationInformationUID",
+    "name" : "setCredentialSpecUID",
     "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
@@ -2507,12 +2564,6 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getRevocationInfoReference",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setRevocationInfoReference",
-    "parameterTypes" : [ "eu.abc4trust.xml.Reference" ]
-  }, {
     "name" : "getNonRevocationEvidenceReference",
     "parameterTypes" : [ ]
   }, {
@@ -2524,6 +2575,12 @@
   }, {
     "name" : "setNonRevocationEvidenceUpdateReference",
     "parameterTypes" : [ "eu.abc4trust.xml.Reference" ]
+  }, {
+    "name" : "getRevocationInfoReference",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevocationInfoReference",
+    "parameterTypes" : [ "eu.abc4trust.xml.Reference" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.InspectorDescription",
@@ -2534,14 +2591,14 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getFriendlyInspectorDescription",
+    "parameterTypes" : [ ]
+  }, {
     "name" : "getInspectorUID",
     "parameterTypes" : [ ]
   }, {
     "name" : "setInspectorUID",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getFriendlyInspectorDescription",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.UiPresentationReturn",
@@ -2603,17 +2660,17 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getPresentationToken",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setPresentationToken",
-    "parameterTypes" : [ "eu.abc4trust.xml.PresentationToken" ]
-  }, {
     "name" : "getPresentationPolicyAlternatives",
     "parameterTypes" : [ ]
   }, {
     "name" : "setPresentationPolicyAlternatives",
     "parameterTypes" : [ "eu.abc4trust.xml.PresentationPolicyAlternatives" ]
+  }, {
+    "name" : "getPresentationToken",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setPresentationToken",
+    "parameterTypes" : [ "eu.abc4trust.xml.PresentationToken" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.Credential",
@@ -2622,6 +2679,9 @@
   "queryAllDeclaredConstructors" : true,
   "methods" : [ {
     "name" : "<init>",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getNonRevocationEvidenceUID",
     "parameterTypes" : [ ]
   }, {
     "name" : "getCryptoParams",
@@ -2635,9 +2695,6 @@
   }, {
     "name" : "setCredentialDescription",
     "parameterTypes" : [ "eu.abc4trust.xml.CredentialDescription" ]
-  }, {
-    "name" : "getNonRevocationEvidenceUID",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PolicyDescriptionsEntry",
@@ -2672,6 +2729,9 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "getParameter",
     "parameterTypes" : [ ]
   }, {
@@ -2695,9 +2755,6 @@
   }, {
     "name" : "setPublicKeyId",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PseudonymDescriptionsEntry",
@@ -2729,17 +2786,17 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCryptoParams",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCryptoParams",
-    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
-  }, {
     "name" : "getSecretKeyUID",
     "parameterTypes" : [ ]
   }, {
     "name" : "setSecretKeyUID",
     "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getCryptoParams",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCryptoParams",
+    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CredentialTemplate",
@@ -2756,11 +2813,11 @@
     "name" : "setSameKeyBindingAs",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
-    "name" : "getCredentialSpecUID",
+    "name" : "getUnknownAttributes",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setCredentialSpecUID",
-    "parameterTypes" : [ "java.net.URI" ]
+    "name" : "setUnknownAttributes",
+    "parameterTypes" : [ "eu.abc4trust.xml.UnknownAttributes" ]
   }, {
     "name" : "getIssuerParametersUID",
     "parameterTypes" : [ ]
@@ -2768,11 +2825,11 @@
     "name" : "setIssuerParametersUID",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
-    "name" : "getUnknownAttributes",
+    "name" : "getCredentialSpecUID",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setUnknownAttributes",
-    "parameterTypes" : [ "eu.abc4trust.xml.UnknownAttributes" ]
+    "name" : "setCredentialSpecUID",
+    "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.SystemParameters",
@@ -2786,11 +2843,8 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCryptoParams",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCryptoParams",
-    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
   }, {
     "name" : "getSystemParametersUID",
     "parameterTypes" : [ ]
@@ -2798,8 +2852,11 @@
     "name" : "setSystemParametersUID",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
+    "name" : "getCryptoParams",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCryptoParams",
+    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.RevocationState",
@@ -2873,6 +2930,12 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getScope",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setScope",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "getPseudonymUID",
     "parameterTypes" : [ ]
   }, {
@@ -2896,12 +2959,6 @@
   }, {
     "name" : "setSecretReference",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getScope",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setScope",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CredentialSpecificationAndSystemParameters",
@@ -2972,6 +3029,18 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getFriendlyInspectorDescription",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "setPublicKeyUID",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getPublicKeyUID",
+    "parameterTypes" : [ ]
+  }, {
     "name" : "getCryptoParams",
     "parameterTypes" : [ ]
   }, {
@@ -2989,18 +3058,6 @@
   }, {
     "name" : "setHashAlgorithm",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "setPublicKeyUID",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getPublicKeyUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "getFriendlyInspectorDescription",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CredentialSpecification",
@@ -3013,6 +3070,9 @@
   }, {
     "name" : "getVersion",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
   }, {
     "name" : "getSpecificationUID",
     "parameterTypes" : [ ]
@@ -3052,9 +3112,6 @@
   }, {
     "name" : "getFriendlyCredentialName",
     "parameterTypes" : [ ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.UiManageCredentialData",
@@ -3080,11 +3137,11 @@
     "name" : "getFunction",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setFunction",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
     "name" : "getAttributeOrConstantValue",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "setFunction",
+    "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.SignatureToken",
@@ -3119,17 +3176,17 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCredentialTemplate",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCredentialTemplate",
-    "parameterTypes" : [ "eu.abc4trust.xml.CredentialTemplate" ]
-  }, {
     "name" : "getPresentationTokenDescription",
     "parameterTypes" : [ ]
   }, {
     "name" : "setPresentationTokenDescription",
     "parameterTypes" : [ "eu.abc4trust.xml.PresentationTokenDescription" ]
+  }, {
+    "name" : "getCredentialTemplate",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCredentialTemplate",
+    "parameterTypes" : [ "eu.abc4trust.xml.CredentialTemplate" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.SelectPresentationTokenDescription",
@@ -3139,6 +3196,12 @@
   "methods" : [ {
     "name" : "<init>",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "getCandidatePresentationTokenList",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCandidatePresentationTokenList",
+    "parameterTypes" : [ "eu.abc4trust.xml.CandidatePresentationTokenList" ]
   }, {
     "name" : "getPolicyDescriptions",
     "parameterTypes" : [ ]
@@ -3163,12 +3226,6 @@
   }, {
     "name" : "setInspectorDescriptions",
     "parameterTypes" : [ "eu.abc4trust.xml.InspectorDescriptions" ]
-  }, {
-    "name" : "getCandidatePresentationTokenList",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCandidatePresentationTokenList",
-    "parameterTypes" : [ "eu.abc4trust.xml.CandidatePresentationTokenList" ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.SptdArguments",
@@ -3206,11 +3263,32 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getMaximalNumberOfAttributes",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setMaximalNumberOfAttributes",
+    "parameterTypes" : [ "int" ]
+  }, {
+    "name" : "getFriendlyIssuerDescription",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getSystemParametersUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setSystemParametersUID",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
     "name" : "getCryptoParams",
     "parameterTypes" : [ ]
   }, {
     "name" : "setCryptoParams",
     "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
+  }, {
+    "name" : "getParametersUID",
+    "parameterTypes" : [ ]
   }, {
     "name" : "setParametersUID",
     "parameterTypes" : [ "java.net.URI" ]
@@ -3232,27 +3310,6 @@
   }, {
     "name" : "setRevocationParametersUID",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getSystemParametersUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setSystemParametersUID",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getParametersUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "getFriendlyIssuerDescription",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "getMaximalNumberOfAttributes",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setMaximalNumberOfAttributes",
-    "parameterTypes" : [ "int" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PolicyDescription",
@@ -3266,14 +3323,14 @@
     "name" : "getMessage",
     "parameterTypes" : [ ]
   }, {
+    "name" : "setMessage",
+    "parameterTypes" : [ "eu.abc4trust.xml.Message" ]
+  }, {
     "name" : "getPolicyUID",
     "parameterTypes" : [ ]
   }, {
     "name" : "setPolicyUID",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "setMessage",
-    "parameterTypes" : [ "eu.abc4trust.xml.Message" ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.UiIssuanceReturn",
@@ -3317,19 +3374,19 @@
     "name" : "getModule",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getSValue",
+    "parameterTypes" : [ ]
+  }, {
     "name" : "getChallenge",
     "parameterTypes" : [ ]
   }, {
     "name" : "setChallenge",
     "parameterTypes" : [ "[B" ]
   }, {
-    "name" : "getAttributeValue",
-    "parameterTypes" : [ ]
-  }, {
     "name" : "getAttributePartition",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getSValue",
+    "name" : "getAttributeValue",
     "parameterTypes" : [ ]
   } ]
 },{
@@ -3356,14 +3413,14 @@
     "name" : "getType",
     "parameterTypes" : [ ]
   }, {
+    "name" : "setType",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "getHashContribution",
     "parameterTypes" : [ ]
   }, {
     "name" : "setHashContribution",
     "parameterTypes" : [ "[B" ]
-  }, {
-    "name" : "setType",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.AttributePartition",
@@ -3401,20 +3458,20 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCryptoEvidence",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCryptoEvidence",
-    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
     "name" : "getIssuanceTokenDescription",
     "parameterTypes" : [ ]
   }, {
     "name" : "setIssuanceTokenDescription",
     "parameterTypes" : [ "eu.abc4trust.xml.IssuanceTokenDescription" ]
+  }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getCryptoEvidence",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCryptoEvidence",
+    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.Parameter",
@@ -3443,6 +3500,9 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getFriendlySecretDescription",
+    "parameterTypes" : [ ]
+  }, {
     "name" : "getMetadata",
     "parameterTypes" : [ ]
   }, {
@@ -3460,9 +3520,6 @@
   }, {
     "name" : "setDeviceBoundSecret",
     "parameterTypes" : [ "java.lang.Boolean" ]
-  }, {
-    "name" : "getFriendlySecretDescription",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CandidateIssuanceTokenList",
@@ -3488,11 +3545,17 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCryptoParams",
+    "name" : "getRevocationInformationUID",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setCryptoParams",
-    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
+    "name" : "setRevocationInformationUID",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getRevocationAuthorityParametersUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevocationAuthorityParametersUID",
+    "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getCreated",
     "parameterTypes" : [ ]
@@ -3509,17 +3572,11 @@
     "name" : "setVersion",
     "parameterTypes" : [ "java.lang.String" ]
   }, {
-    "name" : "getRevocationAuthorityParametersUID",
+    "name" : "getCryptoParams",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setRevocationAuthorityParametersUID",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getRevocationInformationUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setRevocationInformationUID",
-    "parameterTypes" : [ "java.net.URI" ]
+    "name" : "setCryptoParams",
+    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.AbstractPseudonym",
@@ -3536,16 +3593,16 @@
     "name" : "setValue",
     "parameterTypes" : [ "java.math.BigInteger" ]
   }, {
-    "name" : "getDeviceUid",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setDeviceUid",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
     "name" : "getScope",
     "parameterTypes" : [ ]
   }, {
     "name" : "setScope",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getDeviceUid",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setDeviceUid",
     "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
@@ -3563,15 +3620,6 @@
     "name" : "setName",
     "parameterTypes" : [ "java.lang.String" ]
   }, {
-    "name" : "getRevealedAttribute",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "getHashContribution",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setHashContribution",
-    "parameterTypes" : [ "[B" ]
-  }, {
     "name" : "getSValue",
     "parameterTypes" : [ ]
   }, {
@@ -3583,6 +3631,15 @@
   }, {
     "name" : "getTValue",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "getHashContribution",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setHashContribution",
+    "parameterTypes" : [ "[B" ]
+  }, {
+    "name" : "getRevealedAttribute",
+    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PseudonymInPolicy",
@@ -3593,17 +3650,23 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getScope",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setScope",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getAlias",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setAlias",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
     "name" : "getSameKeyBindingAs",
     "parameterTypes" : [ ]
   }, {
     "name" : "setSameKeyBindingAs",
     "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "isEstablished",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setEstablished",
-    "parameterTypes" : [ "java.lang.Boolean" ]
   }, {
     "name" : "getPseudonymValue",
     "parameterTypes" : [ ]
@@ -3617,17 +3680,11 @@
     "name" : "setExclusive",
     "parameterTypes" : [ "java.lang.Boolean" ]
   }, {
-    "name" : "getAlias",
+    "name" : "isEstablished",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setAlias",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getScope",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setScope",
-    "parameterTypes" : [ "java.lang.String" ]
+    "name" : "setEstablished",
+    "parameterTypes" : [ "java.lang.Boolean" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.IssuanceExtraMessage",
@@ -3698,17 +3755,17 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getPresentationToken",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setPresentationToken",
-    "parameterTypes" : [ "eu.abc4trust.xml.PresentationToken" ]
-  }, {
     "name" : "getPresentationPolicyAlternatives",
     "parameterTypes" : [ ]
   }, {
     "name" : "setPresentationPolicyAlternatives",
     "parameterTypes" : [ "eu.abc4trust.xml.PresentationPolicyAlternatives" ]
+  }, {
+    "name" : "getPresentationToken",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setPresentationToken",
+    "parameterTypes" : [ "eu.abc4trust.xml.PresentationToken" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PrivateKey",
@@ -3806,11 +3863,11 @@
     "name" : "setValue",
     "parameterTypes" : [ "java.lang.String" ]
   }, {
-    "name" : "setLang",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
     "name" : "getLang",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "setLang",
+    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.ui.CredentialInUi",
@@ -3839,33 +3896,6 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCryptoParams",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCryptoParams",
-    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
-  }, {
-    "name" : "setParametersUID",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getRevocationInfoReference",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setRevocationInfoReference",
-    "parameterTypes" : [ "eu.abc4trust.xml.Reference" ]
-  }, {
-    "name" : "getRevocationMechanism",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setRevocationMechanism",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getParametersUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
     "name" : "getNonRevocationEvidenceReference",
     "parameterTypes" : [ ]
   }, {
@@ -3877,6 +3907,33 @@
   }, {
     "name" : "setNonRevocationEvidenceUpdateReference",
     "parameterTypes" : [ "eu.abc4trust.xml.Reference" ]
+  }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getRevocationMechanism",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevocationMechanism",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getCryptoParams",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCryptoParams",
+    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
+  }, {
+    "name" : "getParametersUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getRevocationInfoReference",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevocationInfoReference",
+    "parameterTypes" : [ "eu.abc4trust.xml.Reference" ]
+  }, {
+    "name" : "setParametersUID",
+    "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PseudonymInToken",
@@ -3886,6 +3943,18 @@
   "methods" : [ {
     "name" : "<init>",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "getScope",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setScope",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
+    "name" : "getAlias",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setAlias",
+    "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getSameKeyBindingAs",
     "parameterTypes" : [ ]
@@ -3904,18 +3973,6 @@
   }, {
     "name" : "setExclusive",
     "parameterTypes" : [ "java.lang.Boolean" ]
-  }, {
-    "name" : "getAlias",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setAlias",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getScope",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setScope",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.TestReference",
@@ -3941,6 +3998,9 @@
     "name" : "toString",
     "parameterTypes" : [ ]
   }, {
+    "name" : "addIssuer",
+    "parameterTypes" : [ "eu.abc4trust.returnTypes.ui.IssuerInUi" ]
+  }, {
     "name" : "addCredential",
     "parameterTypes" : [ "eu.abc4trust.returnTypes.ui.CredentialInUi" ]
   }, {
@@ -3955,9 +4015,6 @@
   }, {
     "name" : "addInspector",
     "parameterTypes" : [ "eu.abc4trust.returnTypes.ui.InspectorInUi" ]
-  }, {
-    "name" : "addIssuer",
-    "parameterTypes" : [ "eu.abc4trust.returnTypes.ui.IssuerInUi" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.Reference",
@@ -3986,6 +4043,18 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getRevocationInformationUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevocationInformationUID",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "getAlias",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setAlias",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
     "name" : "getDisclosedAttribute",
     "parameterTypes" : [ ]
   }, {
@@ -3995,28 +4064,16 @@
     "name" : "setSameKeyBindingAs",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
-    "name" : "getCredentialSpecUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCredentialSpecUID",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
     "name" : "getIssuerParametersUID",
     "parameterTypes" : [ ]
   }, {
     "name" : "setIssuerParametersUID",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
-    "name" : "getAlias",
+    "name" : "getCredentialSpecUID",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setAlias",
-    "parameterTypes" : [ "java.net.URI" ]
-  }, {
-    "name" : "getRevocationInformationUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setRevocationInformationUID",
+    "name" : "setCredentialSpecUID",
     "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
@@ -4046,16 +4103,16 @@
     "name" : "getAttribute",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCryptoParams",
+    "name" : "getNonRevocationEvidenceUID",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setCryptoParams",
-    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
+    "name" : "setNonRevocationEvidenceUID",
+    "parameterTypes" : [ "java.net.URI" ]
   }, {
-    "name" : "getCredentialUID",
+    "name" : "getRevocationAuthorityParametersUID",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setCredentialUID",
+    "name" : "setRevocationAuthorityParametersUID",
     "parameterTypes" : [ "java.net.URI" ]
   }, {
     "name" : "getCreated",
@@ -4076,16 +4133,16 @@
     "name" : "setEpoch",
     "parameterTypes" : [ "java.lang.Integer" ]
   }, {
-    "name" : "getRevocationAuthorityParametersUID",
+    "name" : "getCryptoParams",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setRevocationAuthorityParametersUID",
-    "parameterTypes" : [ "java.net.URI" ]
+    "name" : "setCryptoParams",
+    "parameterTypes" : [ "eu.abc4trust.xml.CryptoParams" ]
   }, {
-    "name" : "getNonRevocationEvidenceUID",
+    "name" : "getCredentialUID",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setNonRevocationEvidenceUID",
+    "name" : "setCredentialUID",
     "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
@@ -4096,6 +4153,12 @@
   "methods" : [ {
     "name" : "<init>",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "getCandidateIssuanceTokenList",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCandidateIssuanceTokenList",
+    "parameterTypes" : [ "eu.abc4trust.xml.CandidateIssuanceTokenList" ]
   }, {
     "name" : "getPolicyDescriptions",
     "parameterTypes" : [ ]
@@ -4120,12 +4183,6 @@
   }, {
     "name" : "setInspectorDescriptions",
     "parameterTypes" : [ "eu.abc4trust.xml.InspectorDescriptions" ]
-  }, {
-    "name" : "getCandidateIssuanceTokenList",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCandidateIssuanceTokenList",
-    "parameterTypes" : [ "eu.abc4trust.xml.CandidateIssuanceTokenList" ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.ui.InspectableAttribute",
@@ -4190,6 +4247,15 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getFriendlyTokenDescription",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "getToken",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setToken",
+    "parameterTypes" : [ "eu.abc4trust.xml.Token" ]
+  }, {
     "name" : "getCredentialUidList",
     "parameterTypes" : [ ]
   }, {
@@ -4207,15 +4273,6 @@
   }, {
     "name" : "setInspectorChoiceList",
     "parameterTypes" : [ "eu.abc4trust.xml.InspectorChoiceList" ]
-  }, {
-    "name" : "getToken",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setToken",
-    "parameterTypes" : [ "eu.abc4trust.xml.Token" ]
-  }, {
-    "name" : "getFriendlyTokenDescription",
-    "parameterTypes" : [ ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.PseudonymDescription",
@@ -4225,6 +4282,12 @@
   "methods" : [ {
     "name" : "<init>",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "getScope",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setScope",
+    "parameterTypes" : [ "java.lang.String" ]
   }, {
     "name" : "getPseudonymUID",
     "parameterTypes" : [ ]
@@ -4243,12 +4306,6 @@
   }, {
     "name" : "setPseudonymMetadata",
     "parameterTypes" : [ "eu.abc4trust.xml.PseudonymMetadata" ]
-  }, {
-    "name" : "getScope",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setScope",
-    "parameterTypes" : [ "java.lang.String" ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.ui.IssuerInUi",
@@ -4292,6 +4349,15 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getVerifierParametersPrefix",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setVerifierParametersPrefix",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
+  }, {
     "name" : "getParameter",
     "parameterTypes" : [ ]
   }, {
@@ -4303,15 +4369,6 @@
   }, {
     "name" : "getSupportedBuildingBlock",
     "parameterTypes" : [ ]
-  }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
-  }, {
-    "name" : "getVerifierParametersPrefix",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setVerifierParametersPrefix",
-    "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.CredentialDescriptionsEntry",
@@ -4397,6 +4454,12 @@
     "name" : "<init>",
     "parameterTypes" : [ ]
   }, {
+    "name" : "getRevocationAuthorityParametersUID",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setRevocationAuthorityParametersUID",
+    "parameterTypes" : [ "java.net.URI" ]
+  }, {
     "name" : "getRevocationHistoryUID",
     "parameterTypes" : [ ]
   }, {
@@ -4411,12 +4474,6 @@
   }, {
     "name" : "getRevocationLogEntry",
     "parameterTypes" : [ ]
-  }, {
-    "name" : "getRevocationAuthorityParametersUID",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setRevocationAuthorityParametersUID",
-    "parameterTypes" : [ "java.net.URI" ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.ui.RevealedAttributeValue",
@@ -4454,14 +4511,14 @@
     "name" : "getPublicKey",
     "parameterTypes" : [ ]
   }, {
-    "name" : "setPublicKey",
-    "parameterTypes" : [ "eu.abc4trust.xml.PublicKey" ]
-  }, {
     "name" : "setPrivateKey",
     "parameterTypes" : [ "eu.abc4trust.xml.PrivateKey" ]
   }, {
     "name" : "getPrivateKey",
     "parameterTypes" : [ ]
+  }, {
+    "name" : "setPublicKey",
+    "parameterTypes" : [ "eu.abc4trust.xml.PublicKey" ]
   } ]
 },{
   "name" : "eu.abc4trust.xml.BigIntegerParameter",
@@ -4553,11 +4610,8 @@
     "name" : "getVersion",
     "parameterTypes" : [ ]
   }, {
-    "name" : "getCredentialTemplate",
-    "parameterTypes" : [ ]
-  }, {
-    "name" : "setCredentialTemplate",
-    "parameterTypes" : [ "eu.abc4trust.xml.CredentialTemplate" ]
+    "name" : "setVersion",
+    "parameterTypes" : [ "java.lang.String" ]
   }, {
     "name" : "setPresentationPolicy",
     "parameterTypes" : [ "eu.abc4trust.xml.PresentationPolicy" ]
@@ -4571,8 +4625,11 @@
     "name" : "setVerifierParameters",
     "parameterTypes" : [ "eu.abc4trust.xml.VerifierParameters" ]
   }, {
-    "name" : "setVersion",
-    "parameterTypes" : [ "java.lang.String" ]
+    "name" : "getCredentialTemplate",
+    "parameterTypes" : [ ]
+  }, {
+    "name" : "setCredentialTemplate",
+    "parameterTypes" : [ "eu.abc4trust.xml.CredentialTemplate" ]
   } ]
 },{
   "name" : "eu.abc4trust.returnTypes.ui.PseudonymListCandidate",
@@ -4614,10 +4671,13 @@
   "name":"com.fasterxml.jackson.databind.ext.Java7SupportImpl",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
 {
-  "name":"com.github.jaiimageio.impl.common.PackageUtil"
+  "name":"com.fasterxml.jackson.module.jaxb.deser.DataHandlerJsonDeserializer",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.fasterxml.jackson.module.jaxb.ser.DataHandlerJsonSerializer",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"com.jcraft.jsch.DHEC256",
@@ -4784,6 +4844,10 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"com.sun.crypto.provider.RSACipher",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"com.sun.crypto.provider.TlsMasterSecretGenerator",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -4869,9 +4933,18 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.IssuanceReturn$JaxbAccessorF_cd",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.IssuanceReturn$JaxbAccessorF_im",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.IssuanceReturn$JaxbAccessorF_uia",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ObjectFactoryReturnTypes",
   "queryAllDeclaredMethods":true
@@ -4882,216 +4955,468 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.SitdArguments$JaxbAccessorF_credentialDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdArguments$JaxbAccessorF_credentialUids",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdArguments$JaxbAccessorF_inspectorChoice",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdArguments$JaxbAccessorF_inspectors",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdArguments$JaxbAccessorF_policies",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdArguments$JaxbAccessorF_pseudonymChoice",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdArguments$JaxbAccessorF_pseudonyms",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdArguments$JaxbAccessorF_selfClaimedAttributes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdArguments$JaxbAccessorF_tokens",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.SitdReturn",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.SitdReturn$JaxbAccessorF_chosenAttributeValues",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdReturn$JaxbAccessorF_chosenInspectors",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdReturn$JaxbAccessorF_chosenIssuanceToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdReturn$JaxbAccessorF_chosenPseudonyms",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SitdReturn$JaxbAccessorF_metadataToChange",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.SptdArguments",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.SptdArguments$JaxbAccessorF_credentialDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdArguments$JaxbAccessorF_credentialUids",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdArguments$JaxbAccessorF_inspectorChoice",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdArguments$JaxbAccessorF_inspectors",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdArguments$JaxbAccessorF_policies",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdArguments$JaxbAccessorF_pseudonymChoice",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdArguments$JaxbAccessorF_pseudonyms",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdArguments$JaxbAccessorF_tokens",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.SptdReturn",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.SptdReturn$JaxbAccessorF_chosenInspectors",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdReturn$JaxbAccessorF_chosenPresentationToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdReturn$JaxbAccessorF_chosenPseudonyms",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.SptdReturn$JaxbAccessorF_metadataToChange",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.UiIssuanceArguments",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.UiIssuanceArguments$JaxbAccessorF_data",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiIssuanceArguments$JaxbAccessorF_policy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiIssuanceArguments$JaxbAccessorF_tokenCandidates",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiIssuanceArguments$JaxbAccessorF_uiContext",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.UiIssuanceReturn",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.UiIssuanceReturn$JaxbAccessorF_chosenInspectors",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiIssuanceReturn$JaxbAccessorF_chosenIssuanceToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiIssuanceReturn$JaxbAccessorF_chosenPseudonymList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiIssuanceReturn$JaxbAccessorF_metadataToChange",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiIssuanceReturn$JaxbAccessorF_uiContext",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.UiManageCredentialData",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.returnTypes.UiManageCredentialData$JaxbAccessorF_data",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiManageCredentialData$JaxbAccessorF_revokedCredentials",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.UiPresentationArguments",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.UiPresentationArguments$JaxbAccessorF_data",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiPresentationArguments$JaxbAccessorF_tokenCandidatesPerPolicy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiPresentationArguments$JaxbAccessorF_uiContext",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.UiPresentationReturn",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.UiPresentationReturn$JaxbAccessorF_chosenInspectors",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiPresentationReturn$JaxbAccessorF_chosenPolicy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiPresentationReturn$JaxbAccessorF_chosenPresentationToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiPresentationReturn$JaxbAccessorF_chosenPseudonymList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiPresentationReturn$JaxbAccessorF_metadataToChange",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.UiPresentationReturn$JaxbAccessorF_uiContext",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.CredentialInUi",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.CredentialInUi$JaxbAccessorF_desc",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.CredentialInUi$JaxbAccessorF_uri",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.CredentialSpecInUi",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.CredentialSpecInUi$JaxbAccessorF_spec",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.CredentialSpecInUi$JaxbAccessorF_uri",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.InspectableAttribute",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.InspectableAttribute$JaxbAccessorF_attributeType",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.InspectableAttribute$JaxbAccessorF_dataHandlingPolicy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.InspectableAttribute$JaxbAccessorF_inspectionGrounds",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.InspectableAttribute$JaxbAccessorF_inspectorAlternatives",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.InspectorInUi",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.InspectorInUi$JaxbAccessorF_description",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.InspectorInUi$JaxbAccessorF_uri",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.IssuerInUi",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.IssuerInUi$JaxbAccessorF_description",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.IssuerInUi$JaxbAccessorF_revocationAuthorityUri",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.IssuerInUi$JaxbAccessorF_uri",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.PseudonymInUi",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.PseudonymInUi$JaxbAccessorF_metadata",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.PseudonymInUi$JaxbAccessorF_pseudonym",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.PseudonymInUi$JaxbAccessorF_uri",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.PseudonymListCandidate",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.PseudonymListCandidate$JaxbAccessorF_pseudonyms",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.PseudonymListCandidate_JaxbXducedAccessor_candidateId",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.RevealedAttributeValue",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.RevealedAttributeValue$JaxbAccessorF_descriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.RevealedFact",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.RevealedFact$JaxbAccessorF_descriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.RevocationAuthorityInUi",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.RevocationAuthorityInUi$JaxbAccessorF_description",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.RevocationAuthorityInUi$JaxbAccessorF_uri",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.TokenCandidate",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidate$JaxbAccessorF_credentials",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidate$JaxbAccessorF_inspectableAttributes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidate$JaxbAccessorF_pseudonymCandidates",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidate$JaxbAccessorF_revealedAttributeValues",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidate$JaxbAccessorF_revealedFacts",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidate$JaxbAccessorF_tokenDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.TokenCandidatePerPolicy",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidatePerPolicy$JaxbAccessorF_policy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidatePerPolicy$JaxbAccessorF_tokenCandidates",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidatePerPolicy_JaxbXducedAccessor_policyId",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.TokenCandidate_JaxbXducedAccessor_candidateId",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.UiCommonArguments",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.returnTypes.ui.UiCommonArguments$JaxbAccessorF_credentialSpecifications",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.UiCommonArguments$JaxbAccessorF_credentials",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.UiCommonArguments$JaxbAccessorF_inspectors",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.UiCommonArguments$JaxbAccessorF_issuers",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.UiCommonArguments$JaxbAccessorF_pseudonyms",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.returnTypes.ui.UiCommonArguments$JaxbAccessorF_revocationAuthorities",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.returnTypes.ui.ref.CredentialRef",
   "allDeclaredFields":true,
@@ -5134,14 +5459,20 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.ABCEBoolean$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AbstractPseudonym",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.AbstractPseudonym$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.Adapter1",
   "methods":[{"name":"<init>","parameterTypes":[] }]
@@ -5156,7 +5487,10 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.ApplicationData$JaxbAccessorF_content",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AttSourceCredentialInfo",
   "allDeclaredFields":true,
@@ -5169,31 +5503,52 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.Attribute$JaxbAccessorF_attributeDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Attribute$JaxbAccessorF_attributeValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AttributeDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.AttributeDescription$JaxbAccessorF_allowedValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.AttributeDescription$JaxbAccessorF_friendlyAttributeName",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AttributeDescriptions",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.AttributeDescriptions$JaxbAccessorF_attributeDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.AttributeDescriptions$JaxbAccessorF_maxLength",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AttributeInLogEntry",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.AttributeInLogEntry$JaxbAccessorF_attributeValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AttributeInPolicy",
   "allDeclaredFields":true,
@@ -5206,9 +5561,18 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.AttributeInPolicy$InspectorAlternatives$JaxbAccessorF_inspectorPublicKeyUID",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.AttributeInPolicy$JaxbAccessorF_inspectionGrounds",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.AttributeInPolicy$JaxbAccessorF_inspectorAlternatives",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AttributeInRevocation",
   "allDeclaredFields":true,
@@ -5221,24 +5585,42 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.AttributeInToken$JaxbAccessorF_attributeValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.AttributeInToken$JaxbAccessorF_inspectionGrounds",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AttributeList",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.AttributeList$JaxbAccessorF_attributes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AttributePartition",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.AttributePartition$JaxbAccessorF_attributeName",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.AttributePartition$JaxbAccessorF_representativeName",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.AttributePartition$JaxbAccessorF_residueClass",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.AttributePredicate",
   "allDeclaredFields":true,
@@ -5251,108 +5633,198 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.AttributePredicate$JaxbAccessorF_attributeOrConstantValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.BigIntegerParameter",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.BigIntegerParameter$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CandidateIssuanceToken",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.CandidateIssuanceToken$JaxbAccessorF_credentialUidList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CandidateIssuanceToken$JaxbAccessorF_friendlyTokenDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CandidateIssuanceToken$JaxbAccessorF_inspectorChoiceList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CandidateIssuanceToken$JaxbAccessorF_pseudonymChoiceList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CandidateIssuanceToken$JaxbAccessorF_token",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CandidateIssuanceTokenList",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.CandidateIssuanceTokenList$JaxbAccessorF_candidateIssuanceToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CandidatePresentationToken",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.CandidatePresentationToken$JaxbAccessorF_credentialUidList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CandidatePresentationToken$JaxbAccessorF_friendlyTokenDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CandidatePresentationToken$JaxbAccessorF_inspectorChoiceList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CandidatePresentationToken$JaxbAccessorF_pseudonymChoiceList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CandidatePresentationToken$JaxbAccessorF_token",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CandidatePresentationTokenList",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.CandidatePresentationTokenList$JaxbAccessorF_candidatePresentationToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CarriedOverAttribute",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.CarriedOverAttribute$JaxbAccessorF_sourceCredentialInfo",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CommittedAttribute",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.CommittedAttribute$JaxbAccessorF_commitment",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CommittedAttribute$JaxbAccessorF_committedValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CommittedAttribute$JaxbAccessorF_openingInformation",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CommittedKey",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.CommittedKey$JaxbAccessorF_commitment",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CommittedKey$JaxbAccessorF_committedValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CommittedKey$JaxbAccessorF_openingInformation",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.Credential",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.Credential$JaxbAccessorF_credentialDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Credential$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Credential$JaxbAccessorF_nonRevocationEvidenceUID",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.CredentialDescription$JaxbAccessorF_attribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialDescription$JaxbAccessorF_friendlyCredentialName",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialDescription$JaxbAccessorF_revokedByIssuer",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialDescriptions",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.CredentialDescriptions$JaxbAccessorF_entry",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialDescriptionsEntry",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.CredentialDescriptionsEntry$JaxbAccessorF_key",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialDescriptionsEntry$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialInPolicy",
   "allDeclaredFields":true,
@@ -5365,7 +5837,10 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.CredentialInPolicy$CredentialSpecAlternatives$JaxbAccessorF_credentialSpecUID",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialInPolicy$IssuerAlternatives",
   "allDeclaredFields":true,
@@ -5378,255 +5853,444 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.CredentialInPolicy$IssuerAlternatives$JaxbAccessorF_issuerParametersUID",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialInPolicy$JaxbAccessorF_credentialSpecAlternatives",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialInPolicy$JaxbAccessorF_disclosedAttribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialInPolicy$JaxbAccessorF_issuerAlternatives",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialInToken",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.CredentialInToken$JaxbAccessorF_disclosedAttribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialInTokenWithCommitments",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.CredentialInTokenWithCommitments$JaxbAccessorF_committedAttribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialInTokenWithCommitments$JaxbAccessorF_committedKey",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialInTokenWithCommitments$JaxbAccessorF_disclosedAttribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialSpecification",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.CredentialSpecification$JaxbAccessorF_attributeDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialSpecification$JaxbAccessorF_friendlyCredentialName",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialSpecification$JaxbAccessorF_numericalId",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialSpecification$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialSpecificationAndSystemParameters",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.CredentialSpecificationAndSystemParameters$JaxbAccessorF_credentialSpecification",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialSpecificationAndSystemParameters$JaxbAccessorF_systemParameters",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialSpecification_JaxbXducedAccessor_keyBinding",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.CredentialSpecification_JaxbXducedAccessor_revocable",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialTemplate",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.CredentialTemplate$JaxbAccessorF_unknownAttributes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CredentialUidList",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.CredentialUidList$JaxbAccessorF_credentialUid",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.CryptoParams",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.CryptoParams$JaxbAccessorF_content",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.Error",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.Error$JaxbAccessorF_errorParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.FriendlyDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.FriendlyDescription$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IdemixVerifierParameters",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.IdemixVerifierParameters$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IdemixVerifierParameters$JaxbAccessorF_supportedBuildingBlock",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IdemixVerifierParameters$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.InspectorChoiceList",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.InspectorChoiceList$JaxbAccessorF_uriSet",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.InspectorDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.InspectorDescription$JaxbAccessorF_friendlyInspectorDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.InspectorDescriptions",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.InspectorDescriptions$JaxbAccessorF_entry",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.InspectorDescriptionsEntry",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.InspectorDescriptionsEntry$JaxbAccessorF_key",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.InspectorDescriptionsEntry$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.InspectorPublicKey",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.InspectorPublicKey$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.InspectorPublicKey$JaxbAccessorF_friendlyInspectorDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.InspectorPublicKey$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.InspectorPublicKeyTemplate",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.InspectorPublicKeyTemplate$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IntegerParameter",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.IntegerParameter$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuanceAttributeList",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.IssuanceAttributeList$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuanceExtraMessage",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.IssuanceExtraMessage$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuanceLogEntry",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.IssuanceLogEntry$JaxbAccessorF_issuanceToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuanceLogEntry$JaxbAccessorF_issuerAttributes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuanceMessage",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.IssuanceMessage$JaxbAccessorF_content",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuanceMessageAndBoolean",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.IssuanceMessageAndBoolean$JaxbAccessorF_issuanceMessage",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuanceMessageAndBoolean$JaxbAccessorF_lastMessage",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuancePolicy",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.IssuancePolicy$JaxbAccessorF_credentialTemplate",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuancePolicy$JaxbAccessorF_presentationPolicy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuancePolicy$JaxbAccessorF_verifierParameters",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuancePolicy$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuancePolicyAndAttributes",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.IssuancePolicyAndAttributes$JaxbAccessorF_attribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuancePolicyAndAttributes$JaxbAccessorF_issuancePolicy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuanceProtocolMetadata",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.IssuanceProtocolMetadata$JaxbAccessorF_counter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuanceToken",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.IssuanceToken$JaxbAccessorF_cryptoEvidence",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuanceToken$JaxbAccessorF_issuanceTokenDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuanceToken$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuanceTokenAndIssuancePolicy",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.IssuanceTokenAndIssuancePolicy$JaxbAccessorF_issuancePolicy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuanceTokenAndIssuancePolicy$JaxbAccessorF_issuanceToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuanceTokenDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.IssuanceTokenDescription$JaxbAccessorF_credentialTemplate",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuanceTokenDescription$JaxbAccessorF_presentationTokenDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuerParameters",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.IssuerParameters$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuerParameters$JaxbAccessorF_friendlyIssuerDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuerParameters$JaxbAccessorF_maximalNumberOfAttributes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuerParameters$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuerParametersInput",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.IssuerParametersInput$JaxbAccessorF_friendlyIssuerDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuerParametersInput$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.IssuerPublicKeyTemplate",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.IssuerPublicKeyTemplate$JaxbAccessorF_friendlyDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.IssuerPublicKeyTemplate$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.JointlyRandomAttribute",
   "allDeclaredFields":true,
@@ -5639,70 +6303,136 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.KeyPair$JaxbAccessorF_privateKey",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.KeyPair$JaxbAccessorF_publicKey",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.MechanismSpecification",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.MechanismSpecification$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.MechanismSpecification$JaxbAccessorF_proofSystem",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.Message",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.Message$JaxbAccessorF_applicationData",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Message$JaxbAccessorF_friendlyPolicyDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Message$JaxbAccessorF_friendlyPolicyName",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Message$JaxbAccessorF_nonce",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Message$JaxbAccessorF_verifierIdentity",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.Metadata",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.Metadata$JaxbAccessorF_any",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.ModuleInZkProof",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.ModuleInZkProof$JaxbAccessorF_dValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ModuleInZkProof$JaxbAccessorF_hashContribution",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ModuleInZkProof$JaxbAccessorF_nValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ModuleInZkProof$JaxbAccessorF_name",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ModuleInZkProof$JaxbAccessorF_revealedAttribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ModuleInZkProof$JaxbAccessorF_sValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ModuleInZkProof$JaxbAccessorF_tValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.NonRevocationEvidence",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.NonRevocationEvidence$JaxbAccessorF_attribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.NonRevocationEvidence$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.NonRevocationEvidence$JaxbAccessorF_epoch",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.NonRevocationEvidenceUpdate",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.NonRevocationEvidenceUpdate$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.NreUpdateMessage",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.NreUpdateMessage$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.ObjectFactory",
   "queryAllDeclaredMethods":true
@@ -5713,298 +6443,562 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.Parameter$JaxbAccessorF_friendlyDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Parameter$JaxbAccessorF_name",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PolicyDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.PolicyDescription$JaxbAccessorF_message",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PolicyDescriptions",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.PolicyDescriptions$JaxbAccessorF_entry",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PolicyDescriptionsEntry",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.PolicyDescriptionsEntry$JaxbAccessorF_key",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PolicyDescriptionsEntry$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PresentationPolicy",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.PresentationPolicy$JaxbAccessorF_allowSimpleProof",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationPolicy$JaxbAccessorF_attributePredicate",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationPolicy$JaxbAccessorF_credential",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationPolicy$JaxbAccessorF_message",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationPolicy$JaxbAccessorF_pseudonym",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationPolicy$JaxbAccessorF_verifierDrivenRevocation",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PresentationPolicyAlternatives",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.PresentationPolicyAlternatives$JaxbAccessorF_presentationPolicy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationPolicyAlternatives$JaxbAccessorF_verifierParameters",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationPolicyAlternatives$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PresentationPolicyAlternativesAndPresentationToken",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.PresentationPolicyAlternativesAndPresentationToken$JaxbAccessorF_presentationPolicyAlternatives",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationPolicyAlternativesAndPresentationToken$JaxbAccessorF_presentationToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PresentationToken",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.PresentationToken$JaxbAccessorF_cryptoEvidence",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationToken$JaxbAccessorF_presentationTokenDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationToken$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PresentationTokenDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescription$JaxbAccessorF_attributePredicate",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescription$JaxbAccessorF_credential",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescription$JaxbAccessorF_message",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescription$JaxbAccessorF_pseudonym",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescription$JaxbAccessorF_usesSimpleProof",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescription$JaxbAccessorF_verifierDrivenRevocation",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PresentationTokenDescriptionWithCommitments",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescriptionWithCommitments$JaxbAccessorF_attributePredicate",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescriptionWithCommitments$JaxbAccessorF_credential",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescriptionWithCommitments$JaxbAccessorF_cryptoEvidence",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescriptionWithCommitments$JaxbAccessorF_message",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescriptionWithCommitments$JaxbAccessorF_pseudonym",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenDescriptionWithCommitments$JaxbAccessorF_verifierDrivenRevocation",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PresentationTokenWithCommitments",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.PresentationTokenWithCommitments$JaxbAccessorF_cryptoEvidence",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenWithCommitments$JaxbAccessorF_presentationTokenDescriptionWithCommitments",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PresentationTokenWithCommitments$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PrivateKey",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.PrivateKey$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.Pseudonym",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.Pseudonym$JaxbAccessorF_exclusive",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Pseudonym$JaxbAccessorF_pseudonymValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Pseudonym$JaxbAccessorF_scope",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PseudonymChoiceList",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.PseudonymChoiceList$JaxbAccessorF_uriSet",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PseudonymDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.PseudonymDescription$JaxbAccessorF_exclusive",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymDescription$JaxbAccessorF_pseudonymMetadata",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymDescription$JaxbAccessorF_scope",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PseudonymDescriptionValue",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.PseudonymDescriptionValue$JaxbAccessorF_pseudonymDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PseudonymDescriptions",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.PseudonymDescriptions$JaxbAccessorF_entry",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PseudonymDescriptionsEntry",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.PseudonymDescriptionsEntry$JaxbAccessorF_key",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymDescriptionsEntry$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PseudonymInPolicy",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.PseudonymInPolicy$JaxbAccessorF_established",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymInPolicy$JaxbAccessorF_exclusive",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymInPolicy$JaxbAccessorF_pseudonymValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymInPolicy$JaxbAccessorF_scope",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PseudonymInToken",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.PseudonymInToken$JaxbAccessorF_exclusive",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymInToken$JaxbAccessorF_pseudonymValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymInToken$JaxbAccessorF_scope",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PseudonymMetadata",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.PseudonymMetadata$JaxbAccessorF_friendlyPseudonymDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymMetadata$JaxbAccessorF_humanReadableData",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymMetadata$JaxbAccessorF_metadata",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PseudonymWithMetadata",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.PseudonymWithMetadata$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymWithMetadata$JaxbAccessorF_pseudonym",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PseudonymWithMetadata$JaxbAccessorF_pseudonymMetadata",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.PublicKey",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.PublicKey$JaxbAccessorF_friendlyDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PublicKey$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.PublicKey$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.Reference",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.Reference$JaxbAccessorF_references",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationAuthorityParameters",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.RevocationAuthorityParameters$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationAuthorityParameters$JaxbAccessorF_nonRevocationEvidenceReference",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationAuthorityParameters$JaxbAccessorF_nonRevocationEvidenceUpdateReference",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationAuthorityParameters$JaxbAccessorF_revocationInfoReference",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationAuthorityParameters$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationAuthorityPublicKeyTemplate",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.RevocationAuthorityPublicKeyTemplate$JaxbAccessorF_friendlyDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationAuthorityPublicKeyTemplate$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationEvent",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.RevocationEvent$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationHandle",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.RevocationHandle$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationHandle$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationHistory",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.RevocationHistory$JaxbAccessorF_currentState",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationHistory$JaxbAccessorF_revocationLogEntry",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationHistoryIdmx",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.RevocationHistoryIdmx$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationInformation",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.RevocationInformation$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationInformation$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationLogEntry",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.RevocationLogEntry$JaxbAccessorF_cryptoParameters",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationLogEntry$JaxbAccessorF_revocableAttribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationLogEntry_JaxbXducedAccessor_revoked",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationMessage",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.RevocationMessage$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationMessage$JaxbAccessorF_revocationMessageType",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationReferences",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.RevocationReferences$JaxbAccessorF_nonRevocationEvidenceReference",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationReferences$JaxbAccessorF_nonRevocationEvidenceUpdateReference",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.RevocationReferences$JaxbAccessorF_revocationInfoReference",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.RevocationState",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.RevocationState$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.ScopeExclusivePseudonym",
   "allDeclaredFields":true,
@@ -6017,62 +7011,122 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.Secret$JaxbAccessorF_secretDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Secret$JaxbAccessorF_secretKey",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Secret$JaxbAccessorF_systemParameters",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.SecretDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.SecretDescription$JaxbAccessorF_deviceBoundSecret",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SecretDescription$JaxbAccessorF_friendlySecretDescription",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SecretDescription$JaxbAccessorF_metadata",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.SecretKey",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.SecretKey$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.SelectIssuanceTokenDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.SelectIssuanceTokenDescription$JaxbAccessorF_candidateIssuanceTokenList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SelectIssuanceTokenDescription$JaxbAccessorF_credentialDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SelectIssuanceTokenDescription$JaxbAccessorF_inspectorDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SelectIssuanceTokenDescription$JaxbAccessorF_policyDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SelectIssuanceTokenDescription$JaxbAccessorF_pseudonymDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.SelectPresentationTokenDescription",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.SelectPresentationTokenDescription$JaxbAccessorF_candidatePresentationTokenList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SelectPresentationTokenDescription$JaxbAccessorF_credentialDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SelectPresentationTokenDescription$JaxbAccessorF_inspectorDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SelectPresentationTokenDescription$JaxbAccessorF_policyDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SelectPresentationTokenDescription$JaxbAccessorF_pseudonymDescriptions",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.Signature",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.Signature$JaxbAccessorF_canReuseToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.Signature$JaxbAccessorF_signatureToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.SignatureToken",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.SignatureToken$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.SmartcardPinRequest",
   "allDeclaredFields":true,
@@ -6085,37 +7139,76 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.SmartcardPinRequests$JaxbAccessorF_smartcardPinRequest",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.SmartcardSystemParameters",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_any",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_deviceSecretSizeBytes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_generator",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_primeModulus",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_signatureNonceLengthBytes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_subgroupOrder",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_zkChallengeSizeBytes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_zkNonceOpeningSizeBytes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_zkNonceSizeBytes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SmartcardSystemParameters$JaxbAccessorF_zkStatisticalHidingSizeBytes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.StandardPseudonym",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.StandardPseudonym$JaxbAccessorF_openingInformation",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.StringParameter",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.StringParameter$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.SupportedBuildingBlock",
   "allDeclaredFields":true,
@@ -6128,50 +7221,74 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.SystemParameters$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.SystemParameters$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.SystemParametersTemplate",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.SystemParametersTemplate$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.TestApplicationData",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.TestApplicationData$JaxbAccessorF_data",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.TestCryptoParams",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.TestCryptoParams$JaxbAccessorF_data",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.TestIssuanceMessage",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.TestIssuanceMessage$JaxbAccessorF_data",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.TestReference",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.TestReference$JaxbAccessorF_data",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.TestSystemParameters",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.TestSystemParameters$JaxbAccessorF_data",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.Token",
   "allDeclaredFields":true,
@@ -6184,15 +7301,24 @@
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.URISet$JaxbAccessorF_uri",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.UnknownAttributes",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.UnknownAttributes$JaxbAccessorF_carriedOverAttribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.UnknownAttributes$JaxbAccessorF_jointlyRandomAttribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.UriParameter",
   "allDeclaredFields":true,
@@ -6205,76 +7331,142 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.ValueInZkProof$JaxbAccessorF_name",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ValueInZkProof$JaxbAccessorF_type",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ValueInZkProof$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.ValueWithHashInZkProof",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.ValueWithHashInZkProof$JaxbAccessorF_hashContribution",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ValueWithHashInZkProof$JaxbAccessorF_name",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ValueWithHashInZkProof$JaxbAccessorF_type",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ValueWithHashInZkProof$JaxbAccessorF_value",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.VerificationCall",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.VerificationCall$JaxbAccessorF_presentationPolicyAlternatives",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.VerificationCall$JaxbAccessorF_presentationToken",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.VerifierDrivenRevocationInPolicy",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.VerifierDrivenRevocationInPolicy$JaxbAccessorF_attribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.VerifierDrivenRevocationInToken",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.VerifierDrivenRevocationInToken$JaxbAccessorF_attribute",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.VerifierIdentity",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
+{
+  "name":"eu.abc4trust.xml.VerifierIdentity$JaxbAccessorF_content",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.VerifierParameters",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"eu.abc4trust.xml.VerifierParameters$JaxbAccessorF_cryptoParams",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.VerifierParameters$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.VerifierParametersTemplate",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"eu.abc4trust.xml.VerifierParametersTemplate$JaxbAccessorF_parameter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.VerifierParametersTemplate$JaxbAccessorF_supportedBuildingBlock",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.VerifierParametersTemplate$JaxbAccessorF_version",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"eu.abc4trust.xml.ZkProof",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
+{
+  "name":"eu.abc4trust.xml.ZkProof$JaxbAccessorF_attributePartition",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ZkProof$JaxbAccessorF_attributeValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ZkProof$JaxbAccessorF_challenge",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ZkProof$JaxbAccessorF_module",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"eu.abc4trust.xml.ZkProof$JaxbAccessorF_sValue",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"io.exonym.lib.abc.attributeEncoding.MyEncodingBoolean",
   "fields":[{"name":"ENCODING"}]
@@ -6357,9 +7549,18 @@
   ],
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
+{
+  "name":"io.exonym.lib.helpers.AbstractCouchDbObject$JaxbAccessorM_getType_setType_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.helpers.AbstractCouchDbObject$JaxbAccessorM_get_id_set_id_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.helpers.AbstractCouchDbObject$JaxbAccessorM_get_rev_set_rev_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"io.exonym.lib.helpers.WordSets",
   "fields":[
@@ -6625,42 +7826,46 @@
   ]
 },
 {
-  "name":"io.exonym.lib.lite.DelegationRequest",
-  "allDeclaredFields":true,
-  "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true,
-  "methods":[
-    {"name":"getLink","parameterTypes":[] }, 
-    {"name":"getName","parameterTypes":[] }, 
-    {"name":"getQrPngB64","parameterTypes":[] }, 
-    {"name":"getRequestDate","parameterTypes":[] }, 
-    {"name":"getService","parameterTypes":[] }
-  ]
-},
-{
-  "name":"io.exonym.lib.lite.WalletReport",
-  "allDeclaredFields":true,
-  "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true,
-  "methods":[
-    {"name":"getRulebooksToIssuers","parameterTypes":[] }, 
-    {"name":"getSftpAccess","parameterTypes":[] }, 
-    {"name":"isEmpty","parameterTypes":[] }
-  ]
-},
-{
   "name":"io.exonym.lib.pojo.ActorOverview",
   "allDeclaredFields":true,
   "queriedMethods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.exonym.lib.pojo.DelegateRequest",
-  "allDeclaredFields":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
   "name":"io.exonym.lib.pojo.ExonymChallenge",
   "queryAllDeclaredMethods":true
+},
+{
+  "name":"io.exonym.lib.pojo.IdContainerSchema",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getAppPublicKey","parameterTypes":[] }, 
+    {"name":"getDeviceId","parameterTypes":[] }, 
+    {"name":"getInspectorStore","parameterTypes":[] }, 
+    {"name":"getIssuanceParameterStore","parameterTypes":[] }, 
+    {"name":"getIssuancePolicyStore","parameterTypes":[] }, 
+    {"name":"getIssuedStore","parameterTypes":[] }, 
+    {"name":"getIssuerSecretStore","parameterTypes":[] }, 
+    {"name":"getLocalLedger","parameterTypes":[] }, 
+    {"name":"getNoninteractiveTokenStore","parameterTypes":[] }, 
+    {"name":"getOwnerSecretStore","parameterTypes":[] }, 
+    {"name":"getRevocationAuthStore","parameterTypes":[] }, 
+    {"name":"getUsername","parameterTypes":[] }, 
+    {"name":"setAppPublicKey","parameterTypes":["byte[]"] }, 
+    {"name":"setDeviceId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setInspectorStore","parameterTypes":["java.util.HashMap"] }, 
+    {"name":"setIssuanceParameterStore","parameterTypes":["java.util.HashMap"] }, 
+    {"name":"setIssuancePolicyStore","parameterTypes":["java.util.HashMap"] }, 
+    {"name":"setIssuedStore","parameterTypes":["java.util.HashMap"] }, 
+    {"name":"setIssuerSecretStore","parameterTypes":["java.util.HashMap"] }, 
+    {"name":"setLocalLedger","parameterTypes":["java.util.HashMap"] }, 
+    {"name":"setNoninteractiveTokenStore","parameterTypes":["java.util.HashMap"] }, 
+    {"name":"setOwnerSecretStore","parameterTypes":["java.util.HashMap"] }, 
+    {"name":"setRevocationAuthStore","parameterTypes":["java.util.HashMap"] }, 
+    {"name":"setUsername","parameterTypes":["java.lang.String"] }
+  ]
 },
 {
   "name":"io.exonym.lib.pojo.Interpretation",
@@ -6689,7 +7894,6 @@
     {"name":"getIssuerUid","parameterTypes":[] }, 
     {"name":"getSybilClass","parameterTypes":[] }, 
     {"name":"isTestNet","parameterTypes":[] }, 
-    {"name":"setH","parameterTypes":["java.math.BigInteger"] }, 
     {"name":"setImab","parameterTypes":["java.lang.String"] }, 
     {"name":"setIssuerUid","parameterTypes":["java.net.URI"] }
   ]
@@ -6700,8 +7904,14 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
+{
+  "name":"io.exonym.lib.pojo.KeyContainer$JaxbAccessorM_getKeyPairs_setKeyPairs_java_util_ArrayList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.KeyContainer$JaxbAccessorM_getLastUpdateTime_setLastUpdateTime_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"io.exonym.lib.pojo.NetworkMapItem",
   "allDeclaredFields":true,
@@ -6764,32 +7974,92 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
-
-
-
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_getBroadcastAddress_setBroadcastAddress_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_getLastIssuerUID_setLastIssuerUID_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_getLastUpdateTime_setLastUpdateTime_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_getNetworkName_setNetworkName_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_getNodeUid_setNodeUid_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_getPublicKey_setPublicKey_io_exonym_lib_pojo_XKey",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_getRegion_setRegion_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_getRulebookNodeUrl_setRulebookNodeUrl_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_getStaticNodeUrl0_setStaticNodeUrl0_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NetworkParticipant$JaxbAccessorM_isAvailableOnMostRecentRequest_setAvailableOnMostRecentRequest_boolean",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"io.exonym.lib.pojo.NodeInformation",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
-
-
-
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getBroadcastAddress_setBroadcastAddress_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getIssuerParameterUids_setIssuerParameterUids_java_util_LinkedList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getLastUpdateReceived_setLastUpdateReceived_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getLeadUid_setLeadUid_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getNodeName_setNodeName_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getNodeUid_setNodeUid_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getRegion_setRegion_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getRulebookNodeUrl_setRulebookNodeUrl_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getStaticLeadUrl0_setStaticLeadUrl0_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.NodeInformation$JaxbAccessorM_getStaticNodeUrl0_setStaticNodeUrl0_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"io.exonym.lib.pojo.Penalty",
   "allDeclaredFields":true,
@@ -6840,9 +8110,11 @@
   "queryAllDeclaredConstructors":true,
   "methods":[
     {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getDefaultPenalty","parameterTypes":[] }, 
     {"name":"getName","parameterTypes":[] }, 
     {"name":"getSimpleDescriptionEN","parameterTypes":[] }, 
     {"name":"isProduction","parameterTypes":[] }, 
+    {"name":"setDefaultPenalty","parameterTypes":["io.exonym.lib.pojo.Penalty"] }, 
     {"name":"setName","parameterTypes":["java.lang.String"] }, 
     {"name":"setProduction","parameterTypes":["boolean"] }, 
     {"name":"setSimpleDescriptionEN","parameterTypes":["java.lang.String"] }
@@ -6859,10 +8131,12 @@
     {"name":"getId","parameterTypes":[] }, 
     {"name":"getInterpretations","parameterTypes":[] }, 
     {"name":"getPenalty","parameterTypes":[] }, 
+    {"name":"getSubheading","parameterTypes":[] }, 
     {"name":"setDescription","parameterTypes":["java.lang.String"] }, 
     {"name":"setId","parameterTypes":["java.lang.String"] }, 
     {"name":"setInterpretations","parameterTypes":["java.util.ArrayList"] }, 
-    {"name":"setPenalty","parameterTypes":["io.exonym.lib.pojo.Penalty"] }
+    {"name":"setPenalty","parameterTypes":["io.exonym.lib.pojo.Penalty"] }, 
+    {"name":"setSubheading","parameterTypes":["java.lang.String"] }
   ]
 },
 {
@@ -6892,14 +8166,16 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"setChallenge","parameterTypes":["java.lang.String"] }
+  ]
 },
 {
   "name":"io.exonym.lib.pojo.SsoConfiguration",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[
-    {"name":"setDomain","parameterTypes":["java.net.URI"] }, 
     {"name":"setHonestUnder","parameterTypes":["java.util.HashMap"] }, 
     {"name":"setSybil","parameterTypes":["boolean"] }
   ]
@@ -6913,41 +8189,17 @@
     {"name":"getParticipants","parameterTypes":[] }
   ]
 },
-
-
-
 {
-  "name":"io.exonym.lib.pojo.XContainerSchema",
-  "allDeclaredFields":true,
-  "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true,
-  "methods":[
-    {"name":"<init>","parameterTypes":[] }, 
-    {"name":"getAppPublicKey","parameterTypes":[] }, 
-    {"name":"getDeviceId","parameterTypes":[] }, 
-    {"name":"getInspectorStore","parameterTypes":[] }, 
-    {"name":"getIssuanceParameterStore","parameterTypes":[] }, 
-    {"name":"getIssuancePolicyStore","parameterTypes":[] }, 
-    {"name":"getIssuedStore","parameterTypes":[] }, 
-    {"name":"getIssuerSecretStore","parameterTypes":[] }, 
-    {"name":"getLocalLedger","parameterTypes":[] }, 
-    {"name":"getNoninteractiveTokenStore","parameterTypes":[] }, 
-    {"name":"getOwnerSecretStore","parameterTypes":[] }, 
-    {"name":"getRevocationAuthStore","parameterTypes":[] }, 
-    {"name":"getUsername","parameterTypes":[] }, 
-    {"name":"setAppPublicKey","parameterTypes":["byte[]"] }, 
-    {"name":"setDeviceId","parameterTypes":["java.lang.String"] }, 
-    {"name":"setInspectorStore","parameterTypes":["java.util.HashMap"] }, 
-    {"name":"setIssuanceParameterStore","parameterTypes":["java.util.HashMap"] }, 
-    {"name":"setIssuancePolicyStore","parameterTypes":["java.util.HashMap"] }, 
-    {"name":"setIssuedStore","parameterTypes":["java.util.HashMap"] }, 
-    {"name":"setIssuerSecretStore","parameterTypes":["java.util.HashMap"] }, 
-    {"name":"setLocalLedger","parameterTypes":["java.util.HashMap"] }, 
-    {"name":"setNoninteractiveTokenStore","parameterTypes":["java.util.HashMap"] }, 
-    {"name":"setOwnerSecretStore","parameterTypes":["java.util.HashMap"] }, 
-    {"name":"setRevocationAuthStore","parameterTypes":["java.util.HashMap"] }, 
-    {"name":"setUsername","parameterTypes":["java.lang.String"] }
-  ]
+  "name":"io.exonym.lib.pojo.TrustNetwork$JaxbAccessorM_getLastUpdated_setLastUpdated_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.TrustNetwork$JaxbAccessorM_getNodeInformationUid_setNodeInformationUid_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.TrustNetwork$JaxbAccessorM_getNodeInformation_setNodeInformation_io_exonym_lib_pojo_NodeInformation",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"io.exonym.lib.pojo.XKey",
@@ -6955,14 +8207,38 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
-
+{
+  "name":"io.exonym.lib.pojo.XKey$JaxbAccessorM_getExpiryDateUtc_setExpiryDateUtc_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.XKey$JaxbAccessorM_getHash_setHash_java_lang_String",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.XKey$JaxbAccessorM_getKeyIn_setKeyIn_AOf_byte",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.XKey$JaxbAccessorM_getKeyOut_setKeyOut_AOf_byte",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.XKey$JaxbAccessorM_getKeyUid_setKeyUid_java_net_URI",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.XKey$JaxbAccessorM_getPrivateKey_setPrivateKey_AOf_byte",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.XKey$JaxbAccessorM_getPublicKey_setPublicKey_AOf_byte",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.exonym.lib.pojo.XKey$JaxbAccessorM_getSignature_setSignature_AOf_byte",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 {
   "name":"java.io.Serializable",
   "queryAllDeclaredMethods":true
@@ -7074,20 +8350,6 @@
 },
 {
   "name":"javax.crypto.interfaces.DHPublicKey"
-},
-{
-  "name":"javax.imageio.spi.ImageReaderSpi"
-},
-{
-  "name":"javax.imageio.spi.ImageReaderWriterSpi",
-  "queriedMethods":[
-    {"name":"getFileSuffixes","parameterTypes":[] }, 
-    {"name":"getFormatNames","parameterTypes":[] }, 
-    {"name":"getMIMETypes","parameterTypes":[] }
-  ]
-},
-{
-  "name":"javax.imageio.spi.ImageWriterSpi"
 },
 {
   "name":"javax.security.auth.x500.X500Principal",
@@ -7251,6 +8513,10 @@
 },
 {
   "name":"sun.security.rsa.RSAKeyFactory$Legacy",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"sun.security.rsa.RSAKeyPairGenerator$Legacy",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {

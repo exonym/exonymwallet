@@ -14,6 +14,7 @@ import io.exonym.lib.actor.CandidateToken;
 import io.exonym.lib.api.*;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.pojo.IdContainerSchema;
+import io.exonym.lib.pojo.NetworkMapItemModerator;
 import io.exonym.lib.standard.PassStore;
 import io.exonym.lib.pojo.ExternalResourceContainer;
 
@@ -21,10 +22,16 @@ import javax.crypto.Cipher;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 public final class ExonymOwner extends AbstractExonymOwner {
 
     private static ExonymOwner VERIFIER = null;
+
+
+    private final static Logger logger = Logger.getLogger(ExonymOwner.class.getName());
+
+
 
     /**
      *
@@ -195,22 +202,31 @@ public final class ExonymOwner extends AbstractExonymOwner {
         super.acceptableIssuers(issuerAlternatives);
     }
 
-
-
     public static ExonymOwner verifierOnly() throws Exception {
         if (VERIFIER==null){
             PkiExternalResourceContainer pki = PkiExternalResourceContainer.getInstance();
             NetworkMapMemory networkMap = NetworkMapMemory.getInstance();
             CacheInMemory cache = CacheInMemory.getInstance();
             pki.setNetworkMapAndCache(networkMap, cache);
+
             ExonymOwner owner = new ExonymOwner(new IdContainerJsonMemory());
             PassStore store = new PassStore("password", false);
             owner.openContainer(store);
             owner.setupContainerSecret(store.getEncrypt(), store.getDecipher());
             // load sybil in preparation
-            // TODO - Test Only
+
+            NetworkMapItemModerator nmim = null;
+            try {
+                logger.info("Trying sybil-test");
+                nmim = networkMap.nmiForSybilTestNet();
+
+            } catch (Exception e) {
+                logger.info("Trying sybil-main");
+                nmim = networkMap.nmiForSybilMainNet();
+
+            }
             owner.openResourceIfNotLoaded(
-                    networkMap.nmiForSybilTestNet().getLastIssuerUID());
+                    nmim.getLastIssuerUID());
             VERIFIER=owner;
 
         }
