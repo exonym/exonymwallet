@@ -93,10 +93,10 @@ public class TestTools {
 
             logger.info(playerPath);
 
-            BasicHeader game0Header = new BasicHeader(TestC30.HEADER_NAME_C30_SYBIL_API_KEY,
+            BasicHeader game0Header = new BasicHeader("C30-App-Key",
                     game.getApiKey());
 
-            String response = client.basicPost(TestC30.END_POINT_CONTAINER + playerPath,
+            String response = client.basicPost("https://t1.sybil.cyber30.io/c30/" + playerPath,
                     gameToPost.toString(), game0Header);
 
             logger.info(response);
