@@ -17,8 +17,8 @@
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-
 		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<graalvmHome>${env.JAVA_HOME}</graalvmHome>
 		<gluonfx.maven.plugin.version>1.0.18</gluonfx.maven.plugin.version>
 		<gluonfx.target>host</gluonfx.target>
 		<main.class>io.exonym.lib.wallet.WalletAPI</main.class>
@@ -262,7 +262,8 @@
 			<configuration>
 				<target>${gluonfx.target}</target>
 				<mainClass>${main.class}</mainClass>
-				<graalvmHome>/Library/Java/JavaVirtualMachines/graalvm-svm-java17-darwin-m1-gluon-22.1.0.1-Final/Contents/Home</graalvmHome>
+				<graalvmHome>${graalvmHome}</graalvmHome>
+<!--				/Library/Java/JavaVirtualMachines/graalvm-svm-java17-darwin-m1-gluon-22.1.0.1-Final/Contents/Home-->
 				<nativeImageArgs>
 					<arg>-H:-CheckToolchain</arg>
 					<arg>--enable-url-protocols=https</arg>
