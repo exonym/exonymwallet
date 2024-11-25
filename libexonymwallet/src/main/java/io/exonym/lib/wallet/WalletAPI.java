@@ -11,12 +11,15 @@ import io.exonym.lib.standard.PassStore;
 import io.exonym.lib.pojo.IdContainer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.graalvm.nativeimage.IsolateThread;
+import org.graalvm.nativeimage.UnmanagedMemory;
 import org.graalvm.nativeimage.c.function.CEntryPoint;
 import org.graalvm.nativeimage.c.type.CCharPointer;
 import org.graalvm.nativeimage.c.type.CTypeConversion;
+import org.graalvm.word.WordFactory;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -654,10 +657,33 @@ public class WalletAPI {
 
     }
 
+    public static CCharPointer toCString(String javaString) {
+        if (javaString == null) {
+            return WordFactory.nullPointer();
 
-    private static CCharPointer toCString(String string){
-        return CTypeConversion.toCString(string).get();
+        }
+        byte[] bytes = javaString.getBytes(StandardCharsets.UTF_8);
+        CCharPointer cString = UnmanagedMemory.calloc(bytes.length + 1);
+
+        for (int i = 0; i < bytes.length; i++) {
+            cString.write(i, bytes[i]);
+        }
+        cString.write(bytes.length, (byte) 0);
+
+        return cString;
     }
+
+
+    @CEntryPoint(name = "free_cstring")
+    public static void freeCString(IsolateThread thread, CCharPointer cString) {
+        if (cString.isNonNull()) {
+            UnmanagedMemory.free(cString);
+        }
+    }
+
+//    private static CCharPointer toCString(String string){
+//        return CTypeConversion.toCString(string).get();
+//    }
 
     @CEntryPoint(name = "hello_exonym")
     public static int helloWallet(IsolateThread thread){
