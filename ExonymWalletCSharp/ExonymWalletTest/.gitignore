@@ -1,0 +1,80 @@
+# Ignore build results
+bin/
+obj/
+
+# Rider-specific files
+.idea/
+*.sln.iml
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows shortcut files
+*.lnk
+
+# Rider settings and caches
+.idea/
+.idea_modules/
+*.ipr
+*.iws
+*.iml
+
+# Rider workspace
+workspace.xml
+
+# Logs
+*.log
+
+# NCrunch
+*.ncrunch*
+_ncrunch_/
+.*crunch.*
+
+# Coverity
+.coverity/
+
+# Statically linked files
+*.pdb
+*.mdb
+
+# Azure DevOps
+*.coverage
+*.coveragexml
+
+# VSCode settings
+.vscode/
+
+# Exclude node_modules, if applicable
+node_modules/
+
+# Exclude compiled output
+*.dll
+*.exe
+*.so
+*.dylib
+*.lib
+
+# Backup files
+*.bak
+*.swp
+
+# Dependency directories
+packages/
+.vscode/
+.nuget/
+
+# Temporary and other development files
+*.dbmdl
+*.jfm

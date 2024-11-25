@@ -1,0 +1,76 @@
+# https://dart.dev/guides/libraries/private-files
+# Created by `dart pub`
+.dart_tool/
+
+# Avoid committing pubspec.lock for library packages; see
+# https://dart.dev/guides/libraries/private-files#pubspeclock.
+pubspec.lock
+*.env
+
+lib/dylib
+
+# Dart/Flutter related
+.dart_tool/
+.packages
+.pub/
+build/
+*.dart.js
+*.js.map
+*.kernel.js
+
+# Flutter specific
+ios/Flutter/.last_build_id
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-versions
+.merged_manifest
+pubspec.lock
+android/.gradle/
+android/app/debug.keystore
+.android/
+ios/.generated/
+
+# macOS and Xcode related
+*.xcworkspace
+*.xcodeproj
+DerivedData/
+*.hmap
+*.ipa
+*.app
+
+# Windows related
+*.exe
+*.bat
+*.cmd
+
+# Linux related
+*.so
+
+# Generated localization files
+intl_translation/
+
+# Web related
+web/main.dart.js
+web/main.dart.js.deps
+web/main.dart.js.map
+
+# IDE-specific files
+.idea/
+*.iml
+.vscode/
+
+# Temporary files
+*.log
+*.tmp
+*.swp
+*.lock
+
+# Node.js dependencies (if applicable)
+node_modules/
+
+# Files and directories created by pub
+.packages
+pubspec.lock
+
+# JetBrains IDEs
+.idea/

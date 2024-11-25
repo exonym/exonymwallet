@@ -1,0 +1,7 @@
+name: ExonymWalletLibrary
+output: 'lib/src/generated/exonym_wallet_bindings.dart'
+headers:
+  entry-points:
+    - '../libexonymwallet/target/gluonfx/aarch64-darwin/gvm/libexonymwallet/graal_isolate_dynamic.h'
+    - '../libexonymwallet/target/gluonfx/aarch64-darwin/gvm/libexonymwallet/graal_isolate.h'
+    - '../libexonymwallet/target/gluonfx/aarch64-darwin/gvm/libexonymwallet/io.exonym.lib.wallet.walletapi.h'
