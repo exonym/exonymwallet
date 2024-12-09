@@ -24,6 +24,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -39,7 +40,7 @@ public class C30Utils {
     public static final int STOPPER_RULEBOOK = 2;
 
     public static boolean hasPlayerKeyForGame(String alpha, String beta, String rootPath) {
-        Path root = Path.of(rootPath);
+        Path root = Paths.get(rootPath);
         System.out.println("hasPlayerKeyForGame(" + alpha + ", " + beta);
         String epsilon = computeEpsilon(alpha, beta);
         Path pathKey = pathToKey(root, epsilon);
@@ -51,7 +52,7 @@ public class C30Utils {
     public static boolean writeTestFile(String rootPath) throws Exception {
         try {
             System.out.println("writeTestFile()=" + rootPath);
-            Path path = Path.of(rootPath, "test-file.txt");
+            Path path = Paths.get(rootPath, "test-file.txt");
             Files.write(path, "contents".getBytes(StandardCharsets.UTF_8));
             return true;
 
@@ -76,10 +77,11 @@ public class C30Utils {
     }
 
     public static String getPlayerPublicKeyAsString(String rootPath, String alpha, String beta) throws Exception {
-        Path root = Path.of(rootPath);
+        Path root = Paths.get(rootPath);
         String epsilon = computeEpsilon(alpha, beta);
         Path pathKey = pathToKey(root, epsilon);
-        String keyJson = Files.readString(pathKey);
+        // Needs to work on Android.
+        String keyJson = new String(Files.readAllBytes(pathKey), StandardCharsets.UTF_8);
         XKey key = JaxbHelper.gson.fromJson(keyJson, XKey.class);
         return Form.toHex(key.getPublicKey());
 
@@ -98,7 +100,7 @@ public class C30Utils {
         String epsilon = computeEpsilon(alpha, beta);
         if (hasPlayerKeyForGame(alpha, beta, rootPath)){
             Http client = new Http();
-            Path root = Path.of(rootPath);
+            Path root = Paths.get(rootPath);
             XKey keyXml = openKey(alpha, beta, root);
             AsymStoreKey playerKeyForGame = XKey.assembleAsym(epsilon, keyXml);
             // TODO
@@ -245,7 +247,8 @@ public class C30Utils {
     public static XKey openKey(String alpha, String beta, Path rootPath) throws Exception {
         String epsilon = computeEpsilon(alpha, beta);
         Path pathKey = pathToKey(rootPath, epsilon);
-        String keyJson = Files.readString(pathKey);
+        // Needs to work on Android.
+        String keyJson = new String(Files.readAllBytes(pathKey), StandardCharsets.UTF_8);
         XKey key = JaxbHelper.gson.fromJson(keyJson, XKey.class);
         return key;
 
@@ -275,7 +278,7 @@ public class C30Utils {
     }
 
     protected static Path pathToKey(Path rootPath, String epsilon){
-        return Path.of(rootPath.toString(), "containers", epsilon + "-key.json");
+        return Paths.get(rootPath.toString(), "containers", epsilon + "-key.json");
 
     }
 
@@ -284,7 +287,7 @@ public class C30Utils {
     }
 
     public static XKey generateNewPlayerKeyForGamma(String rootPath, String alpha, String beta) throws Exception {
-        Path root = Path.of(rootPath);
+        Path root = Paths.get(rootPath);
         System.out.println("generateNewPlayerKeyForGamma("+rootPath+"," + alpha +"," + beta + ")");
         String epsilon = computeEpsilon(alpha, beta);
         System.out.println("epsilon=" + epsilon);
@@ -307,17 +310,18 @@ public class C30Utils {
         Files.createDirectories(pathToKey.getParent());
         String keyJson = JaxbHelper.gson.toJson(key);
         System.out.println(keyJson);
-        Files.writeString(pathToKey, keyJson);
+        Files.write(pathToKey, keyJson.getBytes(StandardCharsets.UTF_8));
         System.out.println("Written file");
         return key;
 
     }
 
     protected static IdContainerSchema c30SchemaFromDisk(Path pathRoot, String epsilon) throws IOException {
-        Path sch = Path.of(pathRoot.toString(),
+        Path sch = Paths.get(pathRoot.toString(),
                 "containers", epsilon,
                 epsilon + ".json");
-        String idJson = Files.readString(sch);
+        // Needs to work on Android.
+        String idJson = new String(Files.readAllBytes(sch), StandardCharsets.UTF_8);
         return JaxbHelper.gson.fromJson(idJson, IdContainerSchema.class);
 
     }
@@ -431,6 +435,7 @@ public class C30Utils {
             System.out.println("File read successfully: " + readContent);
 
             return "Write and Read Successful: " + readContent;
+
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();

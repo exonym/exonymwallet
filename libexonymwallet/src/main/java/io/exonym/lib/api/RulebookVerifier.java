@@ -14,13 +14,14 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class RulebookVerifier {
 
     private Rulebook rulebook = null;
 
     public RulebookVerifier(String rulebookPath) throws Exception {
-        Path path = Path.of(rulebookPath);
+        Path path = Paths.get(rulebookPath);
         Rulebook rulebook = JaxbHelper.jsonFileToClass(path, Rulebook.class);
         verifyRulebook(rulebook);
 

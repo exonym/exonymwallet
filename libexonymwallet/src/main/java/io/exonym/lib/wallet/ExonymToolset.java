@@ -12,7 +12,6 @@ import io.exonym.lib.pojo.IdContainerSchema;
 import io.exonym.lib.standard.PassStore;
 
 import java.net.URI;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Logger;
