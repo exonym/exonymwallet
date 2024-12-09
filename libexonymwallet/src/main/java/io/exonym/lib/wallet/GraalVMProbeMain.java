@@ -301,9 +301,9 @@ public class GraalVMProbeMain {
         String epsilon = CryptoUtils.computeMd5HashAsHex((alpha + beta).getBytes(StandardCharsets.UTF_8));
 
         Path p = Path.of("identities");
-        XKey key = C30Utils.generateNewPlayerKeyForGamma(p, alpha,beta);
+        XKey key = C30Utils.generateNewPlayerKeyForGamma(p.toString(), alpha,beta);
         XKey.assembleAsym(epsilon, key);
-        C30Utils.hasPlayerKeyForGame(alpha, beta, p);
+        C30Utils.hasPlayerKeyForGame(alpha, beta, p.toString());
 
         String kb64 = Base64.encodeBase64String(key.getPublicKey());
 
@@ -339,7 +339,7 @@ public class GraalVMProbeMain {
         url.append("verify/");
         url.append(epsilon);
         url.append("/");
-        url.append(C30Utils.getPlayerPublicKeyAsString(p, alpha, beta));
+        url.append(C30Utils.getPlayerPublicKeyAsString(p.toString(), alpha, beta));
 
         logger.info(url.toString());
 
@@ -348,7 +348,7 @@ public class GraalVMProbeMain {
         String r0 = client.basicGet(url0.toString(), headersGame0);
         logger.info(r0);
 
-        String message = C30Utils.joinToAuthProtocol(alpha, beta, gamma, p, false);
+        String message = C30Utils.joinToAuthProtocol(alpha, beta, gamma, p.toString(), false);
         assert message.contains("success");
 
     }

@@ -113,15 +113,6 @@ public abstract class AbstractIdContainer {
 		} else if (resource instanceof SFTPLogonData){
 			saveSFTPCredentials((SFTPLogonData) resource, overwrite, enc);
 
-		} else if (resource instanceof AnonCredentialParameters){
-			saveAnonCredentialParameters((AnonCredentialParameters) resource, overwrite, enc);
-
-		} else if (resource instanceof MintedAnonCredential){
-			saveMintedAnonCredential((MintedAnonCredential)resource, overwrite, enc);
-
-		} else if (resource instanceof RegisteredDevices){
-			saveRegisteredDevices((RegisteredDevices)resource, overwrite);
-
 		} else if (resource instanceof ConnectKeyContainer){
 			saveConnectKeyContainer((ConnectKeyContainer)resource, overwrite);
 
@@ -180,8 +171,6 @@ public abstract class AbstractIdContainer {
 		} else if (resource instanceof RevocationInformation){
 			saveRevocationAuthorityInformation((RevocationInformation) resource, overwrite);
 
-		} else if (resource instanceof RegistrationParameters){
-			saveRegistrationParameters((RegistrationParameters) resource, overwrite);
 
 		} else if (resource instanceof Rulebook){
 			saveRulebook((Rulebook) resource, overwrite);
@@ -315,42 +304,14 @@ public abstract class AbstractIdContainer {
 
 	}
 	
-	private void saveRegistrationParameters(RegistrationParameters resource, boolean overwrite) throws Exception {
-		String name = uidToFileName(resource.getGroupUid()) + ".rp.xml";
-		String xml = JaxbHelper.serializeToXml(resource, RegistrationParameters.class);
-		save(xml, LOCAL_LEDGER, name, overwrite);
-		
-	}
-	
+
 	private void saveLocalLedgerGroup(LocalLedgerGroup lg, boolean overwrite) throws Exception {
 		String name = uidToFileName(lg.getGroupUid()) + ".rp.xml";
 		String xml = JaxbHelper.serializeToXml(lg, LocalLedgerGroup.class);
 		save(xml, LOCAL_LEDGER, name, overwrite);
 		
 	}	
-	
-	private void saveAnonCredentialParameters(AnonCredentialParameters resource, boolean overwrite, Cipher store)  throws Exception {
-		String name = uidToFileName(resource.getGroupUid()) + ".acp.xml";
-		String xml = JaxbHelper.serializeToXml(resource, AnonCredentialParameters.class);
-		saveEncrypted(xml, OWNER_PRIVATE_STORE, name, overwrite, store);
-		
-	}
 
-	private void saveMintedAnonCredential(MintedAnonCredential resource, boolean overwrite, Cipher store)  throws Exception {
-		String name = uidToFileName(resource.getGroupUid()) + ".mac.xml";
-		String xml = JaxbHelper.serializeToXml(resource, MintedAnonCredential.class);
-		saveEncrypted(xml, OWNER_PRIVATE_STORE, name, overwrite, store);
-
-	}
-
-
-	private void saveRegisteredDevices(RegisteredDevices resource, boolean overwrite)  throws Exception {
-		String name = "devices.xml";
-		String xml = JaxbHelper.serializeToXml(resource, RegisteredDevices.class);
-		save(xml, RUNTIME_KEYS, name, overwrite);
-
-	}
-	
 	private void saveKeyContainer(KeyContainer resource, boolean overwrite)  throws Exception {
 		String name = "keys.xml";
 		String xml = JaxbHelper.serializeToXml(resource, KeyContainer.class);

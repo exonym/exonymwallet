@@ -36,7 +36,7 @@ public class TestC30Onboarding {
             long t0 = Timing.currentTime();
 
             String message = C30Utils.joinToAuthProtocol(alpha, beta,
-                    TestTools.game0.getGamma(), TestTools.STORE_PATH, false);
+                    TestTools.game0.getGamma(), TestTools.STORE_PATH.toString(), false);
             assert message.contains("success");
 
             logger.info("Took Total:" + Timing.hasBeenMs(t0));
@@ -56,13 +56,13 @@ public class TestC30Onboarding {
             String beta = player.getBeta();
 
             String message = C30Utils.joinToAuthProtocol(alpha, beta, TestTools.game0.getGamma(),
-                    TestTools.STORE_PATH, false, C30Utils.STOPPER_SYBIL);
+                    TestTools.STORE_PATH.toString(), false, C30Utils.STOPPER_SYBIL);
             logger.info(message);
 
             long t0 = Timing.currentTime();
 
             message = C30Utils.joinToAuthProtocol(alpha, beta, TestTools.game0.getGamma(),
-                    TestTools.STORE_PATH, false);
+                    TestTools.STORE_PATH.toString(), false);
             assert message.contains("success");
 
             logger.info("Took Total:" + Timing.hasBeenMs(t0));
@@ -82,13 +82,13 @@ public class TestC30Onboarding {
             String beta = player.getBeta();
 
             String message = C30Utils.joinToAuthProtocol(alpha, beta, TestTools.game0.getGamma(),
-                    TestTools.STORE_PATH, false, C30Utils.STOPPER_RULEBOOK);
+                    TestTools.STORE_PATH.toString(), false, C30Utils.STOPPER_RULEBOOK);
             logger.info(message);
 
             long t0 = Timing.currentTime();
 
             message = C30Utils.joinToAuthProtocol(alpha, beta, TestTools.game0.getGamma(),
-                    TestTools.STORE_PATH, false);
+                    TestTools.STORE_PATH.toString(), false);
             assert message.contains("success");
 
             logger.info("Took Total:" + Timing.hasBeenMs(t0));
@@ -105,7 +105,7 @@ public class TestC30Onboarding {
         C30Player player = C30Player.init();
 
         XKey key = C30Utils.generateNewPlayerKeyForGamma(
-                TestTools.STORE_PATH, player.getAlpha(),player.getBeta());
+                TestTools.STORE_PATH.toString(), player.getAlpha(),player.getBeta());
 
         XKey.assembleAsym(player.getEpsilon(), key);
 

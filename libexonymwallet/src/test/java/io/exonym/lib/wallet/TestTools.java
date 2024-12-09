@@ -125,7 +125,7 @@ public class TestTools {
             url.append(player.getEpsilon());
             url.append("/");
             url.append(C30Utils.getPlayerPublicKeyAsString(
-                    TestTools.STORE_PATH, player.getAlpha(), player.getBeta()));
+                    TestTools.STORE_PATH.toString(), player.getAlpha(), player.getBeta()));
 
             logger.info(url.toString());
 

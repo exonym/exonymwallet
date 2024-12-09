@@ -41,7 +41,7 @@ public class WalletAPI {
             String beta = CTypeConversion.toJavaString(beta_);
             String gamma = CTypeConversion.toJavaString(gamma_);
             String path = CTypeConversion.toJavaString(path_);
-            String result = C30Utils.joinToAuthProtocol(alpha, beta, gamma, Path.of(path), test);
+            String result = C30Utils.joinToAuthProtocol(alpha, beta, gamma, path, test);
             return toCString(result);
 
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public class WalletAPI {
             String alpha = CTypeConversion.toJavaString(alpha_);
             String beta = CTypeConversion.toJavaString(beta_);
             String path = CTypeConversion.toJavaString(rootPath_);
-            return C30Utils.hasPlayerKeyForGame(alpha, beta, Path.of(path));
+            return C30Utils.hasPlayerKeyForGame(alpha, beta, path);
 
         } catch (Exception e) {
             handleError(e);
@@ -71,7 +71,7 @@ public class WalletAPI {
             String alpha = CTypeConversion.toJavaString(alpha_);
             String beta = CTypeConversion.toJavaString(beta_);
             String path = CTypeConversion.toJavaString(rootPath_);
-            String publicKeyAsHex = C30Utils.getPlayerPublicKeyAsString(Path.of(path), alpha, beta);
+            String publicKeyAsHex = C30Utils.getPlayerPublicKeyAsString(path, alpha, beta);
             return toCString(publicKeyAsHex);
 
         } catch (Exception e) {

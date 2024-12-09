@@ -6825,32 +6825,12 @@
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
-
-
-
 {
   "name":"io.exonym.lib.pojo.NodeInformation",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
-
-
-
 {
   "name":"io.exonym.lib.pojo.Penalty",
   "allDeclaredFields":true,
@@ -6980,23 +6960,12 @@
     {"name":"getParticipants","parameterTypes":[] }
   ]
 },
-
-
-
 {
   "name":"io.exonym.lib.pojo.XKey",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
-
-
-
-
-
-
-
-
 {
   "name":"java.io.Serializable",
   "queryAllDeclaredMethods":true

@@ -1,6 +1,5 @@
 package io.exonym.lib.actor;
 
-import com.sun.xml.ws.util.ByteArrayBuffer;
 
 import eu.abc4trust.xml.*;
 import io.exonym.lib.helpers.UIDHelper;
@@ -32,8 +31,8 @@ public class NodeVerifier {
 	private KeyContainer rawKeys;
 	private KeyContainerWrapper keys;
 
-	private  ConcurrentHashMap<String, ByteArrayBuffer> byteContent;
-	private  ConcurrentHashMap<String, ByteArrayBuffer> signatureBytes;
+	private  ConcurrentHashMap<String, byte[]> byteContent;
+	private  ConcurrentHashMap<String, byte[]> signatureBytes;
 	private  ConcurrentHashMap<String, Object> contents;
 
 	private TrustNetwork targetTrustNetwork = null;
@@ -93,13 +92,13 @@ public class NodeVerifier {
 
 	}
 
-	private ConcurrentHashMap<String, ByteArrayBuffer> computeBytesThatWereSigned(
-			ConcurrentHashMap<String, ByteArrayBuffer> byteContent) throws UnsupportedEncodingException {
-		ConcurrentHashMap<String, ByteArrayBuffer> result = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String, byte[]> computeBytesThatWereSigned(
+			ConcurrentHashMap<String, byte[]> byteContent) throws UnsupportedEncodingException {
+		ConcurrentHashMap<String, byte[]> result = new ConcurrentHashMap<>();
 		for (String key : byteContent.keySet()){
-			String s = new String(byteContent.get(key).getRawData(), "UTF8");
+			String s = new String(byteContent.get(key), "UTF8");
 			String t = NodeVerifier.stripStringToSign(s);
-			result.put(key, new ByteArrayBuffer(t.getBytes()));
+			result.put(key, t.getBytes());
 
 		}
 		return result;
@@ -128,16 +127,16 @@ public class NodeVerifier {
 		}
 	}
 
-	private ConcurrentHashMap<String, ByteArrayBuffer> readLocalBytes(URL url, KeyContainer keys) throws Exception {
-		ConcurrentHashMap<String, ByteArrayBuffer> result = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String, byte[]> readLocalBytes(URL url, KeyContainer keys) throws Exception {
+		ConcurrentHashMap<String, byte[]> result = new ConcurrentHashMap<>();
 		String sigXml = JaxbHelper.serializeToXml(keys, KeyContainer.class);
-		result.put("signatures.xml", new ByteArrayBuffer(sigXml.getBytes()));
+		result.put("signatures.xml", sigXml.getBytes());
 
 		for (XKey key : keys.getKeyPairs()){
 			if (key.getKeyUid().toString().startsWith(Namespace.URN_PREFIX_COLON)){
 				String fn = IdContainer.uidToXmlFileName(key.getKeyUid());
 				byte[] b = UrlHelper.read(new URL(url.toString() + "/" + fn));
-				result.put(fn, new ByteArrayBuffer(b));
+				result.put(fn, b);
 
 			} else {
 				logger.fine("Opening materials and ignoring " + key.getKeyUid());
@@ -284,14 +283,14 @@ public class NodeVerifier {
 	}
 
 	private void verifyMaterialSignatures(Set<URI> keyRingUids) throws Exception {
-		HashMap<XKey, ByteArrayBuffer> signatures = new HashMap<>();
+		HashMap<XKey, byte[]> signatures = new HashMap<>();
 
 		for (URI uid : keyRingUids){
 			if (!uid.equals(KeyContainerWrapper.TN_ROOT_KEY) &&
 					!uid.equals(KeyContainerWrapper.SIG_CHECKSUM)) {
 				XKey sig = keys.getKey(uid);
 				String fn = IdContainer.uidToXmlFileName(uid);
-				ByteArrayBuffer b = signatureBytes.get(fn);
+				byte[] b = signatureBytes.get(fn);
 				signatures.put(sig, b);
 
 			}
@@ -300,7 +299,7 @@ public class NodeVerifier {
 
 	}
 
-	public static void checkSignatures(AsymStoreKey key, HashMap<XKey, ByteArrayBuffer> signatures) throws Exception{
+	public static void checkSignatures(AsymStoreKey key, HashMap<XKey, byte[]> signatures) throws Exception{
 		if (signatures==null || key==null){
 			throw new Exception("A required attribute was null key " + key + " signatures " + signatures);
 
@@ -316,12 +315,12 @@ public class NodeVerifier {
 				throw new Exception("Signature was null for KeyUid " + uid);
 
 			}
-			ByteArrayBuffer baf = signatures.get(sig);
-			if (baf==null || baf.getRawData()==null){
+			byte[] baf = signatures.get(sig);
+			if (baf==null || baf==null){
 				throw new Exception("Null raw data for file " + uid);
 
 			}
-			if (!verifySignature(baf.getRawData(), key, sig.getSignature())){
+			if (!verifySignature(baf, key, sig.getSignature())){
 				throw new Exception("Signature was invalid for UID " + uid);
 
 			} else {
@@ -448,17 +447,6 @@ public class NodeVerifier {
 
 	}
 
-	public void loadTokenVerifierFromNodeVierifier(TokenVerifierInterface tokenVerifier, UIDHelper uids) throws Exception {
-
-		tokenVerifier.loadRevocationInformation(
-				this.getRevocationInformation(uids.getRevocationAuthorityFileName()));
-
-		tokenVerifier.loadIssuerParameters(this.getIssuerParameters(uids.getIssuerParametersFileName()));
-		tokenVerifier.loadInspectorParams(this.getInspectorPublicKey());
-		tokenVerifier.loadRevocationAuthorityParameters(
-				this.getRevocationAuthorityParameters(uids.getRevocationAuthorityFileName()));
-
-	}
 
 	public TrustNetwork getTargetTrustNetwork() throws HubException {
 		if (targetTrustNetwork ==null){

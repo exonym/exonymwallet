@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.xml.messaging.saaj.util.ByteOutputStream;
 import io.exonym.lib.exceptions.ErrorMessages;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.adapters.Base64TypeAdapter;
@@ -21,6 +20,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayOutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
@@ -46,7 +46,7 @@ public class JaxbHelper {
 		m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 		m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new AbcNamespace());
 		m.setProperty("com.sun.xml.bind.xmlHeaders", "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
-		ByteOutputStream bos = new ByteOutputStream();
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		m.marshal(o, bos);
 		String xml = bos.toString();
 		if (xml.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>")){

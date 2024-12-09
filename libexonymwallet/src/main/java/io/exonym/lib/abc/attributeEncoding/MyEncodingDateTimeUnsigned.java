@@ -4,7 +4,6 @@
 
 package io.exonym.lib.abc.attributeEncoding;
 
-import com.sun.msv.datatype.xsd.datetime.TimeZone;
 import io.exonym.lib.abc.attributeType.EnumAllowedValues;
 import io.exonym.lib.abc.attributeType.MyAttributeValueDateTime;
 
@@ -15,6 +14,7 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 
 public class MyEncodingDateTimeUnsigned extends MyAttributeValueDateTime
@@ -45,9 +45,8 @@ public class MyEncodingDateTimeUnsigned extends MyAttributeValueDateTime
   public static Object recoverValueFromIntegerValue(BigInteger integerValue, /*IsNull*/ EnumAllowedValues eav) {
     try {
       long unixTime = integerValue.longValue();
-      GregorianCalendar cal = new GregorianCalendar();
+      GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
       cal.setGregorianChange(new Date(Long.MIN_VALUE));
-      cal.setTimeZone(TimeZone.ZERO);
       cal.setTimeInMillis(unixTime*1000);
       XMLGregorianCalendar xmlCal = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
       xmlCal.setFractionalSecond(null);

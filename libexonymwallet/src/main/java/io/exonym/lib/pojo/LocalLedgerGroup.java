@@ -14,9 +14,6 @@ public class LocalLedgerGroup {
 	@XmlElement(name = "GroupUID", namespace = Namespace.EX)
 	private URI groupUid;
 
-	@XmlElement(name = "VerboseCredentials", namespace = Namespace.EX)
-	private ArrayList<MintedAnonCredential> fullCredentials = new ArrayList<>();
-	
 	@XmlElement(name = "ShortCredentials", namespace = Namespace.EX)
 	private ArrayList<BigInteger> credentials = new ArrayList<>();
 	
@@ -31,9 +28,6 @@ public class LocalLedgerGroup {
 		this.groupUid = groupUid;
 	}
 
-	public ArrayList<MintedAnonCredential> getFullCredentials() {
-		return fullCredentials;
-	}
 	public ArrayList<BigInteger> getCredentials() {
 		return credentials;
 	}
@@ -49,7 +43,5 @@ public class LocalLedgerGroup {
 	public void setCredentials(ArrayList<BigInteger> credentials) {
 		this.credentials = credentials;
 	}
-	
-	
-	
+
 }

@@ -4,8 +4,6 @@ import io.exonym.lib.standard.SymStoreKey;
 
 import java.io.Serializable;
 
-// TODO visibility after port to dac
-// All to be protected 
 public class SymComKeys implements Serializable {
 	
 	/**

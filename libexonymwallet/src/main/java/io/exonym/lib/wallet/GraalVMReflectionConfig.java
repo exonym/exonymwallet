@@ -1,7 +1,5 @@
 package io.exonym.lib.wallet;
 
-import com.ctc.wstx.compat.Jdk13Impl;
-import com.ctc.wstx.compat.Jdk14Impl;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.exonym.lib.abc.util.JaxbHelper;
@@ -130,8 +128,6 @@ public class GraalVMReflectionConfig {
             HashSet.class,
             JsonObject.class,
             JsonArray.class,
-            Jdk14Impl.class,
-            Jdk13Impl.class,
             eu.abc4trust.xml.SmartcardPinRequests.class,
             eu.abc4trust.xml.ABCEBoolean.class,
             eu.abc4trust.xml.NreUpdateMessage.class,

@@ -13,14 +13,7 @@ public class Constants {
 	  public static final String TIME_TYPE = "time";
 	  public static final String DATETIME_TYPE = "dateTime";
 	  public static final String URI_TYPE = "anyURI";
-	  
-	  //predefined predicates for spesific attribute types
-	  public static final String EXPIRES = "Expires";
-	  public static final String DATEOFBIRTH = "DateOfBirth";
-	  
-	  public enum PredefinedAttrTypesForPredicates {
-		    EXPIRES, DATEOFBIRTH
-	  }
+
 
 	  public enum OperationType {
 	    EQUAL, NOTEQUAL, EQUALONEOF, LESS, LESSEQ, GREATER, GREATEREQ

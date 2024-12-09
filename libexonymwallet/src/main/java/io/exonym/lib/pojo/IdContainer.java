@@ -284,18 +284,6 @@ public final class IdContainer extends AbstractIdContainer {
 		}
 		return latest;
 	}
-	
-	public AnonCredentialParameters openAnonCredential(Cipher dec) throws Exception {
-		updateLists();
-		for (String s: ownerSecretList){
-			if (s.contains(".acp.xml")){
-				return openResource(s, dec);
-				
-			}
-		} 
-		throw new Exception("Container has not been fully defined.  There is no Anonymous Credential.");
-		
-	}
 
 	@SuppressWarnings("unchecked")
 	public synchronized <T> T openResource(String fullFileName, Cipher dec) throws Exception{
@@ -308,20 +296,11 @@ public final class IdContainer extends AbstractIdContainer {
 		} else if (FileType.isOwnerSecret(fullFileName)){ // Local
 			return (T) openEncryptedFile(OWNER_PRIVATE_STORE.resolve(fullFileName).getPath(), Secret.class, dec);
 			
-		} else if (FileType.isMintedAnonCredential(fullFileName)){ // Local
-			return (T) openEncryptedXFile(new File(OWNER_PRIVATE_STORE.resolve(fullFileName).getPath()), MintedAnonCredential.class, dec);
-			
 		} else if (FileType.isKeys(fullFileName)){ // Local
 			return (T) openXFile(new File(RUNTIME_KEYS.resolve(fullFileName).getPath()), KeyContainer.class);
 			
 		} else if (FileType.isConnectKeys(fullFileName)){ // Local
 			throw new RuntimeException("Open Connect Keys using the dedicated method discoverConnectKeys()");
-			
-		} else if (FileType.isDevices(fullFileName)){ // Local
-			return (T) openXFile(new File(RUNTIME_KEYS.resolve(fullFileName).getPath()), RegisteredDevices.class);
-			
-		} else if (FileType.isAnonCredentialParameters(fullFileName)){ // Local
-			return (T) openEncryptedXFile(new File(OWNER_PRIVATE_STORE.resolve(fullFileName).getPath()), AnonCredentialParameters.class, dec);
 			
 		} else if (FileType.isIssuanceLog(fullFileName)){ // Local
 			return (T) openFile(ISSUER_ISSUED.resolve(fullFileName).getPath(), IssuanceLogEntry.class);
@@ -348,9 +327,6 @@ public final class IdContainer extends AbstractIdContainer {
 
 			} else if (FileType.isSystemParameters(fullFileName)){
 				return (T) openFile(LOCAL_LEDGER.resolve(fullFileName).getPath(), SystemParameters.class);
-				
-			} else if (FileType.isRegistrationParams(fullFileName)){
-				return (T) JaxbHelper.xmlFileToClass(Paths.get(LOCAL_LEDGER.resolve(fullFileName).getPath()), RegistrationParameters.class);
 				
 			} else if (FileType.isPresentationPolicyAlternatives(fullFileName)){
 				return (T) JaxbHelper.xmlFileToClass(Paths.get(LOCAL_LEDGER.resolve(fullFileName).getPath()), PresentationPolicyAlternativesAdapter.class);

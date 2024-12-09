@@ -194,7 +194,6 @@ public class BuildPresentationTokenDescription {
 	}
 
 	private HashMap<URI, HashSet<CandidateToken>> collectCandidates() throws Exception {
-		logger.info("Hello");
 		for (PresentationPolicy policy: policies){
 			URI policyUid = policy.getPolicyUID();
 			this.policyUidToPolicyMap.put(policyUid, policy);

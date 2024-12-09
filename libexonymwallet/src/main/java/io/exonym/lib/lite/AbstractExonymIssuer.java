@@ -26,14 +26,12 @@ import io.exonym.lib.exceptions.HubException;
 import io.exonym.lib.exceptions.UxException;
 import io.exonym.lib.helpers.BuildIssuancePolicy;
 import io.exonym.lib.helpers.DateHelper;
-import io.exonym.lib.helpers.UIDHelper;
 import io.exonym.lib.pojo.Namespace;
 import io.exonym.lib.pojo.IdContainer;
 import io.exonym.lib.standard.ExtractObject;
 import io.exonym.lib.abc.util.FileType;
 import io.exonym.lib.abc.util.UidType;
 import io.exonym.lib.api.AbstractIdContainer;
-import io.exonym.lib.wallet.ExonymIssuer;
 
 import javax.crypto.Cipher;
 import java.math.BigInteger;

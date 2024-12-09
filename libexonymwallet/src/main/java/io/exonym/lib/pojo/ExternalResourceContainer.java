@@ -30,9 +30,6 @@ public abstract class ExternalResourceContainer {
 		} else if (FileType.isSystemParameters(fileName)){
 			return (T) IoMngt.getResource(ledger.resolve(fileName).getPath(), SystemParameters.class);
 
-		} else if (FileType.isRegistrationParams(fileName)){
-			return (T) JaxbHelper.xmlFileToClass(Paths.get(ledger.resolve(fileName).getPath()), RegistrationParameters.class);
-
 		} else if (FileType.isPresentationPolicyAlternatives(fileName)){
 			return (T) JaxbHelper.xmlFileToClass(Paths.get(ledger.resolve(fileName).getPath()), PresentationPolicyAlternativesAdapter.class);
 

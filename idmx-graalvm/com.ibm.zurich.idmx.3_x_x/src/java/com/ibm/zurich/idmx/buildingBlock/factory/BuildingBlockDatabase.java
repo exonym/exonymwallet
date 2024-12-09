@@ -52,7 +52,6 @@ import com.ibm.zurich.idmx.buildingBlock.structural.revocationAuthorityKey.Revoc
 import com.ibm.zurich.idmx.buildingBlock.structural.systemParameters.SystemParametersBuildingBlock;
 import com.ibm.zurich.idmx.buildingBlock.structural.verifierParameters.VerifierParametersBuildingBlock;
 import com.ibm.zurich.idmx.buildingBlock.systemParameters.EcryptSystemParametersGenerator;
-import com.ibm.zurich.idmx.buildingBlock.systemParameters.SystemParameterGeneratorBuildingBlock;
 import com.ibm.zurich.idmx.dagger.BasisComponent;
 import com.ibm.zurich.idmx.dagger.DaggerBasisComponent;
 import com.ibm.zurich.idmx.device.ExternalSecretsHelperImpl;

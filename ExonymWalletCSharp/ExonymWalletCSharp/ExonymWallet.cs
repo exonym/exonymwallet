@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using ExonymWalletBridge.Schema;
 
 namespace ExonymWalletBridge
 {
@@ -55,18 +56,18 @@ namespace ExonymWalletBridge
             return result;
         }
         
-        public string C30JoinToAuthProtocol(string alpha, string beta, string gamma, string path, int test)
+        public JoinResponse C30JoinToAuthProtocol(string alpha, string beta, string gamma, string path, int test)
         {
             IntPtr resultPtr = NativeMethods.c30_join_to_auth_protocol(_thread, alpha, beta, gamma, path, test);
-            string result = Marshal.PtrToStringAnsi(resultPtr);
-            NativeMethods.free_cstring(_thread, resultPtr); // Free the memory allocated by the native method
-            return result;
+            string json = Marshal.PtrToStringAnsi(resultPtr);
+            NativeMethods.free_cstring(_thread, resultPtr); 
+            return JoinResponse.Deserialise(json);
         }
 
         public bool HasPlayerKeyForGame(string alpha, string beta, string path)
         {
             int result = NativeMethods.has_player_key_for_game(_thread, alpha, beta, path);
-            return result != 0; // Non-zero result indicates true
+            return result != 0; 
         }
 
         public string GeneratePlayerKeyForGame(string alpha, string beta, string path)

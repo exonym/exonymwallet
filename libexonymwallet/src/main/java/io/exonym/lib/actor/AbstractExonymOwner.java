@@ -19,7 +19,6 @@ import com.ibm.zurich.idmx.interfaces.proofEngine.ZkDirector;
 import com.ibm.zurich.idmx.interfaces.util.BigInt;
 import com.ibm.zurich.idmx.util.bigInt.BigIntFactoryImpl;
 import eu.abc4trust.abce.internal.user.credentialManager.CredentialManagerException;
-import eu.abc4trust.cryptoEngine.CryptoEngineException;
 import eu.abc4trust.cryptoEngine.user.CryptoEngineUser;
 import eu.abc4trust.keyManager.KeyManagerException;
 import eu.abc4trust.returnTypes.IssuMsgOrCredDesc;
@@ -32,10 +31,7 @@ import io.exonym.lib.helpers.BuildPresentationTokenDescription;
 import io.exonym.lib.helpers.CredentialWrapper;
 import io.exonym.lib.api.AbstractIdContainer;
 import io.exonym.lib.lite.SFTPLogonData;
-import io.exonym.lib.pojo.AnonCredentialParameters;
-import io.exonym.lib.pojo.IdContainerSchema;
 import io.exonym.lib.pojo.KeyContainer;
-import io.exonym.lib.pojo.MintedAnonCredential;
 import io.exonym.lib.standard.ExtractObject;
 import io.exonym.lib.standard.Form;
 import io.exonym.lib.standard.PassStore;
@@ -202,12 +198,6 @@ public abstract class AbstractExonymOwner extends AbstractBaseActor {
 					} else if (credentialOrSecret instanceof Secret){
 						this.credentialManagerUser.storeSecret(container.getUsername(), (Secret)credentialOrSecret);
 						logger.fine("Adding secret");
-
-					} else if (credentialOrSecret instanceof AnonCredentialParameters){
-						logger.fine("Anon Credential Params do not get used here.");
-						
-					} else if (credentialOrSecret instanceof MintedAnonCredential){
-						logger.fine("Minted Anon Credential does not used here.");
 
 					} else if (credentialOrSecret instanceof KeyContainer){
 						logger.fine("Key Containers not used here.");

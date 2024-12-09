@@ -4,12 +4,12 @@
   <parent>
     <groupId>com.ibm.zurich.idmx</groupId>
     <artifactId>pom</artifactId>
-    <version>3.1.3</version>
+    <version>3.1.4</version>
   </parent>
 
   <artifactId>com.ibm.zurich.idmx.interfaces</artifactId>
   <name>Identity Mixer Interfaces</name>
-  <version>3.1.3</version>
+  <version>3.1.4</version>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -23,9 +23,9 @@
       <artifactId>abce-interfaces</artifactId>
     </dependency>
   </dependencies>
-<!---->
-<!--  Removed 2024-09-24 as it was causing conflicts with the parent's compiler plug-in -->
-<!--  -->
+  <!---->
+  <!--  Removed 2024-09-24 as it was causing conflicts with the parent's compiler plug-in -->
+  <!--  -->
 
   <build>
     <plugins>
