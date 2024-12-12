@@ -32,6 +32,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class C30Utils {
+
+//    static {
+//        System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
+//    }
     
     private final static Logger logger = Logger.getLogger(C30Utils.class.getName());
 
@@ -373,7 +377,7 @@ public class C30Utils {
             throw e;
 
         } catch (Exception e) {
-            throw new UxException(e.getMessage());
+            throw new UxException(e.getMessage(), e);
 
         }
     }

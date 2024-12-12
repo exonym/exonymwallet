@@ -164,27 +164,48 @@ public final class IdContainerExternal extends AbstractIdContainer {
 
     public static SystemParameters openSystemParameters() throws Exception{
         if (lambda==null) {
-            try (InputStream stream = ExonymOwner.class.getClassLoader()
-                    .getSystemResourceAsStream("lambda.xml")) {
-
+            try (InputStream stream = ExonymOwner.class.getResourceAsStream("/lambda.xml")) {
                 if (stream != null) {
                     byte[] in = new byte[stream.available()];
                     stream.read(in);
-                    lambda = (SystemParameters) JaxbHelperClass.deserialize(new String(in, StandardCharsets.UTF_8)).getValue();
+                    String sp = new String(in, StandardCharsets.UTF_8);
+                    lambda = (SystemParameters) JaxbHelperClass.deserialize(sp).getValue();
 
                 } else {
-                    throw new UxException("SYSTEM_PARAMETERS_NOT_FOUND_ON_CLASS_PATH",
-                            "Unable to load system parameters", "lambda.xml");
+                    tryAlternativeClassLoader();
 
                 }
             } catch (Exception e) {
-                throw e;
+                throw new UxException("SYSTEM_PARAMETERS_NOT_FOUND_ON_CLASS_PATH", e,
+                        "Unable to load system parameters", "lambda.xml");
 
             }
         }
         return lambda;
 
     }
+
+    private static void tryAlternativeClassLoader() throws Exception {
+        try (InputStream stream = Thread.currentThread()
+                .getContextClassLoader()
+                .getSystemResourceAsStream("lambda.xml")) {
+            if (stream!=null){
+                byte[] in = new byte[stream.available()];
+                stream.read(in);
+                lambda = (SystemParameters) JaxbHelperClass.deserialize(
+                        new String(in, StandardCharsets.UTF_8)).getValue();
+
+            } else {
+                throw new UxException("SYSTEM_PARAMETERS_NOT_FOUND_ON_CLASS_PATH",
+                        "Unable to load system parameters", "lambda.xml");
+
+            }
+        } catch (Exception e){
+            throw e;
+
+        }
+    }
+
 
     public static void loadSystemParams(String lambdaXml) throws SerializationException {
         lambda = (SystemParameters) JaxbHelperClass.deserialize(lambdaXml).getValue();

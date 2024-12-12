@@ -26,6 +26,7 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 
 public class JaxbHelper {
 
@@ -39,7 +40,11 @@ public class JaxbHelper {
 	}
 
 	public static String serializeToXml(Object o, Class<?> clazz) throws Exception{
+
+//		System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
+
 		JAXBContext context = JAXBContext.newInstance(clazz);
+
 		Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

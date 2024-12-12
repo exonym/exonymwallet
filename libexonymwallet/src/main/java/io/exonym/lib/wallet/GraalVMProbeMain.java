@@ -26,8 +26,6 @@ import io.exonym.lib.helpers.Timing;
 import io.exonym.lib.standard.WhiteList;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.Header;
-import org.apache.http.message.BasicHeader;
 
 import java.io.IOException;
 import java.net.URI;
@@ -314,8 +312,8 @@ public class GraalVMProbeMain {
 
         String playerPath = alpha + "/" + beta + "/" + gamma;
         logger.info(playerPath);
-
-        BasicHeader game0Header = new BasicHeader("C30-App-Key", api);
+        HashMap<String, String> game0Header = new HashMap<>();
+        game0Header.put("C30-App-Key", api);
 
         String response = client.basicPost("https://t1.sybil.cyber30.io/c30/" + playerPath,
                 gameToPost.toString(), game0Header);
@@ -323,10 +321,10 @@ public class GraalVMProbeMain {
         logger.info(response);
 
         // Set-up player on game server
-        Header[] headersGame0 = {
-            new BasicHeader("kid", "b9c82418-ebe7-45c3-b19b-ca6f7f318867"),
-            new BasicHeader("key", "0fc8bc7cf26084f7341cb007c5233118ea2aecdf95a4ccc25212d5e8f538966b")
-        };
+        HashMap<String, String> headersGame0 = new HashMap<>();
+        headersGame0.put("kid", "b9c82418-ebe7-45c3-b19b-ca6f7f318867");
+        headersGame0.put("key", "0fc8bc7cf26084f7341cb007c5233118ea2aecdf95a4ccc25212d5e8f538966b");
+
 //        Path nmPath = Path.of("resource", "network-map");
         NetworkMap nm = new NetworkMap(p.resolve("network-map"));
         nm.spawnIfDoesNotExist();

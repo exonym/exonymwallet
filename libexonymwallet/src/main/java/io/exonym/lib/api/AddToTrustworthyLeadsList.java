@@ -17,16 +17,13 @@ public class AddToTrustworthyLeadsList {
                 o.addProperty("test", true);
                 o.addProperty("sourceUrl", url);
                 String r = client.basicPost("https://node.t0.sybil.exonym.io/registerSource", o.toString());
-                client.close();
                 return r;
 
             } else {
-                client.close();
                 throw new UxException(ErrorMessages.URL_INVALID + " ", url);
 
             }
         } catch (Exception e) {
-            client.close();
             throw e;
 
         }

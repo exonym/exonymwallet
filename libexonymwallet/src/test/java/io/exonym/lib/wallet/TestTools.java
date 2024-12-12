@@ -15,8 +15,6 @@ import io.exonym.lib.standard.CryptoUtils;
 import io.exonym.lib.standard.PassStore;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.Header;
-import org.apache.http.message.BasicHeader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,6 +22,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -93,8 +92,8 @@ public class TestTools {
 
             logger.info(playerPath);
 
-            BasicHeader game0Header = new BasicHeader("C30-App-Key",
-                    game.getApiKey());
+            HashMap<String, String> game0Header = new HashMap<>();
+            game0Header.put("C30-App-Key", game.getApiKey());
 
             String response = client.basicPost("https://t1.sybil.cyber30.io/c30/" + playerPath,
                     gameToPost.toString(), game0Header);
@@ -110,8 +109,8 @@ public class TestTools {
     public static void registerPlayerOnGameServers(C30Player player){
         try {
             Http client = new Http();
-            Header[] headersGame0 = TestTools.generateHeaders(TestTools.NODE_0_API);
-            Header[] headersGame1 = TestTools.generateHeaders(TestTools.NODE_1_API);
+            HashMap<String, String> headersGame0 = TestTools.generateHeaders(TestTools.NODE_0_API);
+            HashMap<String, String> headersGame1 = TestTools.generateHeaders(TestTools.NODE_1_API);
 
             NetworkMap nm = new NetworkMap(TestTools.STORE_PATH.resolve("network-map"));
             NetworkMapItemModerator nmim0 = (NetworkMapItemModerator) nm.nmiForNode(TestTools.MOD0_UID);
@@ -141,7 +140,6 @@ public class TestTools {
                     + player.getEpsilon() + " "
                     + CryptoUtils.computeMd5HashAsHex(
                     player.getEpsilon().getBytes(StandardCharsets.UTF_8)));
-
 
         } catch (Exception e) {
             TestTools.handleError(e);
@@ -339,10 +337,11 @@ public class TestTools {
         }
     }
 
-    public static Header[] generateHeaders(String[] node0Api) {
-        Header kid = new BasicHeader("kid", node0Api[0]);
-        Header key = new BasicHeader("key", node0Api[1]);
-        return new Header[] {kid, key};
+    public static HashMap<String, String> generateHeaders(String[] node0Api) {
+        HashMap<String, String> result = new HashMap<>();
+        result.put("kid", node0Api[0]);
+        result.put("key", node0Api[1]);
+        return result;
 
     }
 }

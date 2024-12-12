@@ -18,8 +18,8 @@ import io.exonym.lib.standard.PassStore;
 import io.exonym.lib.standard.QrCode;
 import io.exonym.lib.standard.WhiteList;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.client.ClientProtocolException;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -334,7 +334,7 @@ public class Prove {
                         "SSO authentications require a domain name");
 
             }
-        } catch (ClientProtocolException e) {
+        } catch (IOException e) {
             throw new UxException(ErrorMessages.SSO_END_POINT_404, e);
 
         }

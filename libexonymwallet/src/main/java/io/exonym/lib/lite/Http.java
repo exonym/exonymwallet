@@ -1,110 +1,121 @@
 package io.exonym.lib.lite;
 
-import org.apache.http.Header;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
+import okhttp3.*;
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-public class Http implements AutoCloseable {
+public class Http {
 
-    private static Logger logger = Logger.getLogger(Http.class.getName());
+    private static final Logger logger = Logger.getLogger(Http.class.getName());
 
-    private final CloseableHttpClient client;
-    private HttpContext context = null;
-    private final RequestConfig config;
+    private static class InMemoryCookieJar implements CookieJar {
+
+        private final HashMap<HttpUrl, List<Cookie>> cookieStore = new HashMap<>();
+
+        @Override
+        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+            cookieStore.put(url, new ArrayList<>(cookies)); // Save cookies for the URL
+        }
+
+        @Override
+        public List<Cookie> loadForRequest(HttpUrl url) {
+            List<Cookie> cookies = new ArrayList<>();
+            for (HttpUrl storedUrl : cookieStore.keySet()) {
+                // Match cookies for the domain
+                if (url.host().equals(storedUrl.host())) {
+                    cookies.addAll(cookieStore.get(storedUrl));
+                }
+            }
+            return cookies;
+        }
+    }
+
+    private OkHttpClient client;
 
     public Http() {
         int timeout = 60;
-        config = RequestConfig.custom()
-                .setConnectTimeout(timeout * 1000)
-                .setConnectionRequestTimeout(timeout * 1000)
-                .setSocketTimeout(timeout * 1000).build();
-        // this.client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
-        this.client = HttpClients.createDefault();
 
+        // Attach the InMemoryCookieJar to the client
+        this.client = new OkHttpClient.Builder()
+                .connectTimeout(timeout, TimeUnit.SECONDS)
+                .readTimeout(timeout, TimeUnit.SECONDS)
+                .writeTimeout(timeout, TimeUnit.SECONDS)
+                .cookieJar(new InMemoryCookieJar()) // Attach custom cookie jar
+                .build();
     }
 
-    public void newContext(){
-        CookieStore cookieStore = new BasicCookieStore();
-        this.context = new BasicHttpContext();
-        this.context.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
-
-
+    public String basicPost(String url, String json) throws IOException {
+        return basicPost(url, json, new HashMap<>());
     }
 
-    public String basicPost(String url, String json, Header... headers) throws IOException {
-        if (context==null){
-            this.newContext();
+    public String basicPost(String url, String json, HashMap<String, String> headers) throws IOException {
+        RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
 
-        }
-        HttpPost post = new HttpPost(url);
-        post.setConfig(config);
-        post.setHeader("User-Agent",
-                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-        post.addHeader("Accept", "application/json");
-        post.addHeader("Accept-Language", "en-US,en;q=0.5");
-        post.addHeader("Access-Control-Request-Headers", "content-type");
-        post.addHeader("Access-Control-Request-Method", "POST");
-        post.addHeader("Method", "POST");
-        for (Header header : headers){
-            post.addHeader(header);
-        }
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(url)
+                .header("User-Agent",
+                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11")
+                .addHeader("Accept", "application/json")
+                .addHeader("Accept-Language", "en-US,en;q=0.5")
+                .addHeader("Access-Control-Request-Headers", "content-type")
+                .addHeader("Access-Control-Request-Method", "POST")
+                .addHeader("Method", "POST")
+                .addHeader("content-type", "application/json")
+                .post(body);
 
-//        post.addHeader("Cache-Control", "no-cache");
-//        post.addHeader("Connection", "keep-alive");
-//        post.addHeader("Host", "https://node.spectra.plus");
-//        post.addHeader("Sec-Fetch-Dest", "empty");
-//        post.addHeader("Sec-Fetch-Mode", "cors");
-//        post.addHeader("Sec-Fetch-Site", "same-site");
-        post.addHeader("content-type", "application/json");
-        StringEntity entity = new StringEntity(json);
-        post.setEntity(entity);
-        ResponseBasic r = new ResponseBasic();
-        // logger.debug(context.toString());
-        return client.execute(post, r, context);
-
-    }
-
-    public String basicGet(String url, Header... headers) throws IOException{
-        if (context==null){
-            this.newContext();
-
-        }
-        HttpGet get = new HttpGet(url);
-        get.setConfig(config);
-        get.setHeader("User-Agent",
-                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-        get.addHeader("origin", "http://exonym-node");
-        get.addHeader("content-type", "application/json");
-        get.addHeader("Accept", "text/plain");
-        get.addHeader("Method", "GET");
-        for (Header header : headers){
-            get.addHeader(header);
+        for (String k : headers.keySet()) {
+            requestBuilder.addHeader(k, headers.get(k));
         }
 
-
-        ResponseBasic r = new ResponseBasic();
-        return client.execute(get, r, context);
-
-    }
-
-
-    @Override
-    public void close() throws Exception {
-        if (client!=null){
-            client.close();
-
+        Request request = requestBuilder.build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            return response.body().string();
         }
     }
+
+    public String basicGet(String url) throws IOException {
+        return basicGet(url, new HashMap<>());
+    }
+
+    public String basicGet(String url, HashMap<String, String> headers) throws IOException {
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(url)
+                .header("User-Agent",
+                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11")
+                .addHeader("origin", "http://exonym-node")
+                .addHeader("content-type", "application/json")
+                .addHeader("Accept", "text/plain")
+                .addHeader("Method", "GET")
+                .get();
+
+        for (String k : headers.keySet()) {
+            requestBuilder.addHeader(k, headers.get(k));
+        }
+
+        Request request = requestBuilder.build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            return response.body().string();
+        }
+    }
+
+    public void newContext() {
+        // Replace the current client with a new one that has a fresh CookieJar
+        OkHttpClient.Builder builder = client.newBuilder();
+        builder.cookieJar(new InMemoryCookieJar());
+        client = builder.build(); // Reset client with a new CookieJar
+    }
+
 }

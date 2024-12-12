@@ -146,8 +146,33 @@
 					<artifactId>jakarta.activation-api</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.moxy &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.eclipse.persistence</groupId>-->
+<!--			<artifactId>org.eclipse.persistence.moxy</artifactId>-->
+<!--			<version>2.7.7</version>-->
+<!--		</dependency>-->
+
+
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>2.3.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>jakarta.xml.bind</groupId>
+					<artifactId>jakarta.xml.bind-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.activation</groupId>
+					<artifactId>jakarta.activation</artifactId>
+				</exclusion>
+			</exclusions>
 
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.apache.santuario</groupId>
@@ -178,10 +203,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.13</version>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>4.12.0</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>com.google.zxing</groupId>
@@ -318,45 +344,11 @@
 			</build>
 		</profile>
 
-		<!-- Unity-specific Profile (No Native Components) -->
 		<profile>
 			<id>unity</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<properties>
-				<!-- Set Java version -->
-				<maven.compiler.source>11</maven.compiler.source>
-				<maven.compiler.target>11</maven.compiler.target>
-				<maven.compiler.release>11</maven.compiler.release>
-			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>com.google.zxing</groupId>
-					<artifactId>core</artifactId>
-					<version>3.3.0</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>com.google.zxing</groupId>
-					<artifactId>javase</artifactId>
-					<version>3.3.0</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.graalvm.nativeimage</groupId>
-					<artifactId>svm</artifactId>
-					<version>22.0.0.2</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>com.jcraft</groupId>
-					<artifactId>jsch</artifactId>
-					<version>0.1.55</version>
-					<scope>provided</scope>
-				</dependency>
-
-			</dependencies>
 			<build>
 				<resources>
 					<resource>
@@ -366,51 +358,106 @@
 							<include>issuer-for-verifier-params.xml</include>
 						</includes>
 					</resource>
+					<resource>
+						<directory>src/main/java</directory>
+						<includes>
+							<include>**/jaxb.properties</include>
+						</includes>
+					</resource>
 				</resources>
 				<plugins>
-					<!-- Compiler plugin to ensure Java 11+ support -->
+					<!-- Maven Shade Plugin -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.10.1</version>
-						<configuration>
-							<source>11</source>
-							<target>11</target>
-						</configuration>
-					</plugin>
-					<!-- Assembly plugin for JAR-with-dependencies -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<version>3.4.2</version>
-						<configuration>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<archive>
-								<manifest>
-									<addClasspath>true</addClasspath>
-									<mainClass>com.example.Main</mainClass>
-								</manifest>
-								<manifestEntries>
-									<Class-Path>resources/</Class-Path>
-								</manifestEntries>
-							</archive>
-						</configuration>
+						<artifactId>maven-shade-plugin</artifactId>
+						<version>3.4.1</version>
 						<executions>
 							<execution>
-								<id>assemble-unity</id>
 								<phase>package</phase>
 								<goals>
-									<goal>single</goal>
+									<goal>shade</goal>
 								</goals>
+								<configuration>
+									<artifactSet>
+										<includes>
+											<include>com.ibm.zurich.idmx:com.ibm.zurich.idmx.interfaces</include>
+											<include>eu.abc4trust.ri:abc4trust-xml</include>
+											<include>eu.abc4trust.ri:abce-interfaces</include>
+											<include>com.ibm.zurich.idmx:com.ibm.zurich.idmx.3_x_x</include>
+										</includes>
+										<excludes>
+											<exclude>javax.xml.bind:jaxb-api</exclude>
+											<exclude>com.googlecode.jaxb-namespaceprefixmapper-interfaces:JAXBNamespacePrefixMapper</exclude>
+											<exclude>com.sun.xml.bind:jaxb-core</exclude>
+											<exclude>com.sun.xml.bind:jaxb-impl</exclude>
+											<exclude>javax.activation:javax.activation-api</exclude>
+											<exclude>javax.inject:javax.inject</exclude>
+											<exclude>org.xmlunit:xmlunit-core</exclude>
+											<exclude>commons-codec:commons-codec</exclude>
+											<exclude>com.google.code.gson:gson</exclude>
+											<exclude>com.jcraft:jsch</exclude>
+											<exclude>org.graalvm.nativeimage:svm</exclude>
+											<exclude>org.graalvm.sdk:graal-sdk</exclude>
+											<exclude>org.graalvm.nativeimage:objectfile</exclude>
+											<exclude>org.graalvm.nativeimage:pointsto</exclude>
+											<exclude>org.graalvm.compiler:compiler</exclude>
+											<exclude>org.graalvm.nativeimage:native-image-base</exclude>
+											<exclude>junit:junit</exclude>
+											<exclude>org.eclipse.paho:org.eclipse.paho.client.mqttv3</exclude>
+											<exclude>commons-logging:commons-logging</exclude>
+											<exclude>com.google.dagger:dagger</exclude>
+											<exclude>org.apache.santuario:xmlsec</exclude>
+											<exclude>com.fasterxml.woodstox:woodstox-core</exclude>
+											<exclude>org.codehaus.woodstox:stax2-api</exclude>
+											<exclude>com.fasterxml.jackson.module:jackson-module-jaxb-annotations</exclude>
+											<exclude>com.fasterxml.jackson.core:jackson-annotations</exclude>
+											<exclude>com.fasterxml.jackson.core:jackson-core</exclude>
+											<exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
+											<exclude>org.apache.commons:commons-lang3</exclude>
+											<exclude>com.squareup.okhttp3:okhttp</exclude>
+											<exclude>com.squareup.okio:okio</exclude>
+											<exclude>com.squareup.okio:okio-jvm</exclude>
+											<exclude>org.jetbrains.kotlin:kotlin-stdlib-common</exclude>
+											<exclude>org.jetbrains.kotlin:kotlin-stdlib-jdk8</exclude>
+											<exclude>org.jetbrains.kotlin:kotlin-stdlib</exclude>
+											<exclude>org.jetbrains:annotations</exclude>
+											<exclude>org.jetbrains.kotlin:kotlin-stdlib-jdk7</exclude>
+											<exclude>com.google.zxing:core</exclude>
+											<exclude>com.google.zxing:javase</exclude>
+											<exclude>com.beust:jcommander</exclude>
+											<exclude>com.github.jai-imageio:jai-imageio-core</exclude>
+
+										</excludes>
+									</artifactSet>
+									<filters>
+										<filter>
+											<artifact>*:*</artifact>
+											<excludes>
+												<!--												<exclude>META-INF/sun-jaxb.episode</exclude>-->
+												<exclude>META-INF/native-image</exclude>
+												<exclude>META-INF/substrate</exclude>
+												<exclude>META-INF/LICENSE.md</exclude>
+												<exclude>META-INF/*.SF</exclude>
+												<exclude>META-INF/*.DSA</exclude>
+												<exclude>META-INF/*.RSA</exclude>
+											</excludes>
+										</filter>
+									</filters>
+									<transformers>
+										<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+											<mainClass>com.example.Main</mainClass>
+										</transformer>
+										<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+											<resource>META-INF/sun-jaxb.episode</resource>
+										</transformer>
+									</transformers>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
-
 	</profiles>
 
 <!--	<repositories>-->

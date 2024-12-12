@@ -11,7 +11,6 @@ import io.exonym.lib.lite.Http;
 import io.exonym.lib.pojo.*;
 import io.exonym.lib.standard.Const;
 import io.exonym.lib.standard.PassStore;
-import org.apache.http.Header;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -19,6 +18,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
@@ -174,7 +174,8 @@ public class TestRevocation {
             plain.setModOfVioUid(URI.create(modUid));
 
             plain.setType(OverrideRequest.TYPE_PLAIN);
-            Header[] header = TestTools.generateHeaders(TestTools.NODE_0_API);
+            HashMap<String, String> header = new HashMap<>();
+            header = TestTools.generateHeaders(TestTools.NODE_0_API);
 
             NetworkMap nm = new NetworkMap(TestTools.STORE_PATH.resolve("network-map"));
             NetworkMapItemModerator nmim = (NetworkMapItemModerator) nm.nmiForNode(TestTools.MOD0_UID);

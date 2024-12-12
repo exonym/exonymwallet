@@ -15,7 +15,6 @@
 package com.ibm.zurich.idmx.jaxb;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.xml.XMLConstants;
@@ -35,11 +34,7 @@ import org.xml.sax.SAXException;
 import com.ibm.zurich.idmix.abc4trust.AbcNamespace;
 import com.ibm.zurich.idmx.exception.SerializationException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import com.ibm.zurich.idmx.configuration.Configuration;
-import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
-import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 
 /**
  * 
@@ -52,6 +47,7 @@ public class JaxbHelperClass {
 
   private static JAXBContext getContext() throws JAXBException {
     if (context == null) {
+//      System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
       context =
           JAXBContext.newInstance(eu.abc4trust.xml.ObjectFactory.class,
               eu.abc4trust.returnTypes.ObjectFactoryReturnTypes.class);

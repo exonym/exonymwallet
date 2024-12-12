@@ -85,11 +85,12 @@ import com.ibm.zurich.idmx.util.ModuleSorterTest;
 //    _UProveCompatibilityTestSuite.class //
 })
 public class _AllTests {
+
   @BeforeClass
   public static void cleanUpTemporaryFiles() {
     final URI BASE_LOCATION = new File(System.getProperty("user.dir")).toURI();
     final URI SEND = BASE_LOCATION.resolve("files/");
-    TestUtils.deleteFilesInFolder(new File(SEND), null);
+//    TestUtils.deleteFilesInFolder(new File(SEND), null);
   }
 
 
